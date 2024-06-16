@@ -1,0 +1,69 @@
+a {
+    text-decoration: none;
+}
+
+
+h1, h3 {
+    text-align: center;
+}
+
+.Lista_subcuenta {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.Subcuenta {
+    height: 80px;
+    width: 360px;
+    border-radius: 6px;
+    font-size: 18px;
+    background-color: #bbe5a1;
+    margin: 0px 5px 10px;
+}
+
+.newModal {
+	position: fixed;
+	font-family: Arial, Helvetica, sans-serif;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	background: rgba(0,0,0,0.8);
+	z-index: 99999;
+	opacity:0;
+	transition: opacity 400ms ease-in;
+	pointer-events: none;
+}
+
+.modalDialog {
+	width: 400px;
+	position: relative;
+	margin: 10% auto;
+	padding: 5px 20px 13px 20px;
+	border-radius: 10px;
+	background: #ffffff;
+	transition: opacity 400ms ease-in;
+}
+
+.modalHeader{
+	text-align:center;
+	margin: 18px 0px;
+}
+
+.close {
+	background: #ff0000;
+	color: #FFFFFF;
+	border: none;
+	line-height: 25px;
+	position: absolute;
+	right: -12px;
+	text-align: center;
+	top: -10px;
+	width: 24px;
+	text-decoration: none;
+	font-weight: bold;
+	border-radius: 12px;
+	box-shadow: 1px 1px 3px #000;
+}
+.close:hover { background: #00d9ff; }

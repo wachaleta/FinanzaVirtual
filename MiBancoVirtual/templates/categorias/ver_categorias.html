@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <!-- Bootstrap CSS -->
+        <!---->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+        <!---->
+        <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+        <title>Categorias</title>
+    </head>
+    <body>
+        {% include "../nav.html" %}
+        <div id="app">
+            <div id="Alerta" style="position: fixed; top: 0; width: 100%; z-index: 101;"></div>
+            <h1>{{mensaje}}</h1>
+            <!-- Categorias -->
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Categoria</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody v-for="categoria in lista_categorias">
+                    <tr>
+                        <td>[[categoria.nombre]]</td>
+                        <td>
+                            <button type="button" @click="cargarCategoria(categoria)" class="btn btn-link" data-bs-toggle="modal" data-bs-target="#eliminarCategoria">
+                                <i class="bx bxs-x-circle" style="margin: -15px; color:#ff0000; font-size: 38px;"></i>
+                            </button>
+                            <button type="button" @click="cargarCategoria(categoria)" class="btn btn-link" data-bs-toggle="modal" data-bs-target="#modificarCategoria">
+                                <i class="bx bxs-pencil" style="margin: -15px; color:#faf623; font-size: 38px;"></i>
+                            </button >
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <!-- Modal Modificar Categoria -->
+            <div class="modal fade" id="modificarCategoria" tabindex="-1" aria-labelledby="modificarCategoriaLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="exampleModalLabel">Modificar Categoria</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                                <p>Nombre</p>
+                                <input type="text" name="nombre" v-model="obj_categoria.nombre">
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" id="cerrar_modificarCategoria" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                            <button type="button" @click="modificarCategoria()" class="btn btn-primary">Guardar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Modal Eliminar Categoria-->
+            <div class="modal fade" id="eliminarCategoria" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="exampleModalLabel">Eliminar Categoria</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            Está seguro que desea eliminar el categoria "[[obj_categoria.nombre]]"?
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" id="cerrar_eliminarCategoria" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                            <button type="button" @click="eliminarCategoria()" class="btn btn-primary">Eliminar categoria</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Botón Crear Categoria -->
+            <button type="button" @click="cargarCategoria()" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#crearCategoria">
+                Crear Categoria
+            </button>
+            <!-- Modal Crear Categoria -->
+            <div class="modal fade" id="crearCategoria" tabindex="-1" aria-labelledby="CrearCategoria" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="exampleModalLabel">Crear Categoria</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <p>Nombre</p>
+                            <input type="text" v-model="obj_categoria.nombre" name="nombre">
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" id="cerrar_crearCategoria" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                            <input type="hidden" name="accion" value="crear">
+                            <button type="button" @click="crearCategoria()" class="btn btn-primary">Crear</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/js-cookie@3.0.5/dist/js.cookie.min.js"></script>
+        <script>
+            new Vue({
+                el: "#app",
+                delimiters: ['[[', ']]'],
+                data() {
+                    return {
+                        mensaje: "Hola desde Vue",
+                        lista_categorias: [],
+                        obj_categoria: {
+                            id: "",
+                            nombre: ""
+                        }
+                    }
+                },
+                methods: {
+                    async obtenerCategorias(){
+                        const response = await fetch("../api/categoria/")
+                        this.lista_categorias = await response.json()
+                    },
+                    async crearCategoria(){
+                        const formData = new FormData()
+                        formData.append("nombre", this.obj_categoria.nombre)
+                        await fetch("../api/categoria/", {
+                            method: "POST",
+                            headers: {
+                                "X-CSRFToken": Cookies.get("csrftoken"),
+                            }, body: formData
+                        })
+                        document.getElementById("cerrar_crearCategoria").click()
+                        this.obtenerCategorias()
+                        this.activarAlert("success", "¡Se ha creado la categoría <strong>"+this.obj_categoria.nombre+"</strong> correctamente!")
+                    },
+                    cargarCategoria(categoria){
+                        if(categoria){
+                            this.obj_categoria = {
+                                id: categoria.id,
+                                nombre: categoria.nombre
+                            }
+                        }
+                        else{
+                            this.obj_categoria = {
+                            id: "",
+                            nombre: ""
+                        }
+                        }
+                    },
+                    async modificarCategoria(){
+                        const formData = new FormData()
+                        formData.append("nombre", this.obj_categoria.nombre)
+                        await fetch("../api/categoria/" + this.obj_categoria.id + "/", {
+                            method: "PUT",
+                            headers: {
+                                "X-CSRFToken": Cookies.get("csrftoken"),
+                            }, body: formData
+                        })
+                        document.getElementById("cerrar_modificarCategoria").click()
+                        this.obtenerCategorias()
+                        this.activarAlert("success", "¡Se ha modificado la categoría <strong>"+this.obj_categoria.nombre+"</strong> correctamente!")
+                    },
+                    async eliminarCategoria(){
+                        await fetch("../api/categoria/" + this.obj_categoria.id + "/", {
+                            method: "DELETE",
+                            headers: {
+                                "X-CSRFToken": Cookies.get("csrftoken"),
+                            }
+                        })
+                        document.getElementById("cerrar_eliminarCategoria").click()
+                        this.obtenerCategorias()
+                        this.activarAlert("success", "¡Se ha eliminado la categoría <strong>"+this.obj_categoria.nombre+"</strong> correctamente!")
+                    },
+                    activarAlert(type, message){
+                        alerta = document.getElementById("Alerta")
+                        alerta.innerHTML = [
+                            `<div class="alert alert-${type} alert-dismissible" id="alert-body" role="alert" style="width: 50%; margin: 0 auto;">`,
+                            `   <p style="text-align: center;">${message}</p>`,
+                            '   <button type="button" id="cerrar_alerta" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>',
+                            '</div>'].join(''   )
+                            setTimeout(() => {
+                                if(document.getElementById("alert-body")){
+                                    document.getElementById("cerrar_alerta").click()
+                                }
+                            }, 4000)
+                    }
+                },
+                created(){
+                    this.obtenerCategorias()
+                }
+            })
+        </script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe" crossorigin="anonymous"></script>
+    </body>
+</html>

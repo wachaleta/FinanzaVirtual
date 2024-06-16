@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <!-- Bootstrap CSS -->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+        <title>Crear Transacción</title>
+    </head>
+    <body>
+        {% include "../nav.html" %}
+        <div id="app">
+            <div id="Alerta" style="position: fixed; top: 0; width: 100%; z-index: 101;"></div>
+            <div id="container">
+                <form action="" method="POST" class="form-control" style="margin: 10px; padding: 10px;">
+                    <div>
+                        <!-- Monto -->
+                        <div class="row">
+                            <div class="col-1">
+                                <label for="montoTransferencia">monto:</label>
+                            </div>
+                            <div class="col-1">
+                                <input type="number" v-model="obj_transferencia.monto" id="montoTransferencia">
+                            </div>
+                        </div>
+                        <!-- Subcuentas -->
+                        <div class="row">
+                            <div class="col-1">
+                                <p>De:</p>
+                            </div>
+                            <div class="col-5">
+                                <select class="form-select" v-model="obj_transferencia.ordenante" id="ordenante">
+                                    <option v-for="subcuenta in cargarOrdenantes" :value="subcuenta.id">[[ subcuenta.nombre ]]</option>
+                                </select>
+                            </div>
+                            <div class="col-1">
+                                <p>Para:</p>
+                            </div>
+                            <div class="col-5">
+                                <select class="form-select" v-model="obj_transferencia.beneficiario" id="beneficiario">
+                                    <option v-for="subcuenta in cargarBeneficiarios" :value="subcuenta.id">[[ subcuenta.nombre ]]</option>
+                                </select>
+                            </div>
+                        </div>
+                        <!-- Fecha -->
+                        <div class="row">
+                            <div class="col-6">
+                                <label>Fecha</label>
+                            </div>
+                            <div class="col-6">
+                                <input type="date" v-model="obj_transferencia.fecha">
+                            </div>
+                        </div>
+                        <!-- Descripcion -->
+                        <div class="row">
+                            <div>
+                                <label for="descripcionTransferencia">Descripcion: </label>
+                            </div>
+                            <div class="col-12">
+                                <textarea class="form-control" v-model="obj_transferencia.descripcion" id="descripcionTransferencia" style="margin: 0px 10px 10px 10px;"></textarea>
+                            </div>
+                        </div>
+                        <!-- Boton -->
+                        <div>
+                            <button type="button" @click="modificarTransferencia()" class="btn btn-success">Modificar Transferencia</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/js-cookie@3.0.5/dist/js.cookie.min.js"></script>
+        <script>
+            const { createApp } = Vue
+            createApp({
+                delimiters: ['[[', ']]'],
+                data() {
+                    return {
+                        lista_subcuentas: [],
+                        lista_ordenantes: [],
+                        lista_beneficiarios: [],
+                        obj_transferencia: {
+                            id: "",
+                            monto: 0,
+                            ordenante: "",
+                            beneficiario: "",
+                            descripcion: ""
+                        }
+                    }
+                },
+                computed:{
+                    cargarOrdenantes(){
+                        return this.lista_subcuentas.filter(x => x.id != this.obj_transferencia.beneficiario)
+                    },
+                    cargarBeneficiarios(){
+                        return this.lista_subcuentas.filter(x => x.id != this.obj_transferencia.ordenante)
+                    }
+                },
+                methods: {
+                    async obtenerSubcuentas(){
+                        const response = await fetch("../../api/subcuenta/");
+                        this.lista_subcuentas = await response.json();
+                    },
+                    async obtenerId(){
+                        const url = window.location.href;
+                        const lastSlashIndex = url.lastIndexOf("/");
+                        secondLastSlashIndex = url.lastIndexOf("/", lastSlashIndex - 1);
+                        id = url.substring(secondLastSlashIndex + 1, lastSlashIndex)
+                        const response = await fetch("../../api/transferencia/"+id+"/")
+                        this.obj_transferencia = await response.json()
+                    },
+                    async modificarTransferencia(){
+                        parts = this.obj_transferencia.monto.toString().split('.');
+                        if(parts.length > 1) {
+                            this.obj_transferencia.monto = `${parts[0]}.${parts[1].slice(0, 2)}`;
+                        }
+                        formData = new FormData()
+                        formData.append("monto", this.obj_transferencia.monto)
+                        formData.append("ordenante", this.obj_transferencia.ordenante)
+                        formData.append("beneficiario", this.obj_transferencia.beneficiario)
+                        formData.append("descripcion", this.obj_transferencia.descripcion)
+                        formData.append("fecha", this.obj_transferencia.fecha)
+                        await fetch("../../api/transferencia/"+this.obj_transferencia.id+"/", {
+                            method: "PUT",
+                            headers: {
+                                "X-CSRFToken": Cookies.get("csrftoken")
+                            }, body: formData
+                        })
+                        this.activarAlert("success", "¡Se ha modificado la <strong>transferencia</strong> correctamente")
+                    },
+                    redireccionar(){
+                        window.location.replace("../../Ver_Transacciones/0/")
+                    },
+                    activarAlert(type, message){
+                        alerta = document.getElementById("Alerta")
+                        alerta.innerHTML = [
+                            `<div class="alert alert-${type} alert-dismissible" id="alert-body" role="alert" style="width: 50%; margin: 0 auto;">`,
+                            `   <p style="text-align: center;">${message}</p>`,
+                            '   <button type="button" @click="redireccionar()" id="cerrar_alerta" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>',
+                            '</div>'].join(''   )
+                        setTimeout(() => {
+                            if(document.getElementById("alert-body")){
+                                document.getElementById("cerrar_alerta").click()
+                            }
+                            // this.redireccionar()
+                        }, 4000)
+                    }
+                },
+                async created(){
+                    await this.obtenerSubcuentas()
+                    this.obtenerId()
+                }
+            }).mount("#app")
+        </script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe" crossorigin="anonymous"></script>
+    </body>
+</html>

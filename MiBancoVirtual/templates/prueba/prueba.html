@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link href="/static/css/transacciones/Gasto.css" rel="stylesheet">
+
+        <title>Prueba</title>
+    </head>
+    <body>
+        <div id="app">
+            <div class="lista-transacciones">
+                <div class="lista-gastos">
+                    <div class="transaccion gasto" v-for="gasto in lista_gastos">
+                        [[ gasto.nombre_subcuenta ]] -Q[[ gasto.monto ]]
+                    </div>
+                </div>
+                <div class="lista-ingresos">
+                    <div class="transaccion ingreso" v-for="ingreso in lista_ingresos">
+                        [[ ingreso.nombre_subcuenta ]] +Q[[ ingreso.monto ]]
+                    </div>
+                </div>
+                <div class="lista-transferencias">
+                    <div class="transaccion transferencia" v-for="transferencia in lista_transferencias">
+                        [[ transferencia.nombre_ordenante ]] Q[[ transferencia.monto ]] a: [[ transferencia.nombre_beneficiario ]]
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/js-cookie@3.0.5/dist/js.cookie.min.js"></script>
+        <script>
+            new Vue({
+                el: '#app',
+                delimiters: ["[[", "]]"],
+                data(){
+                    return{
+                        lista_gastos: [],
+                        lista_ingresos: [],
+                        lista_transferencias: [],
+                    }
+                },
+                methods: {
+                    async cargarGastos(){
+                        const response = await fetch("../api/gasto/")
+                        this.lista_gastos = await response.json()
+                    },
+                    async cargarIngresos(){
+                        const response = await fetch("../api/ingreso/")
+                        this.lista_ingresos = await response.json()
+                    },
+                    async cargarTransferencias(){
+                        const response = await fetch("../api/transferencia/")
+                        this.lista_transferencias = await response.json()
+                    },
+                },
+                created(){
+                    this.cargarGastos()
+                    this.cargarIngresos()
+                    this.cargarTransferencias()
+                }
+            })
+        </script>
+    </body>
+</html>

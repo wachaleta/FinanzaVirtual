@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <!-- Bootstrap CSS -->
+        <!---->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+        <!---->
+        <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+        <title>Perfiles</title>
+    </head>
+    <body>
+        {% include "../nav.html" %}
+        <div id="app">
+            <div id="Alerta" style="position: fixed; top: 0; width: 100%; z-index: 101;"></div>
+            <h1>{{mensaje}}</h1>
+            <!-- Perfiles -->
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Perfil</th>
+                        <th>Saldo</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody v-for="perfil in lista_perfiles">
+                    <tr>
+                        <td>[[perfil.nombre]]</td>
+                        <td v-if="perfil.saldo >= 0">Q[[ perfil.saldo ]]</td>
+                        <td v-else>-Q[[ perfil.saldo * -1 ]]</td>
+                        <td>
+                            <button type="button" @click="cargarPerfil(perfil)" class="btn btn-link" data-bs-toggle="modal" data-bs-target="#eliminarPerfil">
+                                <i class="bx bxs-x-circle" style="margin: -15px; color:#ff0000; font-size: 38px;"></i>
+                            </button>
+                            <button type="button" @click="cargarPerfil(perfil)" class="btn btn-link" data-bs-toggle="modal" data-bs-target="#modificarPerfil">
+                                <i class="bx bxs-pencil" style="margin: -15px; color:#faf623; font-size: 38px;"></i>
+                            </button >
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <!-- Modal Modificar Perfil -->
+            <div class="modal fade" id="modificarPerfil" tabindex="-1" aria-labelledby="modificarPerfilLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="exampleModalLabel">Modificar Perfil</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                                <p>Nombre</p>
+                                <input type="text" name="nombre" v-model="obj_perfil.nombre">
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" id="cerrar_modificarPerfil" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                            <button type="button" @click="modificarPerfil()" class="btn btn-primary">Guardar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Modal Eliminar Perfil-->
+            <div class="modal fade" id="eliminarPerfil" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="exampleModalLabel">Eliminar Perfil</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            Está seguro que desea eliminar el perfil "[[obj_perfil.nombre]]"?
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" id="cerrar_eliminarPerfil" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                            <button type="button" @click="eliminarPerfil()" class="btn btn-primary">Eliminar perfil</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Botón Crear Perfil -->
+            <button type="button" @click="cargarPerfil()" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#crearPerfil">
+                Crear Perfil
+            </button>
+            <!-- Modal Crear Perfil -->
+            <div class="modal fade" id="crearPerfil" tabindex="-1" aria-labelledby="CrearPerfil" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="exampleModalLabel">Crear Perfil</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <p>Nombre</p>
+                            <input type="text" v-model="obj_perfil.nombre" name="nombre">
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" id="cerrar_crearPerfil" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                            <input type="hidden" name="accion" value="crear">
+                            <button type="button" @click="crearPerfil()" class="btn btn-primary">Crear</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js"></script>
+
+        <script src="https://cdn.jsdelivr.net/npm/js-cookie@3.0.5/dist/js.cookie.min.js"></script>
+        
+        <script>
+            new Vue({
+                el: "#app",
+                delimiters: ["[[", "]]"],
+                data: {
+                    mensaje: "Hola desde Vue",
+                    lista_perfiles: [],
+                    obj_perfil: {
+                        id: "",
+                        nombre: ""
+                    }
+                },
+                methods: {
+                    async obtenerPerfiles(){
+                        const response = await fetch("../api/perfil/")
+                        this.lista_perfiles = await response.json()
+                    },
+                    async crearPerfil(){
+                        const formData = new FormData()
+                        formData.append("nombre", this.obj_perfil.nombre)
+                        await fetch("../api/perfil/", {
+                            method: "POST",
+                            headers: {
+                                "X-CSRFToken": Cookies.get("csrftoken"),
+                            }, body: formData
+                        })
+                        document.getElementById("cerrar_crearPerfil").click()
+                        this.obtenerPerfiles()
+                        this.activarAlert("success", "Se ha creado el perfil <strong>"+this.obj_perfil.nombre+"</strong> correctamente!")
+                    },
+                    cargarPerfil(perfil){
+                        if(perfil){
+                            this.obj_perfil = {
+                                id: perfil.id,
+                                nombre: perfil.nombre
+                            }
+                        }
+                        else{
+                            this.obj_perfil = {
+                            id: "",
+                            nombre: ""
+                        }
+                        }
+                    },
+                    async modificarPerfil(){
+                        const formData = new FormData()
+                        formData.append("nombre", this.obj_perfil.nombre)
+                        await fetch("../api/perfil/" + this.obj_perfil.id + "/", {
+                            method: "PUT",
+                            headers: {
+                                "X-CSRFToken": Cookies.get("csrftoken"),
+                            }, body: formData
+                        })
+                        document.getElementById("cerrar_modificarPerfil").click()
+                        this.obtenerPerfiles()
+                        this.activarAlert("success", "¡Se ha modificado el perfil <strong>"+this.obj_perfil.nombre+"</strong> correctamente!")
+                    },
+                    async eliminarPerfil(){
+                        await fetch("../api/perfil/" + this.obj_perfil.id + "/", {
+                            method: "DELETE",
+                            headers: {
+                                "X-CSRFToken": Cookies.get("csrftoken"),
+                            }
+                        })
+                        document.getElementById("cerrar_eliminarPerfil").click()
+                        this.obtenerPerfiles()
+                        this.activarAlert("success", "Se ha eliminado el perfil <strong>"+this.obj_perfil.nombre+"</strong> correctamente!")
+                    },
+                    activarAlert(type, message){
+                        alerta = document.getElementById("Alerta")
+                        alerta.innerHTML = [
+                            `<div class="alert alert-${type} alert-dismissible" id="alert-body" role="alert" style="width: 50%; margin: 0 auto;">`,
+                            `   <p style="text-align: center;">${message}</p>`,
+                            '   <button type="button" id="cerrar_alerta" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>',
+                            '</div>'].join(''   )
+                            setTimeout(() => {
+                                if(document.getElementById("alert-body")){
+                                    document.getElementById("cerrar_alerta").click()
+                                }
+                            }, 4000)
+                    }
+                },
+                created() {
+                    this.obtenerPerfiles()
+                }
+            });
+        </script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe" crossorigin="anonymous"></script>
+    </body>
+</html>
