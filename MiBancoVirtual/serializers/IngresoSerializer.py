@@ -18,17 +18,16 @@ class IngresoSerializer(serializers.ModelSerializer):
         return instance
     
     def update(self, instance, validated_data):
-
-        preSubcuenta = instance.subcuenta
-        preMonto = instance.monto
         
+        #   Revierte el ingreso anterior
+        instance.subcuenta.crear_gasto(instance.monto)
+
+        #   Modifica el ingreso
         instance = super().update(instance, validated_data)
 
-        if(preSubcuenta == instance.subcuenta):
-            instance.subcuenta.crear_ingreso(instance.monto - preMonto)
+        #   Crea el nuevo ingreso
+        subcuenta = Subcuenta.objects.filter(id=instance.subcuenta.id).first()
 
-        else:
-            preSubcuenta.crear_gasto(preMonto)
-            instance.subcuenta.crear_ingreso(instance.monto)
+        subcuenta.crear_ingreso(instance.monto)
 
         return instance
