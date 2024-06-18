@@ -1,6 +1,6 @@
 from django.db import models
 from django.dispatch import receiver
-from django.db.models.signals import pre_save, post_save, pre_delete
+from django.db.models.signals import pre_delete
 
 class Ingreso(models.Model):
     """ Monto a ingresar en una subcuenta """

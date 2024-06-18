@@ -1,6 +1,6 @@
 from django.db import models
 from django.dispatch import receiver
-from django.db.models.signals import pre_save, post_save, post_delete
+from django.db.models.signals import post_delete
 
 class Subcuenta(models.Model):
     """ Cuentas que gestionan el dinero de un usuario dentro de una Cuenta """
