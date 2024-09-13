@@ -10,6 +10,7 @@ class Transferencia(models.Model):
     monto = models.DecimalField(max_digits=10, decimal_places=2)
     descripcion = models.CharField(max_length=300, null=True, blank=True)
     fecha = models.DateField(auto_now_add=False)
+    fechaCreacion = models.DateField(auto_now_add=True)
     ordenante = models.ForeignKey(Subcuenta, related_name="PersonaOrdenante", on_delete=models.SET_NULL, null=True)
     beneficiario = models.ForeignKey(Subcuenta, related_name="PersonaBeneficiaria", on_delete=models.SET_NULL, null=True)
 

@@ -2,10 +2,10 @@ from django.contrib import admin
 from .models import *
 
 class CuentaAdmin(admin.ModelAdmin):
-    list_display = ("id", "nombre", "saldo_total")
+    list_display = ("id", "nombre")
 
 class SubcuentaAdmin(admin.ModelAdmin):
-    list_display = ("nombre", "saldo", "id")
+    list_display = ("id",)
 
 class GastoAdmin(admin.ModelAdmin):
     list_display = ("monto", "descripcion", "fecha", "subcuenta", "categoria", "saldo_actual")

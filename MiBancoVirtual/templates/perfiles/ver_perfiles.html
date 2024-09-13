@@ -27,8 +27,7 @@
                 <tbody v-for="perfil in lista_perfiles">
                     <tr>
                         <td>[[perfil.nombre]]</td>
-                        <td v-if="perfil.saldo >= 0">Q[[ perfil.saldo ]]</td>
-                        <td v-else>-Q[[ perfil.saldo * -1 ]]</td>
+                        <td>Q[[ perfil.saldo ]]</td>
                         <td>
                             <button type="button" @click="cargarPerfil(perfil)" class="btn btn-link" data-bs-toggle="modal" data-bs-target="#eliminarPerfil">
                                 <i class="bx bxs-x-circle" style="margin: -15px; color:#ff0000; font-size: 38px;"></i>
@@ -153,7 +152,7 @@
                     async modificarPerfil(){
                         const formData = new FormData()
                         formData.append("nombre", this.obj_perfil.nombre)
-                        await fetch("../api/perfil/" + this.obj_perfil.id + "/", {
+                        await fetch("../api/perfil-por-id/" + this.obj_perfil.id + "/", {
                             method: "PUT",
                             headers: {
                                 "X-CSRFToken": Cookies.get("csrftoken"),
@@ -164,7 +163,7 @@
                         this.activarAlert("success", "¡Se ha modificado el perfil <strong>"+this.obj_perfil.nombre+"</strong> correctamente!")
                     },
                     async eliminarPerfil(){
-                        await fetch("../api/perfil/" + this.obj_perfil.id + "/", {
+                        await fetch("../api/perfil-por-id/" + this.obj_perfil.id + "/", {
                             method: "DELETE",
                             headers: {
                                 "X-CSRFToken": Cookies.get("csrftoken"),

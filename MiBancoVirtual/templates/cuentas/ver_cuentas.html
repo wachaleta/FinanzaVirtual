@@ -116,7 +116,7 @@
                             <!-- Datos de las subcuentas -->
                             <div class="Lista_subcuenta">
                                 <button class="Subcuenta" @click="abrirModal('modalDatosSubcuenta'); cargarSubcuenta(subcuenta)" v-for="subcuenta in lista_subcuentas" v-if="subcuenta.cuenta == cuenta.id">
-                                    <p class="m-0">[[ subcuenta.nombre ]] Q[[ subcuenta.saldo ]]</p>
+                                    <p class="m-0">[[ subcuenta.subcuenta_nombre ]] Q[[ subcuenta.saldo ]]</p>
                                 </button>
                             </div>
                             <table class="table" style="margin: 10px;">
@@ -130,7 +130,7 @@
                                 </thead>
                                 <tbody>
                                     <tr v-for="subcuenta in lista_subcuentas">
-                                        <td v-if="subcuenta.cuenta == cuenta.id">[[subcuenta.nombre]]</td>
+                                        <td v-if="subcuenta.cuenta == cuenta.id">[[subcuenta.subcuenta_nombre]]</td>
                                         <td v-if="subcuenta.cuenta == cuenta.id && subcuenta.saldo >= 0">Q[[subcuenta.saldo]]</td>
                                         <td v-else-if="subcuenta.cuenta == cuenta.id && subcuenta.saldo < 0">-Q[[subcuenta.saldo * -1]]</td>
                                         <td v-if="subcuenta.cuenta == cuenta.id">
@@ -286,7 +286,7 @@
                 <div id="modalDatosSubcuenta" class="newModal">
                     <div class="modalDialog">
                         <div class="modalHeader">
-                            <h2>[[ obj_subcuenta.nombre]]</h2>
+                            <h2>[[ obj_subcuenta.subcuenta_nombre]]</h2>
                         </div>
                         <div class="modalBody">
                             <button @click="cerrarModal('modalDatosSubcuenta')" class="close">X</button>
@@ -329,7 +329,7 @@
                     <div class="modal-dialog">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h1 class="modal-title fs-5" id="CrearSubcuentaLabel">Modificar Subcuenta [[ obj_subcuenta.nombre ]]</h1>
+                                <h1 class="modal-title fs-5" id="CrearSubcuentaLabel">Modificar Subcuenta [[ obj_subcuenta.subcuenta_nombre ]]</h1>
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
@@ -356,7 +356,7 @@
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
-                                Está seguro que desea eliminar la subcuenta "[[obj_subcuenta.nombre]]"?
+                                Está seguro que desea eliminar la subcuenta "[[obj_subcuenta.subcuenta_nombre]]"?
                             </div>
                             <div class="modal-footer">
                                 <button type="button" id="cerrar_eliminarSubcuenta" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
@@ -545,17 +545,17 @@
                         document.getElementById("cerrar_crearSubcuenta").click()
                         this.obtenerCuentas()
                         this.obtenerSubcuentas()
-                        this.activarAlert("success", "¡Se ha creado una nueva subcuenta en la cuenta <strong>"+this.obj_subcuenta.nombre_cuenta+"</strong> correctamente!")
+                        this.activarAlert("success", "¡Se ha creado una nueva subcuenta en la cuenta <strong>"+this.obj_subcuenta.subcuenta_nombre_cuenta+"</strong> correctamente!")
                     },
                     async cargarSubcuenta(subcuenta){
                         this.obj_subcuenta = {
                             id: subcuenta.id,
-                            nombre: subcuenta.nombre,
+                            nombre: subcuenta.subcuenta_nombre,
                             saldo: subcuenta.saldo,
                             perfil: subcuenta.perfil,
                             cuenta: subcuenta.cuenta
                         }
-                        tituloEditar = this.obj_subcuenta.nombre
+                        tituloEditar = this.obj_subcuenta.subcuenta_nombre
                         this.lista_perfilesFiltradosModificar = this.lista_perfiles.filter((perfil) => {
                             for(subcuentaf of this.lista_subcuentas){
                                 //primer condición (cuentas): es para verificar si la subcuenta del for es de la misma cuenta que la subcuenta a modificar
@@ -579,7 +579,7 @@
                         formData.append("saldo", this.obj_subcuenta.saldo)
                         formData.append("perfil", this.obj_subcuenta.perfil)
                         formData.append("cuenta", this.obj_subcuenta.cuenta)
-                        await fetch("../api/subcuenta/" + this.obj_subcuenta.id + "/", {
+                        await fetch("../api/subcuenta-por-id/" + this.obj_subcuenta.id + "/", {
                             method: "PUT",
                             headers: {
                                 "X-CSRFToken": Cookies.get("csrftoken")
@@ -588,10 +588,10 @@
                         document.getElementById("cerrar_modificarSubcuenta").click()
                         this.obtenerCuentas()
                         this.obtenerSubcuentas()
-                        this.activarAlert("success", "¡Se ha modificado la subcuenta <strong>"+this.obj_subcuenta.nombre+"</strong> correctamente!")
+                        this.activarAlert("success", "¡Se ha modificado la subcuenta correctamente!")
                     },
                     async eliminarSubcuenta(){
-                        await fetch("../api/subcuenta/" + this.obj_subcuenta.id + "/", {
+                        await fetch("../api/subcuenta-por-id/" + this.obj_subcuenta.id + "/", {
                             method: "DELETE",
                             headers: {
                                 "X-CSRFToken": Cookies.get("csrftoken")
@@ -600,7 +600,7 @@
                         document.getElementById("cerrar_eliminarSubcuenta").click()
                         this.obtenerCuentas()
                         this.obtenerSubcuentas()
-                        this.activarAlert("success", "¡Se ha eliminado la subcuenta <strong>"+this.obj_subcuenta.nombre+"</strong> correctamente!")
+                        this.activarAlert("success", "¡Se ha eliminado la subcuenta <strong>"+this.obj_subcuenta.subcuenta_nombre+"</strong> correctamente!")
                     },
                     activarAlert(type, message){
                         alerta = document.getElementById("Alerta")

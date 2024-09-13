@@ -2,25 +2,12 @@ from rest_framework import serializers
 from ..models import *
 
 class SubcuentaSerializer(serializers.ModelSerializer):
+    cuenta_nombre = serializers.CharField(read_only=True)
+    perfil_nombre = serializers.CharField(read_only=True)
+    subcuenta_nombre = serializers.CharField(read_only=True)
+    saldo = serializers.DecimalField(max_digits=10, decimal_places=2, read_only=True)
+
     class Meta: 
         model = Subcuenta
         fields = "__all__"
-        read_only_fields = ("id", "nombre")
-
-    def create(self, validated_data):
-
-        instance = super().create(validated_data)
-
-        instance.perfil.calcular_saldo()
-        instance.cuenta.calcular_saldo()
-        instance.cambiar_nombre()
-
-        return instance
-    
-    def update(self, instance, validated_data):
-        super().update(instance, validated_data)
-
-        instance.perfil.calcular_saldo()
-        instance.cuenta.calcular_saldo()
-
-        return instance
+        read_only_fields = ("id", "cuenta_nombre", "perfil_nombre", "subcuenta_nombre", "saldo")

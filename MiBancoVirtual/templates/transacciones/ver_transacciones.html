@@ -83,17 +83,17 @@
                             <th v-if="transaccion != 'transferencia'">Categoría</th>
                             <th>Fecha</th>
                             <th>Descripción</th>
-                            <th v-if="transaccion != 'transferencia'">Saldo</th>
+                            <!-- <th v-if="transaccion != 'transferencia'">Saldo</th> -->
                             <th>Acciones</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr v-for="x in lista_filtrada">
                             <td>Q[[ x.monto ]]</td>
-                            <td v-if="transaccion == 'transferencia'">[[ x.nombre_ordenante ]]</td>
-                            <td v-if="transaccion == 'transferencia'">[[ x.nombre_beneficiario ]]</td>
-                            <td v-if="transaccion != 'transferencia'">[[ x.nombre_subcuenta ]]</td>
-                            <td v-if="transaccion != 'transferencia'">[[ x.nombre_categoria ]]</td>
+                            <td v-if="transaccion == 'transferencia'">[[ x.ordenante_nombre ]]</td>
+                            <td v-if="transaccion == 'transferencia'">[[ x.beneficiario_nombre ]]</td>
+                            <td v-if="transaccion != 'transferencia'">[[ x.subcuenta_nombre ]]</td>
+                            <td v-if="transaccion != 'transferencia'">[[ x.categoria_nombre ]]</td>
                             <td>[[ x.fecha ]]</td>
                             <td>[[ x.descripcion ]]</td>
                             <td v-if="transaccion != 'transferencia' && x.saldo_actual >= 0">Q[[ x.saldo_actual ]]</td>
@@ -146,7 +146,7 @@
                             </div>
                             <div class="modal-body" v-for="subcuenta in lista_subcuentas">
                                 <input type="checkbox" @click="actualizarCheckTodos('subcuenta')" checked="true" :id="'subcuenta'+subcuenta.id">
-                                <label :for="'subcuenta'+subcuenta.id">&nbsp;&nbsp;[[ subcuenta.nombre ]]</label>
+                                <label :for="'subcuenta'+subcuenta.id">&nbsp;&nbsp;[[ subcuenta.subcuenta_nombre ]]</label>
                             </div>
                             <div class="modal-footer">
                                 <button type="button" id="cerrar_filtroSubcuentas" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
@@ -192,7 +192,7 @@
                             </div>
                             <div class="modal-body" v-for="subcuenta in lista_subcuentas">
                                 <input type="checkbox" @click="actualizarCheckTodos('ordenante')" checked="true" :id="'ordenante'+subcuenta.id">
-                                <label :for="'ordenante'+subcuenta.id">&nbsp;&nbsp;[[ subcuenta.nombre ]]</label>
+                                <label :for="'ordenante'+subcuenta.id">&nbsp;&nbsp;[[ subcuenta.subcuenta_nombre ]]</label>
                             </div>
                             <div class="modal-footer">
                                 <button type="button" id="cerrar_filtroOrdenantes" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
@@ -215,7 +215,7 @@
                             </div>
                             <div class="modal-body" v-for="subcuenta in lista_subcuentas">
                                 <input type="checkbox" @click="actualizarCheckTodos('beneficiario')" checked="true" :id="'beneficiario'+subcuenta.id">
-                                <label :for="'beneficiario'+subcuenta.id">&nbsp;&nbsp;[[ subcuenta.nombre ]]</label>
+                                <label :for="'beneficiario'+subcuenta.id">&nbsp;&nbsp;[[ subcuenta.subcuenta_nombre ]]</label>
                             </div>
                             <div class="modal-footer">
                                 <button type="button" id="cerrar_filtroBeneficiarios" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
@@ -251,7 +251,6 @@
                 },
                 methods: {
                     cambiarFormato(fecha = new Date()){
-                        console.log("cambiar formato: " + fecha)
                         formato = "yyyy-MM-dd"
                         dia = fecha.getDate()
                         dia = (dia < 10)? "0" + dia : dia;
@@ -261,8 +260,6 @@
                         nueva_fecha = formato.replace("yyyy", fecha.getFullYear())
                             .replace("MM", mes)
                             .replace("dd", dia);
-                        
-                        console.log(nueva_fecha)
                         return nueva_fecha
                     },
                     async obtenerGastos(){

@@ -2,10 +2,12 @@ from rest_framework import serializers
 from ..models import *
 
 class PerfilSerializer(serializers.ModelSerializer):
+    saldo = serializers.DecimalField(max_digits=10, decimal_places=2, read_only=True)
+
     class Meta: 
         model = Perfil
         fields = "__all__"
-        read_only_fields = ("id", "usuario")
+        read_only_fields = ("id", "usuario", "saldo")
 
     def create(self, validated_data):
         x = Perfil.objects.create(

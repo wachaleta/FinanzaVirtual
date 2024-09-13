@@ -2,13 +2,14 @@ from rest_framework import serializers
 from ..models import *
 
 class IngresoSerializer(serializers.ModelSerializer):
-    
-    nombre_subcuenta = serializers.CharField(source="subcuenta.nombre", read_only=True)
-    nombre_categoria = serializers.CharField(source="categoria.nombre", read_only=True)
+    subcuenta = serializers.IntegerField()
+    subcuenta_nombre = serializers.CharField()
+    categoria_nombre = serializers.CharField()
+
     class Meta: 
-        model = Ingreso
+        model = Transaccion
         fields = "__all__"
-        read_only_fields = ("id", "nombre_subcuenta", "nombre_categoria")
+        read_only_fields = ("id", "subcuenta_nombre", "categoria_nombre", "subcuenta")
 
     def create(self, validated_data):
         instance = super().create(validated_data)

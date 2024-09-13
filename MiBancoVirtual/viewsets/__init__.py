@@ -3,6 +3,9 @@ from .CuentaViewSet import CuentaViewSet
 from .GastoViewSet import GastoViewSet
 from .IngresoViewSet import IngresoViewSet
 from .PerfilViewSet import PerfilViewSet
-from .PerfilCrearViewSet import PerfilCrearViewSet
+from .PerfilPorIdViewSet import PerfilPorIdViewSet
 from .SubcuentaViewSet import SubcuentaViewSet
+from .SubcuentaPorIdViewSet import SubcuentaPorIdViewSet
 from .TransferenciaViewSet import TransferenciaViewSet
+from .TransaccionCrearViewSet import TransaccionCrearViewSet
+from .TransaccionPorSubcuentaViewSet import TransaccionPorSubcuentaViewSet

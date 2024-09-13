@@ -7,8 +7,13 @@
                 justify-content: space-around;
             }
 
+            .lista-transacciones .titulo {
+                font-size: xx-large;
+                text-align: center;
+            }
+
             .transaccion {
-                font-size:xx-large;
+                font-size:x-large;
                 text-align: center;
                 border-radius: 20px;
                 padding: 20px;
@@ -40,19 +45,30 @@
     <body>
         <div id="app">
             <div class="lista-transacciones">
-                <div class="lista-gastos">
-                    <div class="transaccion gasto" v-for="gasto in lista_gastos">
-                        [[ gasto.nombre_subcuenta ]] -Q[[ gasto.monto ]]
+                <div>
+                    <div class="titulo">Gastos</div>
+                    <div class="lista-gastos">
+                        <div class="transaccion gasto" v-for="gasto in lista_gastos">
+                            [[ gasto.nombre_subcuenta ]] -Q[[ gasto.monto ]]
+                        </div>
                     </div>
                 </div>
-                <div class="lista-ingresos">
-                    <div class="transaccion ingreso" v-for="ingreso in lista_ingresos">
-                        [[ ingreso.nombre_subcuenta ]] +Q[[ ingreso.monto ]]
+
+                <div>
+                    <div class="titulo">Ingresos</div>
+                    <div class="lista-ingresos">
+                        <div class="transaccion ingreso" v-for="ingreso in lista_ingresos">
+                            [[ ingreso.nombre_subcuenta ]] +Q[[ ingreso.monto ]]
+                        </div>
                     </div>
                 </div>
-                <div class="lista-transferencias">
-                    <div class="transaccion transferencia" v-for="transferencia in lista_transferencias">
-                        [[ transferencia.nombre_ordenante ]] Q[[ transferencia.monto ]] a: [[ transferencia.nombre_beneficiario ]]
+
+                <div>
+                    <div class="titulo">Transferencias</div>
+                    <div class="lista-transferencias">
+                        <div class="transaccion transferencia" v-for="transferencia in lista_transferencias">
+                            [[ transferencia.nombre_ordenante ]] Q[[ transferencia.monto ]] a: [[ transferencia.nombre_beneficiario ]]
+                        </div>
                     </div>
                 </div>
             </div>

@@ -21,13 +21,19 @@ from MiBancoVirtual.viewsets import *
 
 router = routers.DefaultRouter()
 router.register(r"perfil", PerfilViewSet, basename="perfil")
-router.register(r"perfil-crear", PerfilCrearViewSet, basename="perfil-crear")
+router.register(r"perfil-por-id", PerfilPorIdViewSet, basename="perfil-por-id")
 
 router.register(r"cuenta", CuentaViewSet, basename="cuenta")
+
+router.register(r"transaccion-crear", TransaccionCrearViewSet, basename="transaccion-crear")
+router.register(r"transaccion-por-subcuenta", TransaccionPorSubcuentaViewSet, basename="transaccion-por-subcuenta")
+
 router.register(r"subcuenta", SubcuentaViewSet, basename="subcuenta")
+router.register(r"subcuenta-por-id", SubcuentaPorIdViewSet, basename="subcuenta-por-id")
+
 router.register(r"categoria", CategoriaViewSet, basename="categoria")
 router.register(r"gasto", GastoViewSet, basename="gasto")
-router.register(r"ingreso", IngresoViewSet, basename="ingreso")
+router.register(r"ingreso", IngresoViewSet, basename="ingresos")
 router.register(r"transferencia", TransferenciaViewSet, basename="transferencia")
 
 urlpatterns = [
