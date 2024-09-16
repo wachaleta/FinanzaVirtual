@@ -24,8 +24,10 @@ router.register(r"perfil", PerfilViewSet, basename="perfil")
 router.register(r"perfil-por-id", PerfilPorIdViewSet, basename="perfil-por-id")
 
 router.register(r"cuenta", CuentaViewSet, basename="cuenta")
+router.register(r"cuenta-por-id", CuentaPorIdViewSet, basename="cuenta-por-id")
 
 router.register(r"transaccion-crear", TransaccionCrearViewSet, basename="transaccion-crear")
+router.register(r"transaccion-por-id", TransaccionPorIdViewSet, basename="transaccion-por-id")
 router.register(r"transaccion-por-subcuenta", TransaccionPorSubcuentaViewSet, basename="transaccion-por-subcuenta")
 
 router.register(r"subcuenta", SubcuentaViewSet, basename="subcuenta")

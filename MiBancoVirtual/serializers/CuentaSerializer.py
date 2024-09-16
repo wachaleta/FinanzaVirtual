@@ -3,13 +3,14 @@ from ..models import *
 from decimal import Decimal
 
 class CuentaSerializer(serializers.ModelSerializer):
+    saldo_total = serializers.DecimalField(max_digits=10, decimal_places=2, read_only=True)
     total_efectivo = serializers.SerializerMethodField()
     diferencia_efectivo = serializers.SerializerMethodField()
 
     class Meta: 
         model = Cuenta
         fields = "__all__"
-        read_only_fields = ("id", "usuario", "total_efectivo")
+        read_only_fields = ("id", "usuario", "total_efectivo", "saldo_total")
 
     def get_total_efectivo(self, obj):
         total = 0 

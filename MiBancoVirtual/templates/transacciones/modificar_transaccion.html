@@ -4,6 +4,8 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <!-- Bootstrap CSS -->
+        
+        <link rel="stylesheet" href="">
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
         <title>Modificar Transacción</title>
     </head>
@@ -32,7 +34,7 @@
                         <div class="row">
                             <div class="col-6">
                                 <select class="form-select" v-model="obj_transaccion.subcuenta" name="subcuenta">
-                                    <option v-for="subcuenta in lista_subcuentas" :value="subcuenta.id">[[subcuenta.nombre]]</option>
+                                    <option v-for="subcuenta in lista_subcuentas" :value="subcuenta.id">[[subcuenta.subcuenta_nombre]]</option>
                                 </select>
                             </div>
                             <div class="col-6">
@@ -76,6 +78,7 @@
                 </form>
             </div>
         </div>
+        <!-- <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script> -->
         <script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/js-cookie@3.0.5/dist/js.cookie.min.js"></script>
         <script>
@@ -84,7 +87,7 @@
                 delimiters: ['[[', ']]'],
                 data() {
                     return {
-                        transaccion: "gasto",
+                        transaccion: "",
                         transaccionBase: "",
                         lista_subcuentas: [],
                         lista_categorias: [],
@@ -119,42 +122,34 @@
                         AntepenultimoSlash = url.lastIndexOf("/", PenultimoSlash - 1)
                         this.transaccionBase = url.substring(AntepenultimoSlash + 1, PenultimoSlash)
                         id = url.substring(PenultimoSlash + 1, UltimoSlash)
-                        const response = await fetch("../../../api/"+this.transaccionBase+"/"+id+"/")
+                        const response = await fetch("../../../api/transaccion-por-id/"+id+"/")
                         this.obj_transaccion = await response.json()
                         this.cambiarTransaccion(this.transaccionBase)
+                        this.obj_transaccion.subcuenta = (this.obj_transaccion.ordenante)? this.obj_transaccion.ordenante : this.obj_transaccion.beneficiario
+                        console.log(this.obj_transaccion.subcuenta)
                     },
                     async modificarTransaccion(){
                         parts = this.obj_transaccion.monto.toString().split('.');
                         if(parts.length > 1) {
                             this.obj_transaccion.monto = `${parts[0]}.${parts[1].slice(0, 2)}`;
                         }
+                        
+                        this.obj_transaccion.ordenante = (this.transaccion == "gasto")? this.obj_transaccion.subcuenta : ""
+                        this.obj_transaccion.beneficiario = (this.transaccion == "ingreso")? this.obj_transaccion.subcuenta : ""
+
                         formData = new FormData()
-                        formData.append("subcuenta", this.obj_transaccion.subcuenta)
-                        formData.append("fecha", this.obj_transaccion.fecha)
-                        formData.append("monto", this.obj_transaccion.monto)
-                        formData.append("categoria", this.obj_transaccion.categoria)
+                        formData.append("monto", this.obj_transaccion.monto)    
                         formData.append("descripcion", this.obj_transaccion.descripcion)
-                        if(this.transaccion == this.transaccionBase){
-                            await fetch("../../../api/"+this.transaccion+"/"+this.obj_transaccion.id+"/", {
-                                method: "PUT",
-                                headers: {
-                                    "X-CSRFToken": Cookies.get("csrftoken")
-                                }, body: formData
-                            })
-                        }else{
-                            await fetch("../../../api/"+this.transaccionBase+"/"+this.obj_transaccion.id+"/", {
-                                method: "DELETE",
-                                headers: {
-                                    "X-CSRFToken": Cookies.get("csrftoken")
-                                }
-                            })
-                            await fetch("../../../api/"+this.transaccion+"/", {
-                                method: "POST",
-                                headers: {
-                                    "X-CSRFToken": Cookies.get("csrftoken")
-                                }, body: formData
-                            })
-                        }
+                        formData.append("fecha", this.obj_transaccion.fecha)
+                        formData.append("ordenante", this.obj_transaccion.ordenante)
+                        formData.append("beneficiario", this.obj_transaccion.beneficiario)
+                        formData.append("categoria", this.obj_transaccion.categoria)
+                        await fetch("../../../api/transaccion-por-id/"+this.obj_transaccion.id+"/", {
+                            method: "PUT",
+                            headers: {
+                                "X-CSRFToken": Cookies.get("csrftoken")
+                            }, body: formData
+                        })
                         this.activarAlert("success", "¡Se ha modificado el <strong>"+this.transaccionBase+"</strong> correctamente")
                     },
                     redireccionar(){
@@ -177,8 +172,8 @@
                 },
                 async created(){
                     await this.obtenerSubcuentas()
-                    this.obtenerCategorias()
-                    this.obtenerId()
+                    await this.obtenerCategorias()
+                    await this.obtenerId()
                 }
             })
         </script>

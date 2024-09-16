@@ -6,4 +6,5 @@ from .PerfilSerializer import PerfilSerializer
 from .SubcuentaSerializer import SubcuentaSerializer
 from .TransferenciaSerializer import TransferenciaSerializer
 from .TransaccionCrearSerializer import TransaccionCrearSerializer
+from .TransaccionPorIdSerializer import TransaccionPorIdSerializer
 from .TransaccionPorSubcuentaSerializer import TransaccionPorSubcuentaSerializer

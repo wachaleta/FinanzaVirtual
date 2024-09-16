@@ -455,7 +455,7 @@
                             formData.append("m_5c", this.obj_cuenta.m_5c)
                         }
 
-                        await fetch("../api/cuenta/" + this.obj_cuenta.id + "/", {
+                        await fetch("../api/cuenta-por-id/" + this.obj_cuenta.id + "/", {
                             method: "PUT",
                             headers: {
                                 "X-CSRFToken": Cookies.get("csrftoken"),
@@ -468,7 +468,7 @@
                         this.activarAlert("success", "¡Se ha modificado la cuenta <strong>"+this.obj_cuenta.nombre+"</strong> correctamente!")
                     },
                     async eliminarCuenta(){
-                        await fetch("../api/cuenta/" + this.obj_cuenta.id + "/", {
+                        await fetch("../api/cuenta-por-id/" + this.obj_cuenta.id + "/", {
                             method: "DELETE",
                             headers: {
                                 "X-CSRFToken": Cookies.get("csrftoken"),
