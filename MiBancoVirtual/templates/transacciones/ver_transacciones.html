@@ -547,7 +547,7 @@
                         }
                     },
                     async eliminarTransaccion(){
-                        await fetch("../../api/" + this.transaccion + "/" + this.obj_transaccion.id + "/", {
+                        await fetch("../../api/transaccion-por-id/" + this.obj_transaccion.id + "/", {
                             method: "DELETE",
                             headers: {
                                 "X-CSRFToken": Cookies.get("csrftoken")
