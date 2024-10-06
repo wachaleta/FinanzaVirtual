@@ -105,7 +105,7 @@
                                         [[ cuenta.nombre ]] Q[[ cuenta.saldo_total ]]
                                     </span>
                                     <span v-if="cuenta.saldo_total > cuenta.saldo_real" style="color: red;">
-                                        -Q[[ cuenta.saldo_total - cuenta.saldo_real]]
+                                        -Q[[ cuenta.saldo_total - cuenta.saldo_real]] xd [[cuenta.saldo_real]]
                                     </span>
                                     <span v-else style="color: green;">
                                         +Q[[ (cuenta.saldo_real - cuenta.saldo_total).toFixed(2)]]
@@ -269,7 +269,7 @@
                                     <span class="input-group-text" id="addon-wrapping">Q0.05</span>
                                     <input type="number" min="0" v-model="obj_cuenta.m_5c" class="form-control" placeholder="0" aria-label="Username" aria-describedby="addon-wrapping">
                                 </div>
-                                <p>Total: [[ obj_cuenta.b_Q100*100 + obj_cuenta.b_Q50*50 + obj_cuenta.b_Q20*20 + obj_cuenta.b_Q10*10 + obj_cuenta.b_Q5*5 + obj_cuenta.m_100c*1 + obj_cuenta.m_50c*50/100 + obj_cuenta.m_25c*25/100 + obj_cuenta.m_10c*10/100 + obj_cuenta.m_5c*5/100 ]]</p>
+                                <p>Total: [[ (obj_cuenta.b_Q100*100 + obj_cuenta.b_Q50*50 + obj_cuenta.b_Q20*20 + obj_cuenta.b_Q10*10 + obj_cuenta.b_Q5*5 + obj_cuenta.m_100c*1 + obj_cuenta.m_50c*50/100 + obj_cuenta.m_25c*25/100 + obj_cuenta.m_10c*10/100 + obj_cuenta.m_5c*5/100).toFixed(2) ]]</p>
                             </div>
                             <div class="modal-footer">
                                 <button type="button" id="cerrar_cuentaEfectivo" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
