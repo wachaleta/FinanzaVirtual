@@ -101,7 +101,15 @@
                             <div class="row Cuenta">
                                 <!-- Nombre Cuentas -->
                                 <h3>
-                                    [[ cuenta.nombre ]] Q[[ cuenta.saldo_total ]]
+                                    <span>
+                                        [[ cuenta.nombre ]] Q[[ cuenta.saldo_total ]]
+                                    </span>
+                                    <span v-if="cuenta.saldo_total > cuenta.saldo_real" style="color: red;">
+                                        -Q[[ cuenta.saldo_total - cuenta.saldo_real]]
+                                    </span>
+                                    <span v-else style="color: green;">
+                                        +Q[[ cuenta.saldo_real - cuenta.saldo_total]]
+                                    </span>
                                     <button type="button" @click="cargarCuenta(cuenta)" data-bs-toggle="modal" data-bs-target="#modificarCuenta" class="btn btn-link">
                                         <i class="bx bxs-pencil" style="margin: -15px; color:#faf623; font-size: 38px;"></i>
                                     </button >
@@ -196,6 +204,12 @@
                             <div class="modal-body">
                                     <label for="nombre_cuenta">Nombre</label><br/>
                                     <input type="text" v-model="obj_cuenta.nombre" name="nombre_cuenta" id="nombre_cuenta"> <br/>
+
+                                    <div v-if="!obj_cuenta.es_efectivo">
+                                        <label for="saldo_real">Saldo real de la cuenta</label><br/>
+                                        <input type="text" v-model="obj_cuenta.saldo_real" name="saldo_real" id="saldo_real"> <br/>
+                                    </div>
+
                                     <label for="efectivo">Cuenta de Efectivo:</label>
                                     <input type="checkbox" v-model="obj_cuenta.es_efectivo" id="efectivo">
                             </div>
@@ -337,8 +351,6 @@
                                     <select v-model="obj_subcuenta.perfil" name="perfil" id="perfil" class="form-select">
                                             <option v-for="perfil in lista_perfilesFiltradosModificar" :value="perfil.id">[[perfil.nombre]]</option>
                                     </select>
-                                    <label for="saldo_modificar_subcuenta">Saldo</label>
-                                    <input type="number" v-model="obj_subcuenta.saldo" id="saldo_modificar_subcuenta" name="saldo">
                             </div>
                             <div class="modal-footer">
                                 <button type="button" id="cerrar_modificarSubcuenta" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
@@ -440,6 +452,7 @@
                         formData.append("id", this.obj_cuenta.id)
                         formData.append("nombre", this.obj_cuenta.nombre)
                         formData.append("es_efectivo", this.obj_cuenta.es_efectivo)
+                        formData.append("saldo_real", this.obj_cuenta.saldo_real)
 
                         if(this.obj_cuenta.es_efectivo)
                         {
@@ -483,6 +496,7 @@
                             this.obj_cuenta = {
                                 id: cuenta.id,
                                 nombre: cuenta.nombre,
+                                saldo_real: cuenta.saldo_real,
                                 es_efectivo: cuenta.es_efectivo,
                                 b_Q100: parseInt(cuenta.b_Q100),
                                 b_Q50: cuenta.b_Q50,
@@ -501,6 +515,7 @@
                             this.obj_cuenta = {
                                 id: "",
                                 nombre: "",
+                                saldo_real: 0,
                                 es_efectivo: false
                             }
                         }

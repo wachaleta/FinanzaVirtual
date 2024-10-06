@@ -21,6 +21,20 @@ class CuentaViewSet(viewsets.ModelViewSet):
                         ELSE 0
                     END
                 ) as saldo_total,
+                (
+                    CASE 
+                        WHEN cuenta.es_efectivo = FALSE THEN cuenta.saldo_real
+                		ELSE cuenta.b_Q100 * 100 +
+                            cuenta.b_Q50  * 50 + 
+                            cuenta.b_Q20 * 20 +
+                            cuenta.b_Q10 * 10 +
+                            cuenta.m_100c +
+                            cuenta.m_50c * 50 / 100 +
+                            cuenta.m_25c * 25 / 100 +
+                            cuenta.m_10c * 10 / 100 +
+                            cuenta.m_5c * 5 / 100
+                    END
+                ) as saldo_real,
                 cuenta.es_efectivo,
                 cuenta.b_Q100,
                 cuenta.b_Q50,
