@@ -105,7 +105,7 @@
                                         [[ cuenta.nombre ]] Q[[ cuenta.saldo_total ]]
                                     </span>
                                     <span v-if="cuenta.saldo_total > cuenta.saldo_real" style="color: red;">
-                                        -Q[[ cuenta.saldo_total - cuenta.saldo_real]] xd [[cuenta.saldo_real]]
+                                        -Q[[ cuenta.saldo_total - cuenta.saldo_real]]
                                     </span>
                                     <span v-else style="color: green;">
                                         +Q[[ (cuenta.saldo_real - cuenta.saldo_total).toFixed(2)]]
