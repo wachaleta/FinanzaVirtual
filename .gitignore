@@ -1,6 +1,5 @@
 FinanzaVirtual/__pycache__/
 MiBancoVirtual/__pycache__/
-MiBancoVirtual/migrations/
 MiBancoVirtual/models/__pycache__/
 MiBancoVirtual/serializers/__pycache__/
 MiBancoVirtual/viewsets/__pycache__/
