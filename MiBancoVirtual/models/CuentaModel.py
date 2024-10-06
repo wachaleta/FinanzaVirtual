@@ -7,7 +7,7 @@ class Cuenta(models.Model):
     id = models.AutoField(primary_key=True, unique=True)
     nombre = models.CharField(max_length=50)
     usuario = models.ForeignKey(User, on_delete=models.CASCADE)
-    saldo_real = models.IntegerField(default=0)
+    saldo_real = models.DecimalField(default=0, max_digits=10, decimal_places=2)
     es_efectivo = models.BooleanField(default=False)
     b_Q100 = models.IntegerField(default=0)
     b_Q50 = models.IntegerField(default=0)

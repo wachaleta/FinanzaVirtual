@@ -108,7 +108,7 @@
                                         -Q[[ cuenta.saldo_total - cuenta.saldo_real]]
                                     </span>
                                     <span v-else style="color: green;">
-                                        +Q[[ cuenta.saldo_real - cuenta.saldo_total]]
+                                        +Q[[ (cuenta.saldo_real - cuenta.saldo_total).toFixed(2)]]
                                     </span>
                                     <button type="button" @click="cargarCuenta(cuenta)" data-bs-toggle="modal" data-bs-target="#modificarCuenta" class="btn btn-link">
                                         <i class="bx bxs-pencil" style="margin: -15px; color:#faf623; font-size: 38px;"></i>
