@@ -12,71 +12,10 @@
                 text-decoration: none;
             }
 
-
             h1, h3 {
                 text-align: center;
             }
 
-            .Lista_subcuenta {
-                display: flex;
-                flex-wrap: wrap;
-                justify-content: center;
-            }
-
-            .Subcuenta {
-                height: 80px;
-                width: 360px;
-                border-radius: 6px;
-                font-size: 18px;
-                background-color: #bbe5a1;
-                margin: 0px 5px 10px;
-            }
-
-            .newModal {
-                position: fixed;
-                font-family: Arial, Helvetica, sans-serif;
-                top: 0;
-                right: 0;
-                bottom: 0;
-                left: 0;
-                background: rgba(0,0,0,0.8);
-                z-index: 99999;
-                opacity:0;
-                transition: opacity 400ms ease-in;
-                pointer-events: none;
-            }
-
-            .modalDialog {
-                width: 400px;
-                position: relative;
-                margin: 10% auto;
-                padding: 5px 20px 13px 20px;
-                border-radius: 10px;
-                background: #ffffff;
-                transition: opacity 400ms ease-in;
-            }
-
-            .modalHeader{
-                text-align:center;
-                margin: 18px 0px;
-            }
-
-            .close {
-                background: #ff0000;
-                color: #FFFFFF;
-                border: none;
-                line-height: 25px;
-                position: absolute;
-                right: -12px;
-                text-align: center;
-                top: -10px;
-                width: 24px;
-                text-decoration: none;
-                font-weight: bold;
-                border-radius: 12px;
-                box-shadow: 1px 1px 3px #000;
-            }
-            .close:hover { background: #00d9ff; }
         </style>
 
         <title>Cuentas</title>
@@ -95,11 +34,86 @@
                 </h1>
                 <!-- Contenedor para cuentas y transacciones -->
                 <div class="row">
-                    <div class="col-11">
-                        <div v-for="cuenta in lista_cuentas" class="border border-dark-subtle border-2 p-4 mb-3" style="border-radius: 10px;">
+                    <div class="col-12">
+                        <div v-for="cuenta in lista_cuentas" class="mb-4">
+                            <div class="accordion" id="accordionExample">
+                                <div class="accordion-item">
+                                    <h3 class="accordion-header text-center">
+                                        <button class="py-3 collapsed" type="button" data-bs-toggle="collapse"
+                                        :data-bs-target="`#${cuenta.id}`" aria-expanded="false" :aria-controls="cuenta.id"
+                                        style="width: 100%; border:none; background-color: white">
+
+                                            <span>
+                                                [[ cuenta.nombre ]] Q[[ cuenta.saldo_total ]]
+                                            </span>
+                                            <span v-if="cuenta.saldo_total - cuenta.saldo_real > 0" style="color: red;">
+                                                -Q[[ (cuenta.saldo_total - cuenta.saldo_real).toFixed(2)]]
+                                            </span>
+                                            <span v-else style="color: green;">
+                                                +Q[[ (cuenta.saldo_real - cuenta.saldo_total).toFixed(2)]]
+                                            </span>
+                                            <span type="button" @click.stop.prevent="cargarCuenta(cuenta)" data-bs-toggle="modal" data-bs-target="#modificarCuenta" class="btn btn-link">
+                                                <i class="bx bxs-pencil" style="margin: -15px; color:#faf623; font-size: 38px;"></i>
+                                            </span >
+                                            <span type="button" @click.stop.prevent="cargarCuenta(cuenta)" class="btn btn-link" data-bs-toggle="modal" data-bs-target="#eliminarCuenta">
+                                                <i class="bx bxs-x-circle" style="margin: -15px; color:#ff0000; font-size: 38px;"></i>
+                                            </span >
+                                            <span type="button" v-if="cuenta.es_efectivo" @click.stop.prevent="cargarCuenta(cuenta)" class="btn btn-link" data-bs-toggle="modal" data-bs-target="#cuentaEfectivo">
+                                                <i class="bx bxs-wallet" style="margin: -15px; color:#51340c; font-size: 38px;"></i>
+                                            </span >
+                                        </button>
+                                    </h3>
+                                    <div :id="cuenta.id" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+                                        <div class="accordion-body">
+                                            <table class="table" style="margin: 10px;">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Nombre</th>
+                                                        <th v-if="cuenta.saldo_total >= 0">Q[[ cuenta.saldo_total ]]</th>
+                                                        <th v-else>-Q[[ cuenta.saldo_total * -1 ]]</th>
+                                                        <th>Acciones</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr v-for="subcuenta in lista_subcuentas">
+                                                        <td v-if="subcuenta.cuenta == cuenta.id">[[subcuenta.subcuenta_nombre]]</td>
+                                                        <td v-if="subcuenta.cuenta == cuenta.id && subcuenta.saldo >= 0">Q[[subcuenta.saldo]]</td>
+                                                        <td v-else-if="subcuenta.cuenta == cuenta.id && subcuenta.saldo < 0">-Q[[subcuenta.saldo * -1]]</td>
+                                                        <td v-if="subcuenta.cuenta == cuenta.id">
+                                                            <a :href="'/Crear_Transaccion/'+subcuenta.id+'/'">
+                                                                <i class="bx bxs-plus-square" style="position: relative; top: 5px; margin-bottom: -1px; color:#23c933; font-size: 45px;"></i>
+                                                            </a>
+                                                            <a :href="'/Ver_Transacciones/'+subcuenta.id+'/'">
+                                                                <button type="button" class="btn btn-link">
+                                                                    <i class="bx bxs-show" style="position: relative; top: 2px; margin: -20px; color:#1693db; font-size: 45px;"></i>
+                                                                </button >
+                                                            </a>
+                                                            <button type="button" @click="cargarSubcuenta(subcuenta)" data-bs-toggle="modal" data-bs-target="#modificarSubcuenta" class="btn btn-link">
+                                                                <i class="bx bxs-pencil" style="margin: -15px; color:#faf623; font-size: 38px;"></i>
+                                                            </button >
+                                                            <button type="button" @click="cargarSubcuenta(subcuenta)" class="btn btn-link" data-bs-toggle="modal" data-bs-target="#eliminarSubcuenta">
+                                                                <i class="bx bxs-x-circle" style="margin: -15px; color:#ff0000; font-size: 38px;"></i>
+                                                            </button >
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                            <div class="row" style="margin: 10px;">
+                                                <div class="col-12">
+                                                    <!-- Botón Crear Subcuenta -->
+                                                    <button v-show="false" id="modalCrearSubcuenta" data-bs-toggle="modal" data-bs-target="#CrearSubcuenta"></button>
+                                                    <button class="btn btn-success btn-lg" @click="cargarNombreCuenta(cuenta)">
+                                                        Crear Subcuenta de [[cuenta.nombre]]
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                             <!-- Datos de la cuenta -->
-                            <div class="row Cuenta">
-                                <!-- Nombre Cuentas -->
+                            <!-- <div class="row">
+                                <-- Nombre Cuentas ->
                                 <h3>
                                     <span>
                                         [[ cuenta.nombre ]] Q[[ cuenta.saldo_total ]]
@@ -121,12 +135,7 @@
                                     </button >
                                 </h3>
                             </div>
-                            <!-- Datos de las subcuentas -->
-                            <div class="Lista_subcuenta">
-                                <button class="Subcuenta" @click="abrirModal('modalDatosSubcuenta'); cargarSubcuenta(subcuenta)" v-for="subcuenta in lista_subcuentas" v-if="subcuenta.cuenta == cuenta.id">
-                                    <p class="m-0">[[ subcuenta.subcuenta_nombre ]] Q[[ subcuenta.saldo ]]</p>
-                                </button>
-                            </div>
+                            <!-- Datos de las subcuentas ->
                             <table class="table" style="margin: 10px;">
                                 <thead>
                                     <tr>
@@ -162,13 +171,13 @@
                             </table>
                             <div class="row" style="margin: 10px;">
                                 <div class="col-12">
-                                    <!-- Botón Crear Subcuenta -->
+                                    <!-- Botón Crear Subcuenta ->
                                     <button v-show="false" id="modalCrearSubcuenta" data-bs-toggle="modal" data-bs-target="#CrearSubcuenta"></button>
                                     <button class="btn btn-success btn-lg" @click="cargarNombreCuenta(cuenta)">
                                         Crear Subcuenta de [[cuenta.nombre]]
                                     </button>
                                 </div>
-                            </div>
+                            </div> -->
                         </div>
                     </div>
                 </div>
@@ -293,23 +302,6 @@
                                 <button type="button" id="cerrar_eliminarCuenta" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
                                 <button type="button" @click="eliminarCuenta()" class="btn btn-primary">Eliminar Cuenta</button>
                             </div>
-                        </div>
-                    </div>
-                </div>
-                <!-- Modal Datos de Subcuenta -->
-                <div id="modalDatosSubcuenta" class="newModal">
-                    <div class="modalDialog">
-                        <div class="modalHeader">
-                            <h2>[[ obj_subcuenta.subcuenta_nombre]]</h2>
-                        </div>
-                        <div class="modalBody">
-                            <button @click="cerrarModal('modalDatosSubcuenta')" class="close">X</button>
-                            <p v-for="gasto in lista_gastos">
-                                [[ gasto.monto ]] - [[ gasto.nombre_categoria ]] - [[ gasto.fecha ]]
-                            </p>
-                        </div>
-                        <div class="modalFooter">
-                            <button> xd</button>
                         </div>
                     </div>
                 </div>
