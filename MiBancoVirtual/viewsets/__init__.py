@@ -11,3 +11,5 @@ from .TransferenciaViewSet import TransferenciaViewSet
 from .TransaccionCrearViewSet import TransaccionCrearViewSet
 from .TransaccionPorIdViewSet import TransaccionPorIdViewSet
 from .TransaccionPorSubcuentaViewSet import TransaccionPorSubcuentaViewSet
+
+from .TransaccionProgramadaViewSet import TransaccionProgramadaViewSet

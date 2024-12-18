@@ -8,3 +8,5 @@ from .TransferenciaSerializer import TransferenciaSerializer
 from .TransaccionCrearSerializer import TransaccionCrearSerializer
 from .TransaccionPorIdSerializer import TransaccionPorIdSerializer
 from .TransaccionPorSubcuentaSerializer import TransaccionPorSubcuentaSerializer
+
+from .TransaccionProgramadaSerializer import TransaccionProgramadaSerializer

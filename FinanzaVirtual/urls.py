@@ -30,6 +30,8 @@ router.register(r"transaccion-crear", TransaccionCrearViewSet, basename="transac
 router.register(r"transaccion-por-id", TransaccionPorIdViewSet, basename="transaccion-por-id")
 router.register(r"transaccion-por-subcuenta", TransaccionPorSubcuentaViewSet, basename="transaccion-por-subcuenta")
 
+router.register(r"transaccion-programada", TransaccionProgramadaViewSet, basename="transaccion-programada")
+
 router.register(r"subcuenta", SubcuentaViewSet, basename="subcuenta")
 router.register(r"subcuenta-por-id", SubcuentaPorIdViewSet, basename="subcuenta-por-id")
 
