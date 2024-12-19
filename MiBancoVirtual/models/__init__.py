@@ -7,3 +7,4 @@ from .SubcuentaModel import Subcuenta
 from .TransferenciaModel import Transferencia
 from .TransaccionModel import Transaccion
 from .TransaccionProgramadaModel import TransaccionProgramada
+from .TransaccionProgramadaDetalleModel import TransaccionProgramadaDetalle
