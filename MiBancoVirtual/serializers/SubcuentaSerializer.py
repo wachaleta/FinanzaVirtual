@@ -1,7 +1,10 @@
 from rest_framework import serializers
 from ..models import *
+from . import *
 
 class SubcuentaSerializer(serializers.ModelSerializer):
+    perfil = PerfilSerializer()
+    cuenta = CuentaSerializer()
     cuenta_nombre = serializers.CharField(read_only=True)
     perfil_nombre = serializers.CharField(read_only=True)
     subcuenta_nombre = serializers.CharField(read_only=True)

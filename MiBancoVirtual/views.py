@@ -56,6 +56,10 @@ def categorias(request):
     return render(request, "categorias/ver_categorias.html")
 
 @login_required
+def transacciones_programadas(request):
+    return render(request, "transacciones/transacciones_programadas.html")
+
+@login_required
 def prueba(request):
     return render(request, "prueba/prueba.html")
 

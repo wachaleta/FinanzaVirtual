@@ -1,5 +1,6 @@
 from django.db import models
 from django.utils.timezone import now
+from django.contrib.auth.models import User
 
 class TransaccionProgramada(models.Model):
     """ Transacciones estáticas para ejecutar frecuentemente """
@@ -15,3 +16,8 @@ class TransaccionProgramada(models.Model):
 
     #   Cuando se creó la transacción programada
     FechaCreacion = models.DateTimeField(auto_now_add=True)
+
+    Usuario = models.ForeignKey(User, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.Nombre

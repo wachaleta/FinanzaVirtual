@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <!-- Bootstrap CSS -->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+        <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+
+        <title>Transacciones Programadas</title>
+    </head>
+    <body>
+        {% include "../nav.html" %}
+
+        <div id="app">
+            <div class="container">
+                <div id="Alerta" style="position: fixed; top: 0; width: 100%; z-index: 101;"></div>
+
+                <h1 class="text-center">
+                    Transacciones Programadas
+                    <!-- Botón Crear Transaccion Programada -->
+                    <button class="btn btn-link" @click="resetTransaccionProgamada" data-bs-toggle="modal" data-bs-target="#crearTransaccionProgramadaModal">
+                        <i class="bx bxs-plus-square" style="color:#23c933; font-size: 48px;"></i>
+                    </button>
+                </h1>
+                <div class="row">
+                    <div class="col-12">
+                        <div v-for="tp in transaccionesProgramadas" class="mb-3">
+                            <div class="accordion" id="accordionExample">
+                                <div class="accordion-item">
+                                    <h3 class="accordion-header text-center">
+                                        <button class="py-3 collapsed" type="button" data-bs-toggle="collapse"
+                                        :data-bs-target="`#${tp.Id}`" aria-expanded="false" :aria-controls="tp.Id"
+                                        style="width: 100%; border:none; background-color: white">
+        
+                                            <span>
+                                                [[ tp.Nombre ]]
+                                            </span>
+                                        </button>
+                                    </h3>
+                                    <div :id="tp.Id" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+                                        <div class="accordion-body">
+                                            <table class="table" style="margin: 10px;">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Monto</th>
+                                                        <th>Descripción</th>
+                                                        <th>Ordenante</th>
+                                                        <th>Beneficiario</th>
+                                                        <th>Categoría</th>
+                                                        <th>Acciones</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr v-for="detalle in tp.Detalles">
+                                                        <td> [[ detalle.Monto ]] </td>
+                                                        <td> [[ detalle.Descripcion ]] </td>
+                                                        <td> [[ detalle.Ordenante? detalle.Ordenante.perfil.nombre : '' ]] - [[ detalle.Ordenante? detalle.Ordenante.cuenta.nombre : '' ]] </td>
+                                                        <td> [[ detalle.Beneficiario? detalle.Beneficiario.perfil.nombre : '']] - [[ detalle.Beneficiario? detalle.Beneficiario.cuenta.nombre : '' ]] </td>
+                                                        <td> [[ detalle.Categoria.nombre ]] </td>
+                                                        <!-- <td v-if="subcuenta.cuenta == tp.Id">[[subcuenta.subcuenta_nombre]]</td>
+                                                        <td v-if="subcuenta.cuenta == tp.Id && subcuenta.saldo >= 0">Q[[subcuenta.saldo]]</td>
+                                                        <td v-else-if="subcuenta.cuenta == tp.Id && subcuenta.saldo < 0">-Q[[subcuenta.saldo * -1]]</td>
+                                                        <td v-if="subcuenta.cuenta == tp.Id">
+                                                            <a :href="'/Crear_Transaccion/'+subcuenta.Id+'/'">
+                                                                <i class="bx bxs-plus-square" style="position: relative; top: 5px; margin-bottom: -1px; color:#23c933; font-size: 45px;"></i>
+                                                            </a>
+                                                            <a :href="'/Ver_Transacciones/'+subcuenta.Id+'/'">
+                                                                <button type="button" class="btn btn-link">
+                                                                    <i class="bx bxs-show" style="position: relative; top: 2px; margin: -20px; color:#1693db; font-size: 45px;"></i>
+                                                                </button >
+                                                            </a>
+                                                            <button type="button" @click="cargarSubcuenta(subcuenta)" data-bs-toggle="modal" data-bs-target="#modificarSubcuenta" class="btn btn-link">
+                                                                <i class="bx bxs-pencil" style="margin: -15px; color:#faf623; font-size: 38px;"></i>
+                                                            </button >
+                                                            <button type="button" @click="cargarSubcuenta(subcuenta)" class="btn btn-link" data-bs-toggle="modal" data-bs-target="#eliminarSubcuenta">
+                                                                <i class="bx bxs-x-circle" style="margin: -15px; color:#ff0000; font-size: 38px;"></i>
+                                                            </button >
+                                                        </td> -->
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                            <div class="row" style="margin: 10px;">
+                                                <div class="col-12">
+                                                    <!-- Botón Crear Subcuenta -->
+                                                    <button v-show="false" id="modalCrearSubcuenta" data-bs-toggle="modal" data-bs-target="#CrearSubcuenta"></button>
+                                                    <button class="btn btn-success btn-lg" @click="cargarNombreCuenta(cuenta)">
+                                                        Crear Subcuenta de [[tp.nombre]]
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modals">
+                <!-- Modal Crear Transaccion Programada -->
+                <div class="modal fade" id="crearTransaccionProgramadaModal" tabindex="-1" aria-labelledby="crearTransaccionProgramadaLabelModalcrearTransaccionProgramadaModal" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h1 class="modal-title fs-5" id="crearTransaccionProgramadaLabelModalcrearTransaccionProgramadaModal">Crear Nueva Transacción Programada</h1>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="row mb-3">
+                                    <div class="col-6">
+                                        <p>Nombre</p>
+                                        <input type="text" v-model="transaccionProgramada.Nombre">
+                                    </div>
+                                    <div class="col-6">
+                                        <p>Fecha Límite</p>
+                                        [[ transaccionProgramada.FechaLimite == null]]
+                                        [[ transaccionProgramada.FechaLimite == undefined]]
+                                        [[ transaccionProgramada.FechaLimite == ""]]
+                                        <input type="date" v-model="transaccionProgramada.FechaLimite">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" id="cerrar_crearTransaccionProgramada" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                                <button type="button" @click="crearTransaccionProgramada()" class="btn btn-primary">Crear Transacción Programada</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/js-cookie@3.0.5/dist/js.cookie.min.js"></script>
+        <script>
+            new Vue({
+                el: "#app",
+                delimiters: ['[[', ']]'],
+                data() {
+                    return {
+                        transaccionProgramada: {
+                            Nombre: null,
+                            FechaLimite: ""
+                        },
+                        transaccionesProgramadas: []
+                    }
+                },
+                computed:{
+                    
+                },
+                methods: {
+                    //  Transacción Programada
+                    resetTransaccionProgamada(){
+                        this.transaccionProgramada = {}
+                    },
+                    async crearTransaccionProgramada(){
+                        formData = new FormData()
+                        formData.append("Nombre", this.transaccionProgramada.Nombre)
+
+                        if(this.transaccionProgramada.FechaLimite){
+                            formData.append("FechaLimite", this.transaccionProgramada.FechaLimite)
+                        }
+
+                        await fetch("../../api/transacciones-programadas/", {
+                            method: "POST",
+                            headers: {
+                                "X-CSRFToken": Cookies.get("csrftoken"),
+                            }, body: formData
+                        }).then(() => {
+                            document.getElementById("cerrar_crearTransaccionProgramada").click()
+                            this.cargarTransaccionesProgramadas()
+                            this.activarAlert("success", "¡Se ha creado la transacción programada <strong>"+this.transaccionProgramada.Nombre+"</strong> correctamente!")
+                        });
+                    },
+
+                    async cargarTransaccionesProgramadas(){
+                        const response = await fetch("../../api/transacciones-programadas/");
+                        this.transaccionesProgramadas = await response.json();
+                    },
+
+                    //  Alerta
+                    activarAlert(type, message){
+                        alerta = document.getElementById("Alerta")
+                        alerta.innerHTML = [
+                            `<div class="alert alert-${type} alert-dismissible" id="alert-body" role="alert" style="width: 50%; margin: 0 auto;">`,
+                            `   <p style="text-align: center;">${message}</p>`,
+                            '   <button type="button" id="cerrar_alerta" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>',
+                            '</div>'].join(''   )
+                            setTimeout(() => {
+                                if(document.getElementById("alert-body")){
+                                    document.getElementById("cerrar_alerta").click()
+                                }
+                            }, 4000)
+                    }
+                },
+                async created(){
+                    await this.cargarTransaccionesProgramadas()
+                }
+            })
+        </script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe" crossorigin="anonymous"></script>
+    </body>
+</html>

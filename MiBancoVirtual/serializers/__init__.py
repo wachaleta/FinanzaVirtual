@@ -10,3 +10,4 @@ from .TransaccionPorIdSerializer import TransaccionPorIdSerializer
 from .TransaccionPorSubcuentaSerializer import TransaccionPorSubcuentaSerializer
 
 from .TransaccionProgramadaSerializer import TransaccionProgramadaSerializer
+from .TransaccionProgramadaDetalleSerializer import TransaccionProgramadaDetalleSerializer

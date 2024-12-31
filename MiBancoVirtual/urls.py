@@ -14,5 +14,6 @@ urlpatterns = [
     path("perfiles/", perfiles, name="perfiles"),
     path("cuentas/", cuentas, name="cuentas"),
     path("categorias/", categorias, name="categorias"),
-    path("prueba/", prueba, name="prueba")
+    path("prueba/", prueba, name="prueba"),
+    path("transaccion/programada", transacciones_programadas, name="transaccion-programada")
 ]

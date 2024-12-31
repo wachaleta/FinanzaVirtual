@@ -12,18 +12,12 @@ class TransaccionProgramadaViewSet(viewsets.ModelViewSet):
         idUsuario = self.request.user.id
 
         return TransaccionProgramada.objects.raw("""
-            SELECT
-                tp.Id,
-                tp.Monto,
-                tp.Descripcion,
-                tp.FechaLimite,
-                tp.MetaCantidad,
-                tp.Abonado,
+            SELECT 
+                tp.id,
+                tp.Nombre,
                 tp.FechaCreacion,
-                tp.Ordenante_id,
-                tp.Beneficiario_id,
-                tp.Categoria_id
+                tp.FechaLimite, 
+                tp.Usuario_id 
             FROM MiBancoVirtual_transaccionprogramada tp
-            INNER JOIN MiBancoVirtual_categoria categoria on categoria.id = tp.Categoria_id
-            WHERE categoria.usuario_id = %s
+            WHERE tp.Usuario_id = %s
         """, [idUsuario])
