@@ -3,8 +3,11 @@ from .GastoViewSet import GastoViewSet
 from .CuentaViewSet import CuentaViewSet
 from .CuentaPorIdViewSet import CuentaPorIdViewSet
 from .IngresoViewSet import IngresoViewSet
+
 from .PerfilViewSet import PerfilViewSet
 from .PerfilPorIdViewSet import PerfilPorIdViewSet
+from .ObtenerSaldoTotalPerfilesViewSet import ObtenerSaldoTotalPerfilesViewSet
+
 from .SubcuentaViewSet import SubcuentaViewSet
 from .SubcuentaPorIdViewSet import SubcuentaPorIdViewSet
 from .TransferenciaViewSet import TransferenciaViewSet

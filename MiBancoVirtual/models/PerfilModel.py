@@ -6,6 +6,7 @@ class Perfil(models.Model):
 
     id = models.AutoField(primary_key=True, unique=True)
     nombre = models.CharField(max_length=50)
+    agregarTotal = models.BooleanField(default=True)
     usuario = models.ForeignKey(User, on_delete=models.CASCADE)
 
     def __str__(self):

@@ -17,6 +17,6 @@ class Transaccion(models.Model):
     fechaCreacion = models.DateTimeField(auto_now_add=True)
     # ordenante = models.ForeignKey(Subcuenta, related_name="SubcuentaOrdenante", on_delete=models.SET_NULL, null=True)
     # beneficiario = models.ForeignKey(Subcuenta, related_name="SubcuentaBeneficiaria", on_delete=models.SET_NULL, null=True)
-    ordenante = models.ForeignKey("MiBancoVirtual.Subcuenta", related_name="MiBancoVirtual.Transaccion.ordenante+", on_delete=models.SET_NULL, null=True)
-    beneficiario = models.ForeignKey("MiBancoVirtual.Subcuenta", related_name="MiBancoVirtual.Transaccion.beneficiario+", on_delete=models.SET_NULL, null=True)
+    ordenante = models.ForeignKey("MiBancoVirtual.Subcuenta", related_name="transaccion_ordenante", on_delete=models.SET_NULL, null=True)
+    beneficiario = models.ForeignKey("MiBancoVirtual.Subcuenta", related_name="transaccion_beneficiario", on_delete=models.SET_NULL, null=True)
     categoria = models.ForeignKey("MiBancoVirtual.Categoria", on_delete=models.PROTECT)

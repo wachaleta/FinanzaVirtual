@@ -22,6 +22,7 @@ from MiBancoVirtual.viewsets import *
 router = routers.DefaultRouter()
 router.register(r"perfil", PerfilViewSet, basename="perfil")
 router.register(r"perfil-por-id", PerfilPorIdViewSet, basename="perfil-por-id")
+router.register(r"total-saldo-perfiles", ObtenerSaldoTotalPerfilesViewSet, basename="total-saldo-perfiles")
 
 router.register(r"cuenta", CuentaViewSet, basename="cuenta")
 router.register(r"cuenta-por-id", CuentaPorIdViewSet, basename="cuenta-por-id")

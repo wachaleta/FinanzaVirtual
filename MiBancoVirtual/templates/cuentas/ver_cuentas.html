@@ -76,10 +76,10 @@
                                                 </thead>
                                                 <tbody>
                                                     <tr v-for="subcuenta in lista_subcuentas">
-                                                        <td v-if="subcuenta.cuenta == cuenta.id">[[subcuenta.subcuenta_nombre]]</td>
-                                                        <td v-if="subcuenta.cuenta == cuenta.id && subcuenta.saldo >= 0">Q[[subcuenta.saldo]]</td>
-                                                        <td v-else-if="subcuenta.cuenta == cuenta.id && subcuenta.saldo < 0">-Q[[subcuenta.saldo * -1]]</td>
-                                                        <td v-if="subcuenta.cuenta == cuenta.id">
+                                                        <td v-if="subcuenta.cuenta.id == cuenta.id">[[subcuenta.subcuenta_nombre]]</td>
+                                                        <td v-if="subcuenta.cuenta.id == cuenta.id && subcuenta.saldo >= 0">Q[[subcuenta.saldo]]</td>
+                                                        <td v-else-if="subcuenta.cuenta.id == cuenta.id && subcuenta.saldo < 0">-Q[[subcuenta.saldo * -1]]</td>
+                                                        <td v-if="subcuenta.cuenta.id == cuenta.id">
                                                             <a :href="'/Crear_Transaccion/'+subcuenta.id+'/'">
                                                                 <i class="bx bxs-plus-square" style="position: relative; top: 5px; margin-bottom: -1px; color:#23c933; font-size: 45px;"></i>
                                                             </a>

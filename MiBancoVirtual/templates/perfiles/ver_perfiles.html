@@ -16,6 +16,7 @@
             <div id="Alerta" style="position: fixed; top: 0; width: 100%; z-index: 101;"></div>
             <h1>{{mensaje}}</h1>
             <!-- Perfiles -->
+            <h3>Saldo total: Q[[ saldoTotalPerfiles ]]</h3>
             <table class="table">
                 <thead>
                     <tr>
@@ -48,8 +49,22 @@
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
-                                <p>Nombre</p>
-                                <input type="text" name="nombre" v-model="obj_perfil.nombre">
+                            <div class="row">
+                                <div class="col">
+                                    <p>Nombre</p>
+                                </div>
+                                <div class="col">
+                                    <input type="text" name="nombre" v-model="obj_perfil.nombre">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col">
+                                    <p>Agregar al Saldo Total</p>
+                                </div>
+                                <div class="col">
+                                    <input type="checkbox" name="agregarTotal" v-model="obj_perfil.agregarTotal">
+                                </div>
+                            </div>
                         </div>
                         <div class="modal-footer">
                             <button type="button" id="cerrar_modificarPerfil" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
@@ -89,8 +104,22 @@
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
-                            <p>Nombre</p>
-                            <input type="text" v-model="obj_perfil.nombre" name="nombre">
+                            <div class="row">
+                                <div class="col">
+                                    <p>Nombre</p>
+                                </div>
+                                <div class="col">
+                                    <input type="text" name="nombre" v-model="obj_perfil.nombre">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col">
+                                    <p>Agregar al Saldo Total</p>
+                                </div>
+                                <div class="col">
+                                    <input type="checkbox" name="agregarTotal" v-model="obj_perfil.agregarTotal">
+                                </div>
+                            </div>
                         </div>
                         <div class="modal-footer">
                             <button type="button" id="cerrar_crearPerfil" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
@@ -114,8 +143,10 @@
                     lista_perfiles: [],
                     obj_perfil: {
                         id: "",
-                        nombre: ""
-                    }
+                        nombre: "",
+                        agregarTotal: true
+                    },
+                    saldoTotalPerfiles: 0
                 },
                 methods: {
                     async obtenerPerfiles(){
@@ -125,6 +156,7 @@
                     async crearPerfil(){
                         const formData = new FormData()
                         formData.append("nombre", this.obj_perfil.nombre)
+                        formData.append("agregarTotal", this.obj_perfil.agregarTotal)
                         await fetch("../api/perfil/", {
                             method: "POST",
                             headers: {
@@ -135,23 +167,38 @@
                         this.obtenerPerfiles()
                         this.activarAlert("success", "Se ha creado el perfil <strong>"+this.obj_perfil.nombre+"</strong> correctamente!")
                     },
+                    async obtenerSaldoTotalPerfiles(){
+                        const response = await fetch("../api/total-saldo-perfiles/", {
+                            method: "GET",
+                            headers: {
+                                "X-CSRFToken": Cookies.get("csrftoken"),
+                            }
+                        })
+                        
+                        saldo = await response.json()
+                        this.saldoTotalPerfiles = saldo.saldo
+
+                    },
                     cargarPerfil(perfil){
                         if(perfil){
                             this.obj_perfil = {
                                 id: perfil.id,
-                                nombre: perfil.nombre
+                                nombre: perfil.nombre,
+                                agregarTotal: perfil.agregarTotal
                             }
                         }
                         else{
                             this.obj_perfil = {
-                            id: "",
-                            nombre: ""
-                        }
+                                id: "",
+                                nombre: "",
+                                agregarTotal: true
+                            }
                         }
                     },
                     async modificarPerfil(){
                         const formData = new FormData()
                         formData.append("nombre", this.obj_perfil.nombre)
+                        formData.append("agregarTotal", this.obj_perfil.agregarTotal)
                         await fetch("../api/perfil-por-id/" + this.obj_perfil.id + "/", {
                             method: "PUT",
                             headers: {
@@ -160,6 +207,7 @@
                         })
                         document.getElementById("cerrar_modificarPerfil").click()
                         this.obtenerPerfiles()
+                        this.obtenerSaldoTotalPerfiles()
                         this.activarAlert("success", "¡Se ha modificado el perfil <strong>"+this.obj_perfil.nombre+"</strong> correctamente!")
                     },
                     async eliminarPerfil(){
@@ -189,6 +237,7 @@
                 },
                 created() {
                     this.obtenerPerfiles()
+                    this.obtenerSaldoTotalPerfiles()
                 }
             });
         </script>
