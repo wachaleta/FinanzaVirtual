@@ -199,7 +199,7 @@
                         const formData = new FormData()
                         formData.append("nombre", this.obj_perfil.nombre)
                         formData.append("agregarTotal", this.obj_perfil.agregarTotal)
-                        await fetch("../api/perfil-por-id/" + this.obj_perfil.id + "/", {
+                        await fetch("../api/perfil/" + this.obj_perfil.id + "/", {
                             method: "PUT",
                             headers: {
                                 "X-CSRFToken": Cookies.get("csrftoken"),
@@ -211,7 +211,7 @@
                         this.activarAlert("success", "¡Se ha modificado el perfil <strong>"+this.obj_perfil.nombre+"</strong> correctamente!")
                     },
                     async eliminarPerfil(){
-                        await fetch("../api/perfil-por-id/" + this.obj_perfil.id + "/", {
+                        await fetch("../api/perfil/" + this.obj_perfil.id + "/", {
                             method: "DELETE",
                             headers: {
                                 "X-CSRFToken": Cookies.get("csrftoken"),

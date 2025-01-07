@@ -21,12 +21,11 @@ from MiBancoVirtual.viewsets import *
 
 router = routers.DefaultRouter()
 router.register(r"perfil", PerfilViewSet, basename="perfil")
-router.register(r"perfil-por-id", PerfilPorIdViewSet, basename="perfil-por-id")
 router.register(r"total-saldo-perfiles", ObtenerSaldoTotalPerfilesViewSet, basename="total-saldo-perfiles")
 
 router.register(r"cuenta", CuentaViewSet, basename="cuenta")
-router.register(r"cuenta-por-id", CuentaPorIdViewSet, basename="cuenta-por-id")
 
+router.register(r"transaccion", TransaccionViewSet, basename="transaccion")
 router.register(r"transaccion-crear", TransaccionCrearViewSet, basename="transaccion-crear")
 router.register(r"transaccion-por-id", TransaccionPorIdViewSet, basename="transaccion-por-id")
 router.register(r"transaccion-por-subcuenta", TransaccionPorSubcuentaViewSet, basename="transaccion-por-subcuenta")
@@ -38,7 +37,6 @@ router.register(r"transaccion-programada-detalle", TransaccionProgramadaDetalleP
 router.register(r"transaccion-programada-detalle-por-id", TransaccionProgramadaDetallePorIdViewSet, basename="transaccion-programada-detalle-por-id")
 
 router.register(r"subcuenta", SubcuentaViewSet, basename="subcuenta")
-router.register(r"subcuenta-por-id", SubcuentaPorIdViewSet, basename="subcuenta-por-id")
 
 router.register(r"categoria", CategoriaViewSet, basename="categoria")
 router.register(r"gasto", GastoViewSet, basename="gasto")

@@ -46,11 +46,11 @@
                                             <span>
                                                 [[ cuenta.nombre ]] Q[[ cuenta.saldo_total ]]
                                             </span>
-                                            <span v-if="cuenta.saldo_total - cuenta.saldo_real > 0" style="color: red;">
-                                                -Q[[ (cuenta.saldo_total - cuenta.saldo_real).toFixed(2)]]
+                                            <span v-if="cuenta.saldo_total - cuenta.saldo_mostrar > 0" style="color: red;">
+                                                -Q[[ (cuenta.saldo_total - cuenta.saldo_mostrar).toFixed(2)]]
                                             </span>
                                             <span v-else style="color: green;">
-                                                +Q[[ (cuenta.saldo_real - cuenta.saldo_total).toFixed(2)]]
+                                                +Q[[ (cuenta.saldo_mostrar - cuenta.saldo_total).toFixed(2)]]
                                             </span>
                                             <span type="button" @click.stop.prevent="cargarCuenta(cuenta)" data-bs-toggle="modal" data-bs-target="#modificarCuenta" class="btn btn-link">
                                                 <i class="bx bxs-pencil" style="margin: -15px; color:#faf623; font-size: 38px;"></i>
@@ -76,10 +76,10 @@
                                                 </thead>
                                                 <tbody>
                                                     <tr v-for="subcuenta in lista_subcuentas">
-                                                        <td v-if="subcuenta.cuenta.id == cuenta.id">[[subcuenta.subcuenta_nombre]]</td>
-                                                        <td v-if="subcuenta.cuenta.id == cuenta.id && subcuenta.saldo >= 0">Q[[subcuenta.saldo]]</td>
-                                                        <td v-else-if="subcuenta.cuenta.id == cuenta.id && subcuenta.saldo < 0">-Q[[subcuenta.saldo * -1]]</td>
-                                                        <td v-if="subcuenta.cuenta.id == cuenta.id">
+                                                        <td v-if="subcuenta.cuenta == cuenta.id">[[subcuenta.subcuenta_nombre]]</td>
+                                                        <td v-if="subcuenta.cuenta == cuenta.id && subcuenta.saldo >= 0">Q[[subcuenta.saldo]]</td>
+                                                        <td v-else-if="subcuenta.cuenta == cuenta.id && subcuenta.saldo < 0">-Q[[subcuenta.saldo * -1]]</td>
+                                                        <td v-if="subcuenta.cuenta == cuenta.id">
                                                             <a :href="'/Crear_Transaccion/'+subcuenta.id+'/'">
                                                                 <i class="bx bxs-plus-square" style="position: relative; top: 5px; margin-bottom: -1px; color:#23c933; font-size: 45px;"></i>
                                                             </a>
@@ -118,11 +118,11 @@
                                     <span>
                                         [[ cuenta.nombre ]] Q[[ cuenta.saldo_total ]]
                                     </span>
-                                    <span v-if="cuenta.saldo_total - cuenta.saldo_real > 0" style="color: red;">
-                                        -Q[[ (cuenta.saldo_total - cuenta.saldo_real).toFixed(2)]]
+                                    <span v-if="cuenta.saldo_total - cuenta.saldo_mostrar > 0" style="color: red;">
+                                        -Q[[ (cuenta.saldo_total - cuenta.saldo_mostrar).toFixed(2)]]
                                     </span>
                                     <span v-else style="color: green;">
-                                        +Q[[ (cuenta.saldo_real - cuenta.saldo_total).toFixed(2)]]
+                                        +Q[[ (cuenta.saldo_mostrar - cuenta.saldo_total).toFixed(2)]]
                                     </span>
                                     <button type="button" @click="cargarCuenta(cuenta)" data-bs-toggle="modal" data-bs-target="#modificarCuenta" class="btn btn-link">
                                         <i class="bx bxs-pencil" style="margin: -15px; color:#faf623; font-size: 38px;"></i>
@@ -215,8 +215,8 @@
                                     <input type="text" v-model="obj_cuenta.nombre" name="nombre_cuenta" id="nombre_cuenta"> <br/>
 
                                     <div v-if="!obj_cuenta.es_efectivo">
-                                        <label for="saldo_real">Saldo real de la cuenta</label><br/>
-                                        <input type="text" v-model="obj_cuenta.saldo_real" name="saldo_real" id="saldo_real"> <br/>
+                                        <label for="saldo_mostrar">Saldo real de la cuenta</label><br/>
+                                        <input type="text" v-model="obj_cuenta.saldo_mostrar" name="saldo_mostrar" id="saldo_mostrar"> <br/>
                                     </div>
 
                                     <label for="efectivo">Cuenta de Efectivo:</label>
@@ -460,7 +460,7 @@
                             formData.append("m_5c", this.obj_cuenta.m_5c)
                         }
 
-                        await fetch("../api/cuenta-por-id/" + this.obj_cuenta.id + "/", {
+                        await fetch("../api/cuenta/" + this.obj_cuenta.id + "/", {
                             method: "PUT",
                             headers: {
                                 "X-CSRFToken": Cookies.get("csrftoken"),
@@ -473,7 +473,7 @@
                         this.activarAlert("success", "¡Se ha modificado la cuenta <strong>"+this.obj_cuenta.nombre+"</strong> correctamente!")
                     },
                     async eliminarCuenta(){
-                        await fetch("../api/cuenta-por-id/" + this.obj_cuenta.id + "/", {
+                        await fetch("../api/cuenta/" + this.obj_cuenta.id + "/", {
                             method: "DELETE",
                             headers: {
                                 "X-CSRFToken": Cookies.get("csrftoken"),
@@ -586,7 +586,7 @@
                         formData.append("saldo", this.obj_subcuenta.saldo)
                         formData.append("perfil", this.obj_subcuenta.perfil)
                         formData.append("cuenta", this.obj_subcuenta.cuenta)
-                        await fetch("../api/subcuenta-por-id/" + this.obj_subcuenta.id + "/", {
+                        await fetch("../api/subcuenta/" + this.obj_subcuenta.id + "/", {
                             method: "PUT",
                             headers: {
                                 "X-CSRFToken": Cookies.get("csrftoken")
@@ -598,7 +598,7 @@
                         this.activarAlert("success", "¡Se ha modificado la subcuenta correctamente!")
                     },
                     async eliminarSubcuenta(){
-                        await fetch("../api/subcuenta-por-id/" + this.obj_subcuenta.id + "/", {
+                        await fetch("../api/subcuenta/" + this.obj_subcuenta.id + "/", {
                             method: "DELETE",
                             headers: {
                                 "X-CSRFToken": Cookies.get("csrftoken")

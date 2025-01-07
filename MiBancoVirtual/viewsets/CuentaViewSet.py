@@ -1,5 +1,8 @@
 from rest_framework import viewsets
 from rest_framework.permissions import IsAuthenticated
+from django.db.models.functions import Coalesce
+from django.db.models import Sum, Subquery, OuterRef, Value, DecimalField, Case, When, F
+from decimal import Decimal
 
 from ..models import *
 from ..serializers import *
@@ -9,47 +12,55 @@ class CuentaViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
-        return Cuenta.objects.raw("""
-            SELECT
-                cuenta.id,
-                cuenta.nombre,
-                SUM
-                (
-                    CASE 
-                        WHEN transaccion.ordenante_id = subcuenta.id THEN - transaccion.monto
-                        WHEN transaccion.beneficiario_id = subcuenta.id THEN transaccion.monto
-                        ELSE 0
-                    END
-                ) as saldo_total,
-                (
-                    CASE 
-                        WHEN cuenta.es_efectivo = FALSE THEN cuenta.saldo_real
-                        ELSE cuenta.b_Q100 * 100 +
-                        cuenta.b_Q50  * 50 + 
-                        cuenta.b_Q20 * 20 +
-                        cuenta.b_Q10 * 10 +
-                        cuenta.b_Q5 * 5 +
-                        cuenta.m_100c +
-                        cuenta.m_50c * 50 / 100.00 +
-                        cuenta.m_25c * 25 / 100.00 +
-                        cuenta.m_10c * 10 / 100.00 +
-                        cuenta.m_5c * 5 / 100.00
-                    END
-                ) as saldo_real,
-                cuenta.es_efectivo,
-                cuenta.b_Q100,
-                cuenta.b_Q50,
-                cuenta.b_Q20,
-                cuenta.b_Q10,
-                cuenta.b_Q5,
-                cuenta.m_100c,
-                cuenta.m_50c,
-                cuenta.m_25c,
-                cuenta.m_10c,
-                cuenta.m_5c
-            FROM MiBancoVirtual_cuenta cuenta
-            LEFT JOIN MiBancoVirtual_subcuenta subcuenta on subcuenta.cuenta_id  = cuenta.id
-            LEFT JOIN MiBancoVirtual_transaccion transaccion on transaccion.ordenante_id = subcuenta.id 
-            OR transaccion.beneficiario_id = subcuenta.id
-            WHERE cuenta.usuario_id = %s
-            GROUP BY cuenta.id""", [self.request.user.id])
+
+        idUsuario = self.request.user.id
+
+        cuentas = Cuenta.objects.filter(usuario = idUsuario)
+
+        return cuentas.annotate(
+            # Agregar el saldo total de las transacciones en cada cuenta
+            saldo_total =
+                Coalesce(
+                    Subquery(
+                        Transaccion.objects.filter(
+                            beneficiario__cuenta_id__in=OuterRef("id")
+                        ).values("beneficiario__cuenta").annotate(
+                            total=Sum('monto', default=0)  
+                        ).values('total'),
+                        default=0,
+                        output_field=DecimalField(default=0)
+                    ),
+                    Value(0, DecimalField())
+                )
+                -
+                Coalesce(
+                    Subquery(
+                        Transaccion.objects.filter(
+                            ordenante__cuenta_id__in=OuterRef("id")
+                        ).values("ordenante__cuenta").annotate(
+                            total=Sum('monto', default=0)  
+                        ).values('total'),
+                        default=0,
+                        output_field=DecimalField(default=0)
+                    ),
+                    Value(0, DecimalField())
+                )
+        ).annotate(
+            # Si es efectivo toma el cálculo de las unidades del efectivo, si no toma el valor real
+            saldo_mostrar = 
+            Case(
+                When(es_efectivo = True, then=
+                    F('b_Q100') * Decimal(100)+
+                    F("b_Q50") * Decimal(50)+
+                    F("b_Q20") * Decimal(20)+
+                    F("b_Q10") * Decimal(10)+
+                    F("b_Q5")  * Decimal(5)+
+                    F("m_100c") +
+                    F("m_50c")  * Decimal(0.5)+
+                    F("m_25c") * Decimal(0.25)+
+                    F("m_10c") * Decimal(0.1)+
+                    F("m_5c") * Decimal(0.05)
+                ),
+                default=F("saldo_real")
+            )
+        )

@@ -2,7 +2,7 @@ from rest_framework import serializers
 from ..models import *
 
 class PerfilSerializer(serializers.ModelSerializer):
-    saldo = serializers.DecimalField(max_digits=10, decimal_places=2, read_only=True)
+    saldo = serializers.DecimalField(max_digits=10, decimal_places=2, read_only=True, allow_null=False)
 
     class Meta: 
         model = Perfil

@@ -4,6 +4,7 @@ from decimal import Decimal
 
 class CuentaSerializer(serializers.ModelSerializer):
     saldo_total = serializers.DecimalField(max_digits=10, decimal_places=2, read_only=True)
+    saldo_mostrar = serializers.DecimalField(max_digits=10, decimal_places=2, read_only=True)
 
     class Meta: 
         model = Cuenta
