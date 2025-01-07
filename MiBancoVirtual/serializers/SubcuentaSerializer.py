@@ -3,10 +3,6 @@ from ..models import *
 from . import *
 
 class SubcuentaSerializer(serializers.ModelSerializer):
-    perfil = PerfilSerializer()
-    cuenta = CuentaSerializer()
-    cuenta_nombre = serializers.CharField(read_only=True)
-    perfil_nombre = serializers.CharField(read_only=True)
     subcuenta_nombre = serializers.CharField(read_only=True)
     saldo = serializers.DecimalField(max_digits=10, decimal_places=2, read_only=True)
 
