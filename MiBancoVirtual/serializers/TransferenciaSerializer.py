@@ -2,9 +2,9 @@ from rest_framework import serializers
 from ..models import *
 
 class TransferenciaSerializer(serializers.ModelSerializer):
-    ordenante_nombre = serializers.CharField()
-    beneficiario_nombre = serializers.CharField()
-    categoria_nombre = serializers.CharField()
+    ordenante_nombre = serializers.CharField(read_only = True)
+    beneficiario_nombre = serializers.CharField(read_only = True)
+    # categoria_nombre = serializers.CharField()
     class Meta: 
 
         model = Transaccion

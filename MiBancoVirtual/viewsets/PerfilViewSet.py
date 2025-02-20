@@ -21,8 +21,8 @@ class PerfilViewSet(viewsets.ModelViewSet):
                 Coalesce(
                     Subquery(
                         Transaccion.objects.filter(
-                            beneficiario__perfil_id__in=OuterRef("id")
-                        ).values("beneficiario__perfil").annotate(
+                            perfilBeneficiario_id__in=OuterRef("id")
+                        ).values("perfilBeneficiario").annotate(
                             total=Sum('monto', default=0)  
                         ).values('total'),
                         default=0,
@@ -34,8 +34,8 @@ class PerfilViewSet(viewsets.ModelViewSet):
                 Coalesce(
                     Subquery(
                         Transaccion.objects.filter(
-                            ordenante__perfil_id__in=OuterRef("id")
-                        ).values("ordenante__perfil").annotate(
+                            perfilOrdenante_id__in=OuterRef("id")
+                        ).values("perfilOrdenante").annotate(
                             total=Sum('monto', default=0)  
                         ).values('total'),
                         default=0,

@@ -34,14 +34,25 @@
                 <div class="col-11 p-5" id="container" style="margin-top: 13px;">
                     <!-- Formulario para gastos e ingresos -->
                     <div class="form-control m-3" v-if="transaccion != 'transferencia'">
-                        <!-- Subcuenta -->
-                        <div class="row d-flex align-content-center">
+                        <!-- Cuenta -->
+                        <div class="row d-flex align-content-center mb-2">
                             <div class="col-1">
-                                <label for="subcuenta">Subcuenta:</label>
+                                <label for="subcuenta">Cuenta:</label>
                             </div>
                             <div class="col-6">
-                                <select class="form-select" v-model="obj_transaccion.ordenante" name="subcuenta">
-                                    <option v-for="subcuenta in lista_subcuentas" :value="subcuenta.id">[[subcuenta.subcuenta_nombre]]: Q[[ subcuenta.saldo ]]</option>
+                                <select class="form-select" v-model="obj_transaccion.cuentaOrdenante" name="cuenta">
+                                    <option v-for="cuenta in lista_cuentas" :value="cuenta.id">[[cuenta.nombre]]: Q[[ cuenta.saldo_total ]]</option>
+                                </select>
+                            </div>
+                        </div>
+                        <!-- Perfil -->
+                        <div class="row d-flex align-content-center mb-2">
+                            <div class="col-1">
+                                <label for="subcuenta">Perfil:</label>
+                            </div>
+                            <div class="col-6">
+                                <select class="form-select" v-model="obj_transaccion.perfilOrdenante" name="perfil">
+                                    <option v-for="perfil in lista_perfiles" :value="perfil.id">[[perfil.nombre]]: Q[[ perfil.saldo ]]</option>
                                 </select>
                             </div>
                         </div>
@@ -99,22 +110,78 @@
                                 <input type="number" v-model="obj_transaccion.monto" id="montoTransferencia" min="1">
                             </div>
                         </div>
-                        <!-- Subcuentas -->
+                        <div class="row my-2">
+                            <!-- Ordenante -->
+                            <div class="col border">
+                                <div class="row">
+                                    <div class="col-1">
+                                        <p>De:</p>
+                                    </div>
+                                </div>
+                                <!-- Cuenta -->
+                                <div class="row d-flex align-content-center mb-2">
+                                    <div class="col-2">
+                                        <label for="subcuenta">Cuenta:</label>
+                                    </div>
+                                    <div class="col-10">
+                                        <select class="form-select" v-model="obj_transaccion.cuentaOrdenante" name="cuenta">
+                                            <option v-for="cuenta in lista_cuentas" :value="cuenta.id">[[cuenta.nombre]]: Q[[ cuenta.saldo_total ]]</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <!-- Perfil -->
+                                <div class="row d-flex align-content-center mb-2">
+                                    <div class="col-2">
+                                        <label for="perfil">Perfil:</label>
+                                    </div>
+                                    <div class="col-10">
+                                        <select class="form-select" v-model="obj_transaccion.perfilOrdenante" name="perfil">
+                                            <option v-for="perfil in lista_perfiles" :value="perfil.id">[[perfil.nombre]]: Q[[ perfil.saldo ]]</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Beneficiario -->
+                            <div class="col border ms-2">
+                                <div class="row">
+                                    <div class="col-1">
+                                        <p>Para:</p>
+                                    </div>
+                                </div>
+                                <!-- Cuenta -->
+                                <div class="row d-flex align-content-center mb-2">
+                                    <div class="col-2">
+                                        <label for="subcuenta">Cuenta:</label>
+                                    </div>
+                                    <div class="col-10">
+                                        <select class="form-select" v-model="obj_transaccion.cuentaBeneficiaria" name="cuenta">
+                                            <option v-for="cuenta in lista_cuentas" :value="cuenta.id">[[cuenta.nombre]]: Q[[ cuenta.saldo_total ]]</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <!-- Perfil -->
+                                <div class="row d-flex align-content-center mb-2">
+                                    <div class="col-2">
+                                        <label for="perfil">Perfil:</label>
+                                    </div>
+                                    <div class="col-10">
+                                        <select class="form-select" v-model="obj_transaccion.perfilBeneficiario" name="perfil">
+                                            <option v-for="perfil in lista_perfiles" :value="perfil.id">[[perfil.nombre]]: Q[[ perfil.saldo ]]</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Categorias -->
                         <div class="row">
-                            <div class="col-1">
-                                <p>De:</p>
+                            <div class="col-6">
+                                <p>Categorias: </p>
                             </div>
-                            <div class="col-5">
-                                <select class="form-select" v-model="obj_transaccion.ordenante" id="ordenante">
-                                    <option v-for="subcuenta in cargarOrdenantes" :value="subcuenta.id">[[ subcuenta.subcuenta_nombre ]]</option>
-                                </select>
-                            </div>
-                            <div class="col-1">
-                                <p>Para:</p>
-                            </div>
-                            <div class="col-5">
-                                <select class="form-select" v-model="obj_transaccion.beneficiario" id="beneficiario">
-                                    <option v-for="subcuenta in cargarBeneficiarios" :value="subcuenta.id">[[ subcuenta.subcuenta_nombre ]]</option>
+                        </div>
+                        <div class="row">
+                            <div class="col-6">
+                                <select class="form-select" v-model="obj_transaccion.categoria" name="categoria" aria-label="Default select example">
+                                    <option v-for="categoria in lista_categorias" :value="categoria.id">[[ categoria.nombre ]]</option>
                                 </select>
                             </div>
                         </div>
@@ -154,23 +221,20 @@
                     return {
                         transaccion: "gasto",
                         lista_subcuentas: [],
+                        lista_perfiles: [],
+                        lista_cuentas: [],
                         lista_categorias: [],
                         lista_ordenantes: [],
                         lista_beneficiarios: [],
                         obj_transaccion: {
                             id: "",
-                            subcuenta: "",
-                            fecha: this.hoy(),
-                            monto: 1,
-                            categoria: "",
-                            descripcion: ""
-                        },
-                        obj_transaccion: {
-                            id: "",
                             monto: 1,
                             ordenante: "",
                             fecha: this.hoy(),
-                            beneficiario: "",
+                            cuentaOrdenante: "",
+                            perfilOrdenante: "",
+                            cuentaBeneficiaria: "",
+                            perfilBeneficiario: "",
                             descripcion: ""
                         }
                     }
@@ -185,7 +249,6 @@
                 },
                 methods: {
                     hoy(fecha = new Date()){
-                        console.log("cambiar formato: " + fecha)
                         formato = "yyyy-MM-dd"
                         dia = fecha.getDate()
                         dia = (dia < 10)? "0" + dia : dia;
@@ -196,13 +259,22 @@
                             .replace("MM", mes)
                             .replace("dd", dia);
                         
-                        console.log(nueva_fecha)
                         return nueva_fecha
                     },
                     async obtenerSubcuentas(){
                         const response = await fetch("../../api/subcuenta/");
                         this.lista_subcuentas = await response.json();
                         this.obj_transaccion.subcuenta = (this.lista_subcuentas.length > 0)? this.lista_subcuentas[0].id : null
+                    },
+                    async obtenerPerfiles(){
+                        const response = await fetch("../../api/perfil/");
+                        this.lista_perfiles = await response.json();
+                        this.obj_transaccion.perfil = (this.lista_perfiles.length > 0)? this.lista_perfiles[0].id : null
+                    },
+                    async obtenerCuentas(){
+                        const response = await fetch("../../api/cuenta/");
+                        this.lista_cuentas = await response.json();
+                        this.obj_transaccion.cuenta = (this.lista_cuentas.length > 0)? this.lista_cuentas[0].id : null
                     },
                     async obtenerCategorias(){
                         const response = await fetch("../../api/categoria/");
@@ -227,10 +299,49 @@
                     },
                     async crearTransaccion(){
 
-                        if(this.obj_transaccion.subcuenta == null){
-                            this.activarAlert("danger", "Necesita crear una <strong>subcuenta</strong> para crear una transacción")
+                        if(this.transaccion != "transferencia"){
+                            if(this.obj_transaccion.perfilOrdenante == ""){
+                                this.activarAlert("danger", "Necesita agregar un <strong>perfil</strong> para crear una transacción")
+                                return
+                            }
+                            else if(this.obj_transaccion.cuentaOrdenante == ""){
+                                this.activarAlert("danger", "Necesita agregar una <strong>cuenta</strong> para crear una transacción")
+                                return
+                            }
                         }
-                        else if(this.obj_transaccion.categoria == null){
+                        else {
+                            if(this.obj_transaccion.cuentaOrdenante == "" && this.obj_transaccion.perfilOrdenante == ""){
+                                this.activarAlert("danger", "Necesita agregar al menos una entidad como ordenante")
+                                return
+                            }
+                            
+                            if(this.obj_transaccion.cuentaBeneficiaria == "" && this.obj_transaccion.perfilBeneficiario == ""){
+                                this.activarAlert("danger", "Necesita agregar al menos una entidad como beneficiario")
+                                return
+                            }
+                            
+                            if(this.obj_transaccion.cuentaOrdenante != "" && this.obj_transaccion.cuentaBeneficiaria == ""){
+                                this.activarAlert("danger", "Necesita agregar una <strong>cuenta beneficiaria</strong> para crear una transacción")
+                                return
+                            }
+                            
+                            if(this.obj_transaccion.perfilOrdenante != "" && this.obj_transaccion.perfilBeneficiario == ""){
+                                this.activarAlert("danger", "Necesita agregar una <strong>perfil beneficiario</strong> para crear una transacción")
+                                return
+                            }
+                            
+                            if(this.obj_transaccion.cuentaOrdenante == "" && this.obj_transaccion.cuentaBeneficiaria != ""){
+                                this.activarAlert("danger", "Necesita agregar una <strong>cuenta ordenante</strong> para crear una transacción")
+                                return
+                            }
+                            
+                            if(this.obj_transaccion.perfilOrdenante == "" && this.obj_transaccion.perfilBeneficiario != ""){
+                                this.activarAlert("danger", "Necesita agregar una <strong>perfil ordenante</strong> para crear una transacción")
+                                return
+                            }
+                        }
+                        
+                        if(this.obj_transaccion.categoria == null && this.transaccion != "transferencia"){
                             this.activarAlert("danger", "Necesita crear una <strong>categoría</strong> para crear una transacción")
                         }
                         else if(this.obj_transaccion.fecha == ""){
@@ -238,11 +349,14 @@
                         }
                         else{  
                             if(this.transaccion == "gasto"){
-                                this.obj_transaccion.beneficiario = ""
+                                this.obj_transaccion.perfilBeneficiario = ""
+                                this.obj_transaccion.cuentaBeneficiaria = ""
                             } 
                             else if(this.transaccion == "ingreso") {
-                                this.obj_transaccion.beneficiario = this.obj_transaccion.ordenante
-                                this.obj_transaccion.ordenante = ""
+                                this.obj_transaccion.perfilBeneficiario = this.obj_transaccion.perfilOrdenante
+                                this.obj_transaccion.cuentaBeneficiaria = this.obj_transaccion.cuentaOrdenante
+                                this.obj_transaccion.perfilOrdenante = ""
+                                this.obj_transaccion.cuentaOrdenante = ""
                             }
 
                             parts = this.obj_transaccion.monto.toString().split('.');
@@ -250,8 +364,10 @@
                                 this.obj_transaccion.monto = `${parts[0]}.${parts[1].slice(0, 2)}`;
                             }
                             formData = new FormData()
-                            formData.append("ordenante", this.obj_transaccion.ordenante)
-                            formData.append("beneficiario", this.obj_transaccion.beneficiario)
+                            formData.append("perfilOrdenante", this.obj_transaccion.perfilOrdenante)
+                            formData.append("perfilBeneficiario", this.obj_transaccion.perfilBeneficiario)
+                            formData.append("cuentaOrdenante", this.obj_transaccion.cuentaOrdenante)
+                            formData.append("cuentaBeneficiaria", this.obj_transaccion.cuentaBeneficiaria)
                             formData.append("monto", this.obj_transaccion.monto)
                             formData.append("categoria", this.obj_transaccion.categoria)
                             formData.append("fecha", this.obj_transaccion.fecha)
@@ -264,14 +380,20 @@
                                 }, body: formData
                             })
                             
-                            this.obj_transaccion = {
-                                id: "",
-                                subcuenta: this.obj_transaccion.subcuenta,
-                                fecha: this.obj_transaccion.fecha,
-                                monto: 1,
-                                categoria: this.obj_transaccion.categoria,
-                                descripcion: ""
+                            this.obj_transaccion= {
+                            id: "",
+                            monto: 1,
+                            fecha: this.hoy(),
+                            cuentaOrdenante: "",
+                            categoria: this.obj_transaccion.categoria,
+                            perfilOrdenante: "",
+                            cuentaBeneficiaria: "",
+                            perfilBeneficiario: "",
+                            descripcion: ""
                             }
+                            await this.obtenerCuentas()
+                            await this.obtenerPerfiles()
+                        
                             this.activarAlert("success", "¡Se ha creado el <strong>"+this.transaccion+"</strong> correctamente!")
                         }
                     },
@@ -291,6 +413,8 @@
                 },
                 async created(){
                     await this.obtenerSubcuentas()
+                    await this.obtenerPerfiles()
+                    await this.obtenerCuentas()
                     this.obtenerCategorias()
                     this.obtenerId()
                 }

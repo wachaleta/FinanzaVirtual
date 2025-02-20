@@ -79,7 +79,7 @@
                             <th>Monto</th>
                             <th v-if="transaccion == 'transferencia'">Ordenante</th>
                             <th v-if="transaccion == 'transferencia'">Beneficiario</th>
-                            <th v-if="transaccion != 'transferencia'">Subcuenta</th>
+                            <th v-if="transaccion != 'transferencia'">Nombre</th>
                             <th v-if="transaccion != 'transferencia'">Categoría</th>
                             <th>Fecha</th>
                             <th>Descripción</th>
@@ -92,7 +92,7 @@
                             <td>Q[[ x.monto ]]</td>
                             <td v-if="transaccion == 'transferencia'">[[ x.ordenante_nombre ]]</td>
                             <td v-if="transaccion == 'transferencia'">[[ x.beneficiario_nombre ]]</td>
-                            <td v-if="transaccion != 'transferencia'">[[ x.subcuenta_nombre ]]</td>
+                            <td v-if="transaccion != 'transferencia'">[[ x.nombre ]]</td>
                             <td v-if="transaccion != 'transferencia'">[[ x.categoria_nombre ]]</td>
                             <td>[[ x.fecha ]]</td>
                             <td>[[ x.descripcion ]]</td>
@@ -263,17 +263,17 @@
                         return nueva_fecha
                     },
                     async obtenerGastos(){
-                        const response = await fetch("../../api/gasto/")
+                        const response = await fetch("../../api/gasto?fechaInicio=" + this.fecha + "&fechaFinal=" + this.fecha)
                         this.lista_transacciones = await response.json()
                         this.lista_filtrada = this.lista_transacciones
                     },
                     async obtenerIngresos(){
-                        const response = await fetch("../../api/ingreso/")
+                        const response = await fetch("../../api/ingreso?fechaInicio=" + this.fecha + "&fechaFinal=" + this.fecha)
                         this.lista_transacciones = await response.json()
                         this.lista_filtrada = this.lista_transacciones
                     },
                     async obtenerTransferencias(){
-                        const response = await fetch("../../api/transferencia/")
+                        const response = await fetch("../../api/transferencia?fechaInicio=" + this.fecha + "&fechaFinal=" + this.fecha)
                         this.lista_transacciones = await response.json()
                         this.lista_filtrada = this.lista_transacciones
                     },
@@ -485,7 +485,7 @@
                                 document.getElementById("cerrar_filtroBeneficiarios").click()
                                 break
                         }
-
+                        
                         this.lista_filtrada = this.lista_transacciones
                         if(this.transaccion != "transferencia"){
                             this.lista_filtrada = this.lista_filtrada.filter((transaccion) => {
@@ -506,6 +506,7 @@
                             })
                         }
                         else {
+                            console.log(this.filtroOrdenantes)
                             this.lista_filtrada = this.lista_filtrada.filter((transaccion) => {
                                 for(x of this.filtroOrdenantes){
                                     if(transaccion.ordenante == x){
@@ -539,7 +540,7 @@
                         else{
                             await this.obtenerTransferencias()
                         }
-                        this.guardarFiltros()
+                        // this.guardarFiltros()
                     },
                     cargarTransaccion(transaccion){
                         this.obj_transaccion = {
@@ -577,7 +578,8 @@
                         nueva_fecha = new Date(nueva_fecha)
                         nueva_fecha = new Date(nueva_fecha.setDate(nueva_fecha.getDate() + dias));
                         this.fecha = this.cambiarFormato(nueva_fecha)
-                        this.guardarFiltros()
+                        this.cambiarTransaccion(this.transaccion)
+                        // this.guardarFiltros()
                     }
                 },
                 async created(){

@@ -12,33 +12,52 @@
     <body>
         {% include "../nav.html" %}
         <div id="app">
-            <div id="Alerta" style="position: fixed; top: 0; width: 100%; z-index: 101;"></div>
-            <div id="container">
-                <!-- Botones de selección de transacción -->
-                <div class="row text-center" style="margin-top: 10px;">
-                    <!-- espaciador -->
-                    <!-- Botón de gasto -->
-                    <div class="col-5">
-                        <button type="button" v-if="transaccion == 'gasto'" class="btn btn-success">Gasto</button>
-                        <button type="button" @click="cambiarTransaccion('gasto')" class="btn btn-outline-success" v-else>Gasto</button>
-                    </div>
-                    <!-- Botón de ingreso -->
-                    <div class="col-5">
-                        <button type="button" v-if="transaccion == 'ingreso'" class="btn btn-success">Ingreso</button>
-                        <button type="button" @click="cambiarTransaccion('ingreso')" class="btn btn-outline-success" v-else>Ingreso</button>
-                    </div>
+            <div id="Alerta" style="position: fixed; top: 0; width: 100%; z-index: 101;">
+            </div>
+            <!-- Botones de selección de transacción -->
+            <div class="row text-center" style="margin-top: 10px;">
+                <!-- espaciador -->
+                <!-- Botón de gasto -->
+                <div class="col-5">
+                    <button type="button" v-if="transaccion == 'gasto'" class="btn btn-success">Gasto</button>
+                    <button type="button" @click="cambiarTransaccion('gasto')" class="btn btn-outline-success" v-else>Gasto</button>
                 </div>
-                <form action="" method="POST" class="form-control" style="margin: 10px; padding: 10px;">
-                    <div>
+                <!-- Botón de ingreso -->
+                <div class="col-5">
+                    <button type="button" v-if="transaccion == 'ingreso'" class="btn btn-success">Ingreso</button>
+                    <button type="button" @click="cambiarTransaccion('ingreso')" class="btn btn-outline-success" v-else>Ingreso</button>
+                </div>
+            </div>
+            <div class="row d-flex justify-content-center">
+                <div class="col-11 p-5" id="container" style="margin-top: 13px;">
+                    <!-- Formulario para gastos e ingresos -->
+                    <div class="form-control m-3">
+                        <!-- Cuenta -->
+                        <div class="row d-flex align-content-center mb-2">
+                            <div class="col-1">
+                                <label for="cuenta">Cuenta:</label>
+                            </div>
+                            <div class="col-6">
+                                <select class="form-select" v-model="obj_transaccion.cuentaOrdenante" name="cuenta">
+                                    <option v-for="cuenta in lista_cuentas" :value="cuenta.id">[[cuenta.nombre]]: Q[[ cuenta.saldo_total ]]</option>
+                                </select>
+                            </div>
+                        </div>
+                        <!-- Perfil -->
+                        <div class="row d-flex align-content-center mb-2">
+                            <div class="col-1">
+                                <label for="subcuenta">Perfil:</label>
+                            </div>
+                            <div class="col-6">
+                                <select class="form-select" v-model="obj_transaccion.perfilOrdenante" name="perfil">
+                                    <option v-for="perfil in lista_perfiles" :value="perfil.id">[[perfil.nombre]]: Q[[ perfil.saldo ]]</option>
+                                </select>
+                            </div>
+                        </div>
                         <!-- Subucuenta y monto -->
                         <div class="row">
                             <div class="col-6">
-                                <select class="form-select" v-model="obj_transaccion.subcuenta" name="subcuenta">
-                                    <option v-for="subcuenta in lista_subcuentas" :value="subcuenta.id">[[subcuenta.subcuenta_nombre]]</option>
-                                </select>
-                            </div>
-                            <div class="col-6">
-                                <label for="monto">monto: <input type="number" v-model="obj_transaccion.monto" id="monto"></label>
+                                <label for="monto">monto: <input type="number" min="1" v-model="obj_transaccion.monto" id="monto"></label>
                             </div>
                         </div>
                         <!-- Categorias -->
@@ -46,6 +65,8 @@
                             <div class="col-6">
                                 <p>Categorias: </p>
                             </div>
+                        </div>
+                        <div class="row">
                             <div class="col-6">
                                 <select class="form-select" v-model="obj_transaccion.categoria" name="categoria" aria-label="Default select example">
                                     <option v-for="categoria in lista_categorias" :value="categoria.id">[[ categoria.nombre ]]</option>
@@ -54,9 +75,11 @@
                         </div>
                         <!-- Fecha -->
                         <div class="row">
-                            <div>
-                                <p>Fecha</p>
+                            <div class="col-1">
+                                <label>Fecha:</label>
                             </div>
+                        </div>
+                        <div class="row">
                             <div class="col-6">
                                 <input type="date" v-model="obj_transaccion.fecha">
                             </div>
@@ -75,10 +98,9 @@
                             <button type="button" @click="modificarTransaccion()" class="btn btn-success">Guardar [[transaccion]]</button>
                         </div>
                     </div>
-                </form>
+                </div>
             </div>
         </div>
-        <!-- <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script> -->
         <script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/js-cookie@3.0.5/dist/js.cookie.min.js"></script>
         <script>
@@ -90,6 +112,8 @@
                         transaccion: "",
                         transaccionBase: "",
                         lista_subcuentas: [],
+                        lista_perfiles: [],
+                        lista_cuentas: [],
                         lista_categorias: [],
                         lista_ordenantes: [],
                         lista_beneficiarios: [],
@@ -108,6 +132,16 @@
                         const response = await fetch("../../../api/subcuenta/");
                         this.lista_subcuentas = await response.json();
                     },
+                    async obtenerPerfiles(){
+                        const response = await fetch("../../../api/perfil/");
+                        this.lista_perfiles = await response.json();
+                        this.obj_transaccion.perfil = (this.lista_perfiles.length > 0)? this.lista_perfiles[0].id : null
+                    },
+                    async obtenerCuentas(){
+                        const response = await fetch("../../../api/cuenta/");
+                        this.lista_cuentas = await response.json();
+                        this.obj_transaccion.cuenta = (this.lista_cuentas.length > 0)? this.lista_cuentas[0].id : null
+                    },
                     async obtenerCategorias(){
                         const response = await fetch("../../../api/categoria/");
                         this.lista_categorias = await response.json();
@@ -120,30 +154,65 @@
                         const UltimoSlash = url.lastIndexOf("/");
                         PenultimoSlash = url.lastIndexOf("/", UltimoSlash - 1);
                         AntepenultimoSlash = url.lastIndexOf("/", PenultimoSlash - 1)
+
                         this.transaccionBase = url.substring(AntepenultimoSlash + 1, PenultimoSlash)
                         id = url.substring(PenultimoSlash + 1, UltimoSlash)
+
                         const response = await fetch("../../../api/transaccion-por-id/"+id+"/")
                         this.obj_transaccion = await response.json()
+
                         this.cambiarTransaccion(this.transaccionBase)
                         this.obj_transaccion.subcuenta = (this.obj_transaccion.ordenante)? this.obj_transaccion.ordenante : this.obj_transaccion.beneficiario
+
+                        if(this.transaccionBase == "ingreso"){
+                            this.obj_transaccion.cuentaOrdenante = this.obj_transaccion.cuentaBeneficiaria
+                            this.obj_transaccion.perfilOrdenante = this.obj_transaccion.perfilBeneficiario
+
+                            this.obj_transaccion.cuentaBeneficiaria = ""
+                            this.obj_transaccion.perfilBeneficiario = ""
+                        }
                         console.log(this.obj_transaccion.subcuenta)
                     },
                     async modificarTransaccion(){
+                        if(this.obj_transaccion.perfilOrdenante == ""){
+                            this.activarAlert("danger", "Necesita agregar un <strong>perfil</strong> para crear una transacción")
+                            return
+                        }
+                        else if(this.obj_transaccion.cuentaOrdenante == ""){
+                            this.activarAlert("danger", "Necesita agregar una <strong>cuenta</strong> para crear una transacción")
+                            return
+                        }
+                        
                         parts = this.obj_transaccion.monto.toString().split('.');
                         if(parts.length > 1) {
                             this.obj_transaccion.monto = `${parts[0]}.${parts[1].slice(0, 2)}`;
                         }
-                        
-                        this.obj_transaccion.ordenante = (this.transaccion == "gasto")? this.obj_transaccion.subcuenta : ""
-                        this.obj_transaccion.beneficiario = (this.transaccion == "ingreso")? this.obj_transaccion.subcuenta : ""
+                        if(this.transaccion == "gasto")
+                        {
+                            this.obj_transaccion.cuentaBeneficiaria = ""
+                            this.obj_transaccion.perfilBeneficiario = ""
+                            
+                        } else {
+                            this.obj_transaccion.cuentaBeneficiaria = this.obj_transaccion.cuentaOrdenante
+                            this.obj_transaccion.perfilBeneficiario = this.obj_transaccion.perfilOrdenante
+
+                            this.obj_transaccion.cuentaOrdenante = ""
+                            this.obj_transaccion.perfilOrdenante = ""
+                        }
+
+                        // this.obj_transaccion.ordenante = ? this.obj_transaccion.subcuenta : ""
+                        // this.obj_transaccion.beneficiario = (this.transaccion == "ingreso")? this.obj_transaccion.subcuenta : ""
 
                         formData = new FormData()
-                        formData.append("monto", this.obj_transaccion.monto)    
-                        formData.append("descripcion", this.obj_transaccion.descripcion)
-                        formData.append("fecha", this.obj_transaccion.fecha)
-                        formData.append("ordenante", this.obj_transaccion.ordenante)
-                        formData.append("beneficiario", this.obj_transaccion.beneficiario)
+                        formData.append("perfilOrdenante", this.obj_transaccion.perfilOrdenante)
+                        formData.append("perfilBeneficiario", this.obj_transaccion.perfilBeneficiario)
+                        formData.append("cuentaOrdenante", this.obj_transaccion.cuentaOrdenante)
+                        formData.append("cuentaBeneficiaria", this.obj_transaccion.cuentaBeneficiaria)
+                        formData.append("monto", this.obj_transaccion.monto)
                         formData.append("categoria", this.obj_transaccion.categoria)
+                        formData.append("fecha", this.obj_transaccion.fecha)
+                        formData.append("descripcion", this.obj_transaccion.descripcion)
+                        
                         await fetch("../../../api/transaccion-por-id/"+this.obj_transaccion.id+"/", {
                             method: "PUT",
                             headers: {
@@ -172,6 +241,8 @@
                 },
                 async created(){
                     await this.obtenerSubcuentas()
+                    await this.obtenerPerfiles()
+                    await this.obtenerCuentas()
                     await this.obtenerCategorias()
                     await this.obtenerId()
                 }

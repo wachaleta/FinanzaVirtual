@@ -63,52 +63,6 @@
                                             </span >
                                         </button>
                                     </h3>
-                                    <div :id="cuenta.id" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
-                                        <div class="accordion-body">
-                                            <table class="table" style="margin: 10px;">
-                                                <thead>
-                                                    <tr>
-                                                        <th>Nombre</th>
-                                                        <th v-if="cuenta.saldo_total >= 0">Q[[ cuenta.saldo_total ]]</th>
-                                                        <th v-else>-Q[[ cuenta.saldo_total * -1 ]]</th>
-                                                        <th>Acciones</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    <tr v-for="subcuenta in lista_subcuentas">
-                                                        <td v-if="subcuenta.cuenta == cuenta.id">[[subcuenta.subcuenta_nombre]]</td>
-                                                        <td v-if="subcuenta.cuenta == cuenta.id && subcuenta.saldo >= 0">Q[[subcuenta.saldo]]</td>
-                                                        <td v-else-if="subcuenta.cuenta == cuenta.id && subcuenta.saldo < 0">-Q[[subcuenta.saldo * -1]]</td>
-                                                        <td v-if="subcuenta.cuenta == cuenta.id">
-                                                            <a :href="'/Crear_Transaccion/'+subcuenta.id+'/'">
-                                                                <i class="bx bxs-plus-square" style="position: relative; top: 5px; margin-bottom: -1px; color:#23c933; font-size: 45px;"></i>
-                                                            </a>
-                                                            <a :href="'/Ver_Transacciones/'+subcuenta.id+'/'">
-                                                                <button type="button" class="btn btn-link">
-                                                                    <i class="bx bxs-show" style="position: relative; top: 2px; margin: -20px; color:#1693db; font-size: 45px;"></i>
-                                                                </button >
-                                                            </a>
-                                                            <button type="button" @click="cargarSubcuenta(subcuenta)" data-bs-toggle="modal" data-bs-target="#modificarSubcuenta" class="btn btn-link">
-                                                                <i class="bx bxs-pencil" style="margin: -15px; color:#faf623; font-size: 38px;"></i>
-                                                            </button >
-                                                            <button type="button" @click="cargarSubcuenta(subcuenta)" class="btn btn-link" data-bs-toggle="modal" data-bs-target="#eliminarSubcuenta">
-                                                                <i class="bx bxs-x-circle" style="margin: -15px; color:#ff0000; font-size: 38px;"></i>
-                                                            </button >
-                                                        </td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
-                                            <div class="row" style="margin: 10px;">
-                                                <div class="col-12">
-                                                    <!-- Botón Crear Subcuenta -->
-                                                    <button v-show="false" id="modalCrearSubcuenta" data-bs-toggle="modal" data-bs-target="#CrearSubcuenta"></button>
-                                                    <button class="btn btn-success btn-lg" @click="cargarNombreCuenta(cuenta)">
-                                                        Crear Subcuenta de [[cuenta.nombre]]
-                                                    </button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
                                 </div>
                             </div>
                             <!-- Datos de la cuenta -->

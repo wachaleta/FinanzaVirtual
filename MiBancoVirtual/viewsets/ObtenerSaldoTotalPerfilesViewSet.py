@@ -16,13 +16,11 @@ class ObtenerSaldoTotalPerfilesViewSet(viewsets.ViewSet):
 
         lista_perfiles = Perfil.objects.filter(usuario=idUsuario).filter(agregarTotal=True)
 
-        lista_subcuentas = Subcuenta.objects.filter(perfil__in = lista_perfiles)
-
-        saldo_total = Transaccion.objects.filter(beneficiario__in = lista_subcuentas).aggregate(
+        saldo_total = Transaccion.objects.filter(perfilBeneficiario__in = lista_perfiles).aggregate(
             saldo=Sum('monto')
         )['saldo' or 0]
 
-        saldo_total -= Transaccion.objects.filter(ordenante__in = lista_subcuentas).aggregate(
+        saldo_total -= Transaccion.objects.filter(perfilOrdenante__in = lista_perfiles).aggregate(
             saldo=Sum('monto')
         )['saldo' or 0]
 

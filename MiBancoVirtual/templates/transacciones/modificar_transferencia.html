@@ -10,9 +10,11 @@
     <body>
         {% include "../nav.html" %}
         <div id="app">
-            <div id="Alerta" style="position: fixed; top: 0; width: 100%; z-index: 101;"></div>
-            <div id="container">
-                <form action="" method="POST" class="form-control" style="margin: 10px; padding: 10px;">
+            <div id="Alerta" style="position: fixed; top: 0; width: 100%; z-index: 101;">
+            </div>
+            <div class="row d-flex justify-content-center">
+                <div class="col-11 p-5" id="container" style="margin-top: 13px;">
+                    <!-- Formulario para gastos e ingresos -->
                     <div>
                         <!-- Monto -->
                         <div class="row">
@@ -20,25 +22,81 @@
                                 <label for="montoTransferencia">monto:</label>
                             </div>
                             <div class="col-1">
-                                <input type="number" v-model="obj_transferencia.monto" id="montoTransferencia">
+                                <input type="number" v-model="obj_transaccion.monto" id="montoTransferencia" min="1">
                             </div>
                         </div>
-                        <!-- Subcuentas -->
+                        <div class="row my-2">
+                            <!-- Ordenante -->
+                            <div class="col border">
+                                <div class="row">
+                                    <div class="col-1">
+                                        <p>De:</p>
+                                    </div>
+                                </div>
+                                <!-- Cuenta -->
+                                <div class="row d-flex align-content-center mb-2">
+                                    <div class="col-2">
+                                        <label for="subcuenta">Cuenta:</label>
+                                    </div>
+                                    <div class="col-10">
+                                        <select class="form-select" v-model="obj_transaccion.cuentaOrdenante" name="cuenta">
+                                            <option v-for="cuenta in lista_cuentas" :value="cuenta.id">[[cuenta.nombre]]: Q[[ cuenta.saldo_total ]]</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <!-- Perfil -->
+                                <div class="row d-flex align-content-center mb-2">
+                                    <div class="col-2">
+                                        <label for="perfil">Perfil:</label>
+                                    </div>
+                                    <div class="col-10">
+                                        <select class="form-select" v-model="obj_transaccion.perfilOrdenante" name="perfil">
+                                            <option v-for="perfil in lista_perfiles" :value="perfil.id">[[perfil.nombre]]: Q[[ perfil.saldo ]]</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Beneficiario -->
+                            <div class="col border ms-2">
+                                <div class="row">
+                                    <div class="col-1">
+                                        <p>Para:</p>
+                                    </div>
+                                </div>
+                                <!-- Cuenta -->
+                                <div class="row d-flex align-content-center mb-2">
+                                    <div class="col-2">
+                                        <label for="subcuenta">Cuenta:</label>
+                                    </div>
+                                    <div class="col-10">
+                                        <select class="form-select" v-model="obj_transaccion.cuentaBeneficiaria" name="cuenta">
+                                            <option v-for="cuenta in lista_cuentas" :value="cuenta.id">[[cuenta.nombre]]: Q[[ cuenta.saldo_total ]]</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <!-- Perfil -->
+                                <div class="row d-flex align-content-center mb-2">
+                                    <div class="col-2">
+                                        <label for="perfil">Perfil:</label>
+                                    </div>
+                                    <div class="col-10">
+                                        <select class="form-select" v-model="obj_transaccion.perfilBeneficiario" name="perfil">
+                                            <option v-for="perfil in lista_perfiles" :value="perfil.id">[[perfil.nombre]]: Q[[ perfil.saldo ]]</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Categorias -->
                         <div class="row">
-                            <div class="col-1">
-                                <p>De:</p>
+                            <div class="col-6">
+                                <p>Categorias: </p>
                             </div>
-                            <div class="col-5">
-                                <select class="form-select" v-model="obj_transferencia.ordenante" id="ordenante">
-                                    <option v-for="subcuenta in cargarOrdenantes" :value="subcuenta.id">[[ subcuenta.nombre ]]</option>
-                                </select>
-                            </div>
-                            <div class="col-1">
-                                <p>Para:</p>
-                            </div>
-                            <div class="col-5">
-                                <select class="form-select" v-model="obj_transferencia.beneficiario" id="beneficiario">
-                                    <option v-for="subcuenta in cargarBeneficiarios" :value="subcuenta.id">[[ subcuenta.nombre ]]</option>
+                        </div>
+                        <div class="row">
+                            <div class="col-6">
+                                <select class="form-select" v-model="obj_transaccion.categoria" name="categoria" aria-label="Default select example">
+                                    <option v-for="categoria in lista_categorias" :value="categoria.id">[[ categoria.nombre ]]</option>
                                 </select>
                             </div>
                         </div>
@@ -48,24 +106,24 @@
                                 <label>Fecha</label>
                             </div>
                             <div class="col-6">
-                                <input type="date" v-model="obj_transferencia.fecha">
+                                <input type="date" v-model="obj_transaccion.fecha">
                             </div>
                         </div>
                         <!-- Descripcion -->
                         <div class="row">
                             <div>
-                                <label for="descripcionTransferencia">Descripcion: </label>
+                                <label for="descripcionTransferencia">Descripción: </label>
                             </div>
                             <div class="col-12">
-                                <textarea class="form-control" v-model="obj_transferencia.descripcion" id="descripcionTransferencia" style="margin: 0px 10px 10px 10px;"></textarea>
+                                <textarea class="form-control" v-model="obj_transaccion.descripcion" id="descripcionTransferencia" style="margin: 0px 10px 10px 10px;"></textarea>
                             </div>
                         </div>
                         <!-- Boton -->
                         <div>
-                            <button type="button" @click="modificarTransferencia()" class="btn btn-success">Modificar Transferencia</button>
+                            <button type="button" @click="modificarTransferencia()" class="btn btn-success">Crear Transferencia</button>
                         </div>
                     </div>
-                </form>
+                </div>
             </div>
         </div>
         <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
@@ -77,9 +135,12 @@
                 data() {
                     return {
                         lista_subcuentas: [],
+                        lista_cuentas: [],
+                        lista_perfiles: [],
+                        lista_categorias: [],
                         lista_ordenantes: [],
                         lista_beneficiarios: [],
-                        obj_transferencia: {
+                        obj_transaccion: {
                             id: "",
                             monto: 0,
                             ordenante: "",
@@ -90,10 +151,10 @@
                 },
                 computed:{
                     cargarOrdenantes(){
-                        return this.lista_subcuentas.filter(x => x.id != this.obj_transferencia.beneficiario)
+                        return this.lista_subcuentas.filter(x => x.id != this.obj_transaccion.beneficiario)
                     },
                     cargarBeneficiarios(){
-                        return this.lista_subcuentas.filter(x => x.id != this.obj_transferencia.ordenante)
+                        return this.lista_subcuentas.filter(x => x.id != this.obj_transaccion.ordenante)
                     }
                 },
                 methods: {
@@ -101,26 +162,72 @@
                         const response = await fetch("../../api/subcuenta/");
                         this.lista_subcuentas = await response.json();
                     },
+                    async obtenerPerfiles(){
+                        const response = await fetch("../../../api/perfil/");
+                        this.lista_perfiles = await response.json();
+                        this.obj_transaccion.perfil = (this.lista_perfiles.length > 0)? this.lista_perfiles[0].id : null
+                    },
+                    async obtenerCuentas(){
+                        const response = await fetch("../../../api/cuenta/");
+                        this.lista_cuentas = await response.json();
+                        this.obj_transaccion.cuenta = (this.lista_cuentas.length > 0)? this.lista_cuentas[0].id : null
+                    },
                     async obtenerId(){
                         const url = window.location.href;
                         const lastSlashIndex = url.lastIndexOf("/");
                         secondLastSlashIndex = url.lastIndexOf("/", lastSlashIndex - 1);
                         id = url.substring(secondLastSlashIndex + 1, lastSlashIndex)
-                        const response = await fetch("../../api/transferencia/"+id+"/")
-                        this.obj_transferencia = await response.json()
+                        const response = await fetch("../../api/transaccion-por-id/"+id+"/")
+                        this.obj_transaccion = await response.json()
                     },
                     async modificarTransferencia(){
-                        parts = this.obj_transferencia.monto.toString().split('.');
-                        if(parts.length > 1) {
-                            this.obj_transferencia.monto = `${parts[0]}.${parts[1].slice(0, 2)}`;
+
+                        if(this.obj_transaccion.cuentaOrdenante == "" && this.obj_transaccion.perfilOrdenante == ""){
+                            this.activarAlert("danger", "Necesita agregar al menos una entidad como ordenante")
+                            return
                         }
+                        
+                        if(this.obj_transaccion.cuentaBeneficiaria == "" && this.obj_transaccion.perfilBeneficiario == ""){
+                            this.activarAlert("danger", "Necesita agregar al menos una entidad como beneficiario")
+                            return
+                        }
+                        
+                        if(this.obj_transaccion.cuentaOrdenante != "" && this.obj_transaccion.cuentaBeneficiaria == ""){
+                            this.activarAlert("danger", "Necesita agregar una <strong>cuenta beneficiaria</strong> para crear una transacción")
+                            return
+                        }
+                        
+                        if(this.obj_transaccion.perfilOrdenante != "" && this.obj_transaccion.perfilBeneficiario == ""){
+                            this.activarAlert("danger", "Necesita agregar una <strong>perfil beneficiario</strong> para crear una transacción")
+                            return
+                        }
+                        
+                        if(this.obj_transaccion.cuentaOrdenante == "" && this.obj_transaccion.cuentaBeneficiaria != ""){
+                            this.activarAlert("danger", "Necesita agregar una <strong>cuenta ordenante</strong> para crear una transacción")
+                            return
+                        }
+                        
+                        if(this.obj_transaccion.perfilOrdenante == "" && this.obj_transaccion.perfilBeneficiario != ""){
+                            this.activarAlert("danger", "Necesita agregar una <strong>perfil ordenante</strong> para crear una transacción")
+                            return
+                        }
+
+                        parts = this.obj_transaccion.monto.toString().split('.');
+                        if(parts.length > 1) {
+                            this.obj_transaccion.monto = `${parts[0]}.${parts[1].slice(0, 2)}`;
+                        }
+
                         formData = new FormData()
-                        formData.append("monto", this.obj_transferencia.monto)
-                        formData.append("ordenante", this.obj_transferencia.ordenante)
-                        formData.append("beneficiario", this.obj_transferencia.beneficiario)
-                        formData.append("descripcion", this.obj_transferencia.descripcion)
-                        formData.append("fecha", this.obj_transferencia.fecha)
-                        await fetch("../../api/transferencia/"+this.obj_transferencia.id+"/", {
+                        formData.append("perfilOrdenante", this.obj_transaccion.perfilOrdenante ?? "")
+                        formData.append("perfilBeneficiario", this.obj_transaccion.perfilBeneficiario ?? "")
+                        formData.append("cuentaOrdenante", this.obj_transaccion.cuentaOrdenante ?? "")
+                        formData.append("cuentaBeneficiaria", this.obj_transaccion.cuentaBeneficiaria ?? "")
+                        formData.append("monto", this.obj_transaccion.monto)
+                        formData.append("categoria", this.obj_transaccion.categoria)
+                        formData.append("fecha", this.obj_transaccion.fecha)
+                        formData.append("descripcion", this.obj_transaccion.descripcion)
+
+                        await fetch("../../api/transaccion-por-id/"+this.obj_transaccion.id+"/", {
                             method: "PUT",
                             headers: {
                                 "X-CSRFToken": Cookies.get("csrftoken")
@@ -148,6 +255,8 @@
                 },
                 async created(){
                     await this.obtenerSubcuentas()
+                    await this.obtenerPerfiles()
+                    await this.obtenerCuentas()
                     this.obtenerId()
                 }
             }).mount("#app")

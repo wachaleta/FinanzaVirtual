@@ -23,8 +23,8 @@ class CuentaViewSet(viewsets.ModelViewSet):
                 Coalesce(
                     Subquery(
                         Transaccion.objects.filter(
-                            beneficiario__cuenta_id__in=OuterRef("id")
-                        ).values("beneficiario__cuenta").annotate(
+                            cuentaBeneficiaria_id__in=OuterRef("id")
+                        ).values("cuentaBeneficiaria").annotate(
                             total=Sum('monto', default=0)  
                         ).values('total'),
                         default=0,
@@ -36,8 +36,8 @@ class CuentaViewSet(viewsets.ModelViewSet):
                 Coalesce(
                     Subquery(
                         Transaccion.objects.filter(
-                            ordenante__cuenta_id__in=OuterRef("id")
-                        ).values("ordenante__cuenta").annotate(
+                            cuentaOrdenante_id__in=OuterRef("id")
+                        ).values("cuentaOrdenante").annotate(
                             total=Sum('monto', default=0)  
                         ).values('total'),
                         default=0,
