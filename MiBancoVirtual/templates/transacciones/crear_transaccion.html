@@ -37,7 +37,7 @@
                         <!-- Cuenta -->
                         <div class="row d-flex align-content-center mb-2">
                             <div class="col-1">
-                                <label for="subcuenta">Cuenta:</label>
+                                <label>Cuenta:</label>
                             </div>
                             <div class="col-6">
                                 <select class="form-select" v-model="obj_transaccion.cuentaOrdenante" name="cuenta">
@@ -48,7 +48,7 @@
                         <!-- Perfil -->
                         <div class="row d-flex align-content-center mb-2">
                             <div class="col-1">
-                                <label for="subcuenta">Perfil:</label>
+                                <label>Perfil:</label>
                             </div>
                             <div class="col-6">
                                 <select class="form-select" v-model="obj_transaccion.perfilOrdenante" name="perfil">
@@ -121,7 +121,7 @@
                                 <!-- Cuenta -->
                                 <div class="row d-flex align-content-center mb-2">
                                     <div class="col-2">
-                                        <label for="subcuenta">Cuenta:</label>
+                                        <label>Cuenta:</label>
                                     </div>
                                     <div class="col-10">
                                         <select class="form-select" v-model="obj_transaccion.cuentaOrdenante" name="cuenta">
@@ -151,7 +151,7 @@
                                 <!-- Cuenta -->
                                 <div class="row d-flex align-content-center mb-2">
                                     <div class="col-2">
-                                        <label for="subcuenta">Cuenta:</label>
+                                        <label>Cuenta:</label>
                                     </div>
                                     <div class="col-10">
                                         <select class="form-select" v-model="obj_transaccion.cuentaBeneficiaria" name="cuenta">
@@ -220,7 +220,6 @@
                 data() {
                     return {
                         transaccion: "gasto",
-                        lista_subcuentas: [],
                         lista_perfiles: [],
                         lista_cuentas: [],
                         lista_categorias: [],
@@ -239,14 +238,6 @@
                         }
                     }
                 },
-                computed:{
-                    cargarOrdenantes(){
-                        return this.lista_subcuentas.filter(x => x.id != this.obj_transaccion.beneficiario)
-                    },
-                    cargarBeneficiarios(){
-                        return this.lista_subcuentas.filter(x => x.id != this.obj_transaccion.ordenante)
-                    }
-                },
                 methods: {
                     hoy(fecha = new Date()){
                         formato = "yyyy-MM-dd"
@@ -260,11 +251,6 @@
                             .replace("dd", dia);
                         
                         return nueva_fecha
-                    },
-                    async obtenerSubcuentas(){
-                        const response = await fetch("../../api/subcuenta/");
-                        this.lista_subcuentas = await response.json();
-                        this.obj_transaccion.subcuenta = (this.lista_subcuentas.length > 0)? this.lista_subcuentas[0].id : null
                     },
                     async obtenerPerfiles(){
                         const response = await fetch("../../api/perfil/");
@@ -290,7 +276,6 @@
                         secondLastSlashIndex = url.lastIndexOf("/", lastSlashIndex - 1);
                         if(lastSlashIndex > secondLastSlashIndex){
                             if(parseInt(url.substring(secondLastSlashIndex +1, lastSlashIndex)) != 0){
-                                this.obj_transaccion.subcuenta = parseInt(url.substring(secondLastSlashIndex +1, lastSlashIndex))
                                 this.obj_transaccion.ordenante = parseInt(url.substring(secondLastSlashIndex +1, lastSlashIndex))
                             }else{
 
@@ -412,7 +397,6 @@
                     }
                 },
                 async created(){
-                    await this.obtenerSubcuentas()
                     await this.obtenerPerfiles()
                     await this.obtenerCuentas()
                     this.obtenerCategorias()

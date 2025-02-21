@@ -4,21 +4,16 @@ from .models import *
 class CuentaAdmin(admin.ModelAdmin):
     list_display = ("id", "nombre")
 
-class SubcuentaAdmin(admin.ModelAdmin):
-    list_display = ("id",)
-
 class GastoAdmin(admin.ModelAdmin):
-    list_display = ("monto", "descripcion", "fecha", "subcuenta", "categoria", "saldo_actual")
+    list_display = ("monto", "descripcion", "fecha", "categoria", "saldo_actual")
 
 class IngesoAdmin(admin.ModelAdmin):
-    list_display = ("monto", "descripcion", "fecha", "subcuenta", "categoria", "saldo_actual")
+    list_display = ("monto", "descripcion", "fecha", "categoria", "saldo_actual")
 
 class TransferenciaAdmin(admin.ModelAdmin):
-    list_display = ("monto", "descripcion", "fecha", "ordenante", "beneficiario")
+    list_display = ("monto", "descripcion", "fecha")
 
 # Register your models here.
 admin.site.register(Perfil,)
 admin.site.register(Cuenta, CuentaAdmin)
-admin.site.register(Subcuenta, SubcuentaAdmin)
 admin.site.register(Categoria,)
-admin.site.register(Transferencia, TransferenciaAdmin)

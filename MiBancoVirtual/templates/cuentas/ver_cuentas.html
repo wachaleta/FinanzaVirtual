@@ -65,73 +65,6 @@
                                     </h3>
                                 </div>
                             </div>
-                            <!-- Datos de la cuenta -->
-                            <!-- <div class="row">
-                                <-- Nombre Cuentas ->
-                                <h3>
-                                    <span>
-                                        [[ cuenta.nombre ]] Q[[ cuenta.saldo_total ]]
-                                    </span>
-                                    <span v-if="cuenta.saldo_total - cuenta.saldo_mostrar > 0" style="color: red;">
-                                        -Q[[ (cuenta.saldo_total - cuenta.saldo_mostrar).toFixed(2)]]
-                                    </span>
-                                    <span v-else style="color: green;">
-                                        +Q[[ (cuenta.saldo_mostrar - cuenta.saldo_total).toFixed(2)]]
-                                    </span>
-                                    <button type="button" @click="cargarCuenta(cuenta)" data-bs-toggle="modal" data-bs-target="#modificarCuenta" class="btn btn-link">
-                                        <i class="bx bxs-pencil" style="margin: -15px; color:#faf623; font-size: 38px;"></i>
-                                    </button >
-                                    <button type="button" @click="cargarCuenta(cuenta)" class="btn btn-link" data-bs-toggle="modal" data-bs-target="#eliminarCuenta">
-                                        <i class="bx bxs-x-circle" style="margin: -15px; color:#ff0000; font-size: 38px;"></i>
-                                    </button >
-                                    <button type="button" v-if="cuenta.es_efectivo" @click="cargarCuenta(cuenta)" class="btn btn-link" data-bs-toggle="modal" data-bs-target="#cuentaEfectivo">
-                                        <i class="bx bxs-wallet" style="margin: -15px; color:#51340c; font-size: 38px;"></i>
-                                    </button >
-                                </h3>
-                            </div>
-                            <!-- Datos de las subcuentas ->
-                            <table class="table" style="margin: 10px;">
-                                <thead>
-                                    <tr>
-                                        <th>Nombre</th>
-                                        <th v-if="cuenta.saldo_total >= 0">Q[[ cuenta.saldo_total ]]</th>
-                                        <th v-else>-Q[[ cuenta.saldo_total * -1 ]]</th>
-                                        <th>Acciones</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr v-for="subcuenta in lista_subcuentas">
-                                        <td v-if="subcuenta.cuenta == cuenta.id">[[subcuenta.subcuenta_nombre]]</td>
-                                        <td v-if="subcuenta.cuenta == cuenta.id && subcuenta.saldo >= 0">Q[[subcuenta.saldo]]</td>
-                                        <td v-else-if="subcuenta.cuenta == cuenta.id && subcuenta.saldo < 0">-Q[[subcuenta.saldo * -1]]</td>
-                                        <td v-if="subcuenta.cuenta == cuenta.id">
-                                            <a :href="'/Crear_Transaccion/'+subcuenta.id+'/'">
-                                                <i class="bx bxs-plus-square" style="position: relative; top: 5px; margin-bottom: -1px; color:#23c933; font-size: 45px;"></i>
-                                            </a>
-                                            <a :href="'/Ver_Transacciones/'+subcuenta.id+'/'">
-                                                <button type="button" class="btn btn-link">
-                                                    <i class="bx bxs-show" style="position: relative; top: 2px; margin: -20px; color:#1693db; font-size: 45px;"></i>
-                                                </button >
-                                            </a>
-                                            <button type="button" @click="cargarSubcuenta(subcuenta)" data-bs-toggle="modal" data-bs-target="#modificarSubcuenta" class="btn btn-link">
-                                                <i class="bx bxs-pencil" style="margin: -15px; color:#faf623; font-size: 38px;"></i>
-                                            </button >
-                                            <button type="button" @click="cargarSubcuenta(subcuenta)" class="btn btn-link" data-bs-toggle="modal" data-bs-target="#eliminarSubcuenta">
-                                                <i class="bx bxs-x-circle" style="margin: -15px; color:#ff0000; font-size: 38px;"></i>
-                                            </button >
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                            <div class="row" style="margin: 10px;">
-                                <div class="col-12">
-                                    <!-- Botón Crear Subcuenta ->
-                                    <button v-show="false" id="modalCrearSubcuenta" data-bs-toggle="modal" data-bs-target="#CrearSubcuenta"></button>
-                                    <button class="btn btn-success btn-lg" @click="cargarNombreCuenta(cuenta)">
-                                        Crear Subcuenta de [[cuenta.nombre]]
-                                    </button>
-                                </div>
-                            </div> -->
                         </div>
                     </div>
                 </div>
@@ -242,11 +175,11 @@
                     </div>
                 </div>
                 <!-- Modal Eliminar Cuenta -->
-                <div class="modal fade" id="eliminarCuenta" tabindex="-1" data-bs-backdrop="static" aria-labelledby="EliminarSubcuentaLabel" aria-hidden="true">
+                <div class="modal fade" id="eliminarCuenta" tabindex="-1" data-bs-backdrop="static" aria-labelledby="EliminarCuentaLabel" aria-hidden="true">
                     <div class="modal-dialog">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h1 class="modal-title fs-5" id="EliminarSubcuentaLabel">Eliminar Cuenta</h1>
+                                <h1 class="modal-title fs-5" id="EliminarCuentaLabel">Eliminar Cuenta</h1>
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
@@ -255,70 +188,6 @@
                             <div class="modal-footer">
                                 <button type="button" id="cerrar_eliminarCuenta" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
                                 <button type="button" @click="eliminarCuenta()" class="btn btn-primary">Eliminar Cuenta</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!-- Modal Crear Subcuenta -->
-                <div class="modal fade" id="CrearSubcuenta" tabindex="-1" data-bs-backdrop="static" aria-labelledby="CrearSubcuentaLabel" aria-hidden="true">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h1 class="modal-title fs-5" id="CrearSubcuentaLabel">Crear Nueva Subcuenta</h1>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                            </div>
-                            <form action="" method="POST" class="form-control">
-                                <div class="modal-body">
-                                    <label for="perfil">Perfil</label>
-                                    <select name="perfil" id="perfil" v-model="obj_subcuenta.perfil" class="form-select">
-                                        <option v-for="perfil in lista_perfilesFiltrados" :value="perfil.id">[[perfil.nombre]]</option>
-                                    </select>
-                                    <label for="saldo">Saldo Inicial</label>
-                                    <input type="number" v-model="obj_subcuenta.saldo" id="saldo">
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" id="cerrar_crearSubcuenta" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                                    <button type="button" @click="crearSubcuenta()" class="btn btn-primary">Crear Subcuenta</button>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-                <!-- Modal Modificar Subcuenta -->
-                <div class="modal fade" id="modificarSubcuenta" tabindex="-1" data-bs-backdrop="static" aria-labelledby="CrearSubcuentaLabel" aria-hidden="true">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h1 class="modal-title fs-5" id="CrearSubcuentaLabel">Modificar Subcuenta [[ obj_subcuenta.subcuenta_nombre ]]</h1>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                            </div>
-                            <div class="modal-body">
-                                    <label for="perfil">Perfil</label>
-                                    <select v-model="obj_subcuenta.perfil" name="perfil" id="perfil" class="form-select">
-                                            <option v-for="perfil in lista_perfilesFiltradosModificar" :value="perfil.id">[[perfil.nombre]]</option>
-                                    </select>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" id="cerrar_modificarSubcuenta" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                                <button type="button" @click="modificarSubcuenta()" class="btn btn-primary">Guardar</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!-- Modal Eliminar Subcuenta -->
-                <div class="modal fade" id="eliminarSubcuenta" tabindex="-1" data-bs-backdrop="static" aria-labelledby="EliminarSubcuentaLabel" aria-hidden="true">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h1 class="modal-title fs-5" id="EliminarSubcuentaLabel">Eliminar Subcuenta</h1>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                            </div>
-                            <div class="modal-body">
-                                Está seguro que desea eliminar la subcuenta "[[obj_subcuenta.subcuenta_nombre]]"?
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" id="cerrar_eliminarSubcuenta" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                                <button type="button" @click="eliminarSubcuenta()" class="btn btn-primary">Eliminar Subcuenta</button>
                             </div>
                         </div>
                     </div>
@@ -334,20 +203,12 @@
                 data() {
                     return {
                         lista_cuentas: [],
-                        lista_subcuentas: [],
                         lista_gastos: [],
                         lista_perfiles: [],
                         lista_perfilesFiltrados :[],
                         lista_perfilesFiltradosModificar :[],
                         tituloEditar: "",
                         perfilesLibres: false,
-                        obj_subcuenta: {
-                            id: "",
-                            nombre: "",
-                            saldo: "",
-                            perfil: "",
-                            cuenta: ""
-                        },
                         obj_cuenta: {
                             id: "",
                             nombre: "",
@@ -371,10 +232,6 @@
                     async obtenerCuentas(){
                         const response = await fetch("../api/cuenta/");
                         this.lista_cuentas = await response.json();
-                    },
-                    async obtenerSubcuentas(){
-                        const response = await fetch("../api/subcuenta/");
-                        this.lista_subcuentas = await response.json();
                     },
                     async obtenerPerfiles(){
                         const response = await fetch("../api/perfil/");
@@ -423,7 +280,6 @@
                         document.getElementById("cerrar_modificarCuenta").click()
                         document.getElementById("cerrar_cuentaEfectivo").click()
                         this.obtenerCuentas()
-                        this.obtenerSubcuentas()
                         this.activarAlert("success", "¡Se ha modificado la cuenta <strong>"+this.obj_cuenta.nombre+"</strong> correctamente!")
                     },
                     async eliminarCuenta(){
@@ -467,102 +323,6 @@
                         }
                         this.tituloEditar = this.obj_cuenta.nombre
                     },
-                    async cargarNombreCuenta(cuenta){
-                        this.lista_perfilesFiltrados = this.lista_perfiles.filter((perfil) => {
-                            for(subcuenta of this.lista_subcuentas){
-                                if(subcuenta.cuenta == cuenta.id && subcuenta.perfil == perfil.id){
-                                    return false
-                                }
-                            }
-                            return true
-                        })
-                        this.perfilesLibres = this.lista_perfilesFiltrados.length > 0
-                        if(!this.perfilesLibres){
-                            this.activarAlert("danger", "No hay suficientes perfiles disponibles")
-                        }
-                        else{
-                            document.getElementById("modalCrearSubcuenta").click()
-                        }
-                        this.obj_subcuenta = {
-                            id: "",
-                            nombre: "",
-                            saldo: "",
-                            perfil: (this.lista_perfilesFiltrados.length >= 1)? this.lista_perfilesFiltrados[0].id : null,
-                            cuenta: cuenta.id,
-                            nombre_cuenta: cuenta.nombre
-                        }
-                    },
-                    async crearSubcuenta(){
-                        formData = new FormData()
-                        formData.append("saldo", this.obj_subcuenta.saldo)
-                        formData.append("perfil", this.obj_subcuenta.perfil)
-                        formData.append("cuenta", this.obj_subcuenta.cuenta)
-                        await fetch("../api/subcuenta/", {
-                            method: "POST",
-                            headers: {
-                                "X-CSRFToken": Cookies.get("csrftoken"),
-                            }, body: formData
-                        });
-                        document.getElementById("cerrar_crearSubcuenta").click()
-                        this.obtenerCuentas()
-                        this.obtenerSubcuentas()
-                        this.activarAlert("success", "¡Se ha creado una nueva subcuenta en la cuenta <strong>"+this.obj_subcuenta.subcuenta_nombre_cuenta+"</strong> correctamente!")
-                    },
-                    async cargarSubcuenta(subcuenta){
-                        this.obj_subcuenta = {
-                            id: subcuenta.id,
-                            nombre: subcuenta.subcuenta_nombre,
-                            saldo: subcuenta.saldo,
-                            perfil: subcuenta.perfil,
-                            cuenta: subcuenta.cuenta
-                        }
-                        tituloEditar = this.obj_subcuenta.subcuenta_nombre
-                        this.lista_perfilesFiltradosModificar = this.lista_perfiles.filter((perfil) => {
-                            for(subcuentaf of this.lista_subcuentas){
-                                //primer condición (cuentas): es para verificar si la subcuenta del for es de la misma cuenta que la subcuenta a modificar
-                                //segunda condición: que excluya el perfil del filtro si la cuenta ya tiene una subcuenta con ese perfil
-                                //tercer condición: que no excluya el perfil si el perfiles el de la subcuenta que se va a modificar
-                                if(subcuentaf.cuenta == subcuenta.cuenta && subcuentaf.perfil == perfil.id && subcuenta.perfil != perfil.id){
-                                    return false
-                                }
-                            }
-                            return true
-                        })
-                        this.lista_perfilesFiltradosModificar.push()
-
-                        //  Cargar los gastos de una subcuenta en específico por id
-                        const response = await fetch("../api/gasto/?subcuenta=" + subcuenta.id)
-                        this.lista_gastos = await response.json()
-                    },
-                    async modificarSubcuenta(){
-                        formData = new FormData()
-                        formData.append("id", this.obj_subcuenta.id)
-                        formData.append("saldo", this.obj_subcuenta.saldo)
-                        formData.append("perfil", this.obj_subcuenta.perfil)
-                        formData.append("cuenta", this.obj_subcuenta.cuenta)
-                        await fetch("../api/subcuenta/" + this.obj_subcuenta.id + "/", {
-                            method: "PUT",
-                            headers: {
-                                "X-CSRFToken": Cookies.get("csrftoken")
-                            }, body: formData
-                        })
-                        document.getElementById("cerrar_modificarSubcuenta").click()
-                        this.obtenerCuentas()
-                        this.obtenerSubcuentas()
-                        this.activarAlert("success", "¡Se ha modificado la subcuenta correctamente!")
-                    },
-                    async eliminarSubcuenta(){
-                        await fetch("../api/subcuenta/" + this.obj_subcuenta.id + "/", {
-                            method: "DELETE",
-                            headers: {
-                                "X-CSRFToken": Cookies.get("csrftoken")
-                            }
-                        })
-                        document.getElementById("cerrar_eliminarSubcuenta").click()
-                        this.obtenerCuentas()
-                        this.obtenerSubcuentas()
-                        this.activarAlert("success", "¡Se ha eliminado la subcuenta <strong>"+this.obj_subcuenta.subcuenta_nombre+"</strong> correctamente!")
-                    },
                     activarAlert(type, message){
                         alerta = document.getElementById("Alerta")
                         alerta.innerHTML = [
@@ -580,7 +340,6 @@
                 created(){
 
                     this.obtenerCuentas();
-                    this.obtenerSubcuentas();
                     this.obtenerPerfiles();
 
                 }

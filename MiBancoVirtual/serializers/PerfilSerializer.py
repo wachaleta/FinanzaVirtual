@@ -16,17 +16,3 @@ class PerfilSerializer(serializers.ModelSerializer):
             usuario = self.context["request"].user
         )
         return x
-
-    def update(self, instance, validated_data):
-        super().update(instance, validated_data)
-
-        lista_subcuentas = Subcuenta.objects.filter(perfil=instance.id)
-
-        for subcuenta in lista_subcuentas:
-            
-            subcuenta.cambiar_nombre()
-            subcuenta.save()
-
-
-
-        return instance

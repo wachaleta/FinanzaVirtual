@@ -45,32 +45,12 @@
                             <button @click="sumarDias(-1)" class="btn-primary">&#9668;</button>
                         </div>
                         <div class="col">
-                            <input type="date" v-model="fecha" v-on:change="guardarFiltros()">
+                            <input type="date" v-model="fecha">
                         </div>
                         <div class="col">
                             <button @click="sumarDias(1)" class="btn-primary">&#9658;</button>
                         </div>
                     </div>
-                    <h4 v-if="transaccion != 'transferencia'">
-                        Subcuentas:
-                        <button data-bs-toggle="modal" data-bs-target="#FiltroSubcuentas">
-                            <i class='bx bx-filter' style="color: gray;"></i>
-                        </button>
-                        Categorías:
-                        <button data-bs-toggle="modal" data-bs-target="#FiltroCategorias">
-                            <i class='bx bx-filter' style="color: gray;"></i>
-                        </button>
-                    </h4>
-                    <h4 v-else>
-                        Ordenantes:
-                        <button data-bs-toggle="modal" data-bs-target="#filtroOrdenantes">
-                            <i class='bx bx-filter' style="color: gray;"></i>
-                        </button>
-                        Beneficiarios:
-                        <button data-bs-toggle="modal" data-bs-target="#filtroBeneficiarios">
-                            <i class='bx bx-filter' style="color: gray;"></i>
-                        </button>
-                    </h4>
                 </div>
                 <!-- Tabla de transacciones -->
                 <table class="table">
@@ -88,7 +68,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr v-for="x in lista_filtrada">
+                        <tr v-for="x in lista_transacciones">
                             <td>Q[[ x.monto ]]</td>
                             <td v-if="transaccion == 'transferencia'">[[ x.ordenante_nombre ]]</td>
                             <td v-if="transaccion == 'transferencia'">[[ x.beneficiario_nombre ]]</td>
@@ -132,98 +112,6 @@
                         </div>
                     </div>
                 </div>
-                <!-- Modal Filtro Subcuentas -->
-                <div class="modal fade" id="FiltroSubcuentas" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h1 class="modal-title fs-5" id="exampleModalLabel">Subcuentas</h1>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
-                            </div>
-                            <div class="modal-body">
-                                <input type="checkbox" @click="seleccionarTodasLasOpciones('subcuenta')" checked="true" id="todasLasSubcuentas">
-                                <label for="todasLasSubcuentas">&nbsp;&nbsp;Todas</label>
-                            </div>
-                            <div class="modal-body" v-for="subcuenta in lista_subcuentas">
-                                <input type="checkbox" @click="actualizarCheckTodos('subcuenta')" checked="true" :id="'subcuenta'+subcuenta.id">
-                                <label :for="'subcuenta'+subcuenta.id">&nbsp;&nbsp;[[ subcuenta.subcuenta_nombre ]]</label>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" id="cerrar_filtroSubcuentas" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                                <button type="button" @click="guardarFiltros('subcuenta')" class="btn btn-primary">Guardar Filtros</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!-- Modal Filtro Categorías -->
-                <div class="modal fade" id="FiltroCategorias" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h1 class="modal-title fs-5" id="exampleModalLabel">Categorías</h1>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
-                            </div>
-                            <div class="modal-body">
-                                <input type="checkbox" @click="seleccionarTodasLasOpciones('categoria')" checked="true" id="todasLasCategorias">
-                                <label for="todasLasCategorias">&nbsp;&nbsp;Todas</label>
-                            </div>
-                            <div class="modal-body" v-for="categoria in lista_categorias">
-                                <input type="checkbox" @click="actualizarCheckTodos('categoria')" checked="true" :id="'categoria'+categoria.id">
-                                <label :for="'categoria'+categoria.id">&nbsp;&nbsp;[[ categoria.nombre ]]</label>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" id="cerrar_filtroCategorias" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                                <button type="button" @click="guardarFiltros('categoria')" class="btn btn-primary">Guardar Filtros</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!-- Modal Filtro Ordenantes -->
-                <div class="modal fade" id="filtroOrdenantes" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h1 class="modal-title fs-5" id="exampleModalLabel">Ordenantes</h1>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
-                            </div>
-                            <div class="modal-body">
-                                <input type="checkbox" @click="seleccionarTodasLasOpciones('ordenante')" checked="true" id="todosLosOrdenantes">
-                                <label for="todosLosOrdenantes">&nbsp;&nbsp;Todas</label>
-                            </div>
-                            <div class="modal-body" v-for="subcuenta in lista_subcuentas">
-                                <input type="checkbox" @click="actualizarCheckTodos('ordenante')" checked="true" :id="'ordenante'+subcuenta.id">
-                                <label :for="'ordenante'+subcuenta.id">&nbsp;&nbsp;[[ subcuenta.subcuenta_nombre ]]</label>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" id="cerrar_filtroOrdenantes" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                                <button type="button" @click="guardarFiltros('ordenante')" class="btn btn-primary">Guardar Filtros</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!-- Modal Filtro Beneficiarios -->
-                <div class="modal fade" id="filtroBeneficiarios" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h1 class="modal-title fs-5" id="exampleModalLabel">Beneficiarios</h1>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
-                            </div>
-                            <div class="modal-body">
-                                <input type="checkbox" @click="seleccionarTodasLasOpciones('beneficiario')" checked="true" id="todosLosBeneficiarios">
-                                <label for="todosLosBeneficiarios">&nbsp;&nbsp;Todas</label>
-                            </div>
-                            <div class="modal-body" v-for="subcuenta in lista_subcuentas">
-                                <input type="checkbox" @click="actualizarCheckTodos('beneficiario')" checked="true" :id="'beneficiario'+subcuenta.id">
-                                <label :for="'beneficiario'+subcuenta.id">&nbsp;&nbsp;[[ subcuenta.subcuenta_nombre ]]</label>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" id="cerrar_filtroBeneficiarios" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                                <button type="button" @click="guardarFiltros('beneficiario')" class="btn btn-primary">Guardar Filtros</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
             </div>
         </div>
         <script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js"></script>
@@ -237,10 +125,7 @@
                         transaccion: "gasto",
                         fecha: this.cambiarFormato(),
                         lista_transacciones: [],
-                        lista_subcuentas: [],
                         lista_categorias: [],
-                        lista_filtrada: [],
-                        filtroSubcuentas: [],
                         filtroCategorias: [],
                         filtroOrdenantes: [],
                         filtroBeneficiarios: [],
@@ -265,17 +150,14 @@
                     async obtenerGastos(){
                         const response = await fetch("../../api/gasto?fechaInicio=" + this.fecha + "&fechaFinal=" + this.fecha)
                         this.lista_transacciones = await response.json()
-                        this.lista_filtrada = this.lista_transacciones
                     },
                     async obtenerIngresos(){
                         const response = await fetch("../../api/ingreso?fechaInicio=" + this.fecha + "&fechaFinal=" + this.fecha)
                         this.lista_transacciones = await response.json()
-                        this.lista_filtrada = this.lista_transacciones
                     },
                     async obtenerTransferencias(){
                         const response = await fetch("../../api/transferencia?fechaInicio=" + this.fecha + "&fechaFinal=" + this.fecha)
                         this.lista_transacciones = await response.json()
-                        this.lista_filtrada = this.lista_transacciones
                     },
                     async obtenerCategorias(){
                         const response = await fetch("../../api/categoria/")
@@ -283,251 +165,6 @@
                         for(x of this.lista_categorias){
                             this.filtroCategorias.push(x.id)
                         }
-                    },
-                    async obtenerSubcuentas(){
-                        const response = await fetch("../../api/subcuenta/")
-                        this.lista_subcuentas = await response.json()
-                        for(x of this.lista_subcuentas){
-                            this.filtroOrdenantes.push(x.id)
-                            this.filtroBeneficiarios.push(x.id)
-                        }
-                    },
-                    async obtenerId(){
-                        const url = window.location.href;
-                        const lastSlashIndex = url.lastIndexOf("/");
-                        secondLastSlashIndex = url.lastIndexOf("/", lastSlashIndex - 1);
-                        if(lastSlashIndex > secondLastSlashIndex){
-                            if(parseInt(url.substring(secondLastSlashIndex +1, lastSlashIndex)) != 0){
-                                this.filtroSubcuentas = []
-                                this.filtroSubcuentas.push(parseInt(url.substring(secondLastSlashIndex +1, lastSlashIndex)))
-                            }else{
-                                for(x of this.lista_subcuentas){
-                                    this.filtroSubcuentas.push(x.id)
-                                }
-                            }
-                        }
-                        else{
-                            for(x of this.lista_subcuentas){
-                                this.filtroSubcuentas.push(x.id)
-                            }
-                        }
-                    },
-                    async actualizarCheckTodos(filtro){
-                        switch(filtro){
-                            case "subcuenta":
-                                response = await fetch("../../api/subcuenta/")
-                                response = await response.json()
-
-                                validador = true
-                                for(x of response){
-                                    if(!document.getElementById("subcuenta"+x.id).checked){
-                                        validador = false
-                                        break
-                                    }
-                                }
-                                document.getElementById("todasLasSubcuentas").checked = validador
-                                break
-
-                            case "categoria":
-                                response = await fetch("../../api/categoria/")
-                                response = await response.json()
-
-                                validador = true
-                                for(x of response){
-                                    if(!document.getElementById("categoria"+x.id).checked){
-                                        validador = false
-                                        break
-                                    }
-                                }
-                                document.getElementById("todasLasCategorias").checked = validador
-                                break
-
-                            case "ordenante":
-                            response = await fetch("../../api/subcuenta/")
-                                response = await response.json()
-
-                                validador = true
-                                for(x of response){
-                                    if(!document.getElementById("ordenante"+x.id).checked){
-                                        validador = false
-                                        break
-                                    }
-                                }
-                                document.getElementById("todosLosOrdenantes").checked = validador
-                                break
-
-                            case "beneficiario":
-                                response = await fetch("../../api/subcuenta/")
-                                response = await response.json()
-
-                                validador = true
-                                for(x of response){
-                                    if(!document.getElementById("beneficiario"+x.id).checked){
-                                        validador = false
-                                        break
-                                    }
-                                }
-                                document.getElementById("todosLosBeneficiarios").checked = validador
-                                break
-                        }
-
-                    },
-                    async seleccionarTodasLasOpciones(filtro){
-                        switch(filtro){
-                            case "subcuenta":
-                                response = await fetch("../../api/subcuenta/")
-                                response = await response.json()
-
-                                for(x of response){
-                                    if(document.getElementById("todasLasSubcuentas").checked){
-                                        document.getElementById("subcuenta"+x.id).checked = true
-                                    }
-                                    else{
-                                        document.getElementById("subcuenta"+x.id).checked = false
-                                    }
-                                }
-                                break
-
-                            case "categoria":
-                            response = await fetch("../../api/categoria/")
-                                response = await response.json()
-
-                                for(x of response){
-                                    if(document.getElementById("todasLasCategorias").checked){
-                                        document.getElementById("categoria"+x.id).checked = true
-                                    }
-                                    else{
-                                        document.getElementById("categoria"+x.id).checked = false
-                                    }
-                                }
-                                break
-
-                            case "ordenante":
-                                response = await fetch("../../api/subcuenta/")
-                                response = await response.json()
-
-                                for(x of response){
-                                    if(document.getElementById("todosLosOrdenantes").checked){
-                                        document.getElementById("ordenante"+x.id).checked = true
-                                    }
-                                    else{
-                                        document.getElementById("ordenante"+x.id).checked = false
-                                    }
-                                }
-                                break
-
-                            case "beneficiario":
-                                response = await fetch("../../api/subcuenta/")
-                                response = await response.json()
-
-                                for(x of response){
-                                    if(document.getElementById("todosLosBeneficiarios").checked){
-                                        document.getElementById("beneficiario"+x.id).checked = true
-                                    }
-                                    else{
-                                        document.getElementById("beneficiario"+x.id).checked = false
-                                    }
-                                }
-                                break
-                        }
-                    },
-                    async guardarFiltros(filtro = ""){
-                        switch(filtro){
-                            case "subcuenta": 
-                                response = await fetch("../../api/subcuenta/")
-                                response = await response.json()
-
-                                this.filtroSubcuentas = []
-                                for(x of response){
-                                    if(document.getElementById("subcuenta"+x.id).checked){
-                                        this.filtroSubcuentas.push(x.id)
-                                    }
-                                }
-                                document.getElementById("cerrar_filtroSubcuentas").click()
-                                break
-
-                            case "categoria":
-                                response = await fetch("../../api/categoria/")
-                                response = await response.json()
-
-                                this.filtroCategorias = []
-                                for(x of response){
-                                    if(document.getElementById("categoria"+x.id).checked){
-                                        this.filtroCategorias.push(x.id)
-                                    }
-                                }
-                                document.getElementById("cerrar_filtroCategorias").click()
-                                break
-
-                            case "ordenante":
-                                response = await fetch("../../api/subcuenta/")
-                                response = await response.json()
-
-                                this.filtroOrdenantes = []
-                                for(x of response){
-                                    if(document.getElementById("ordenante"+x.id).checked){
-                                        this.filtroOrdenantes.push(x.id)
-                                    }
-                                }
-                                document.getElementById("cerrar_filtroOrdenantes").click()
-                                break
-
-                            case "beneficiario":
-                                response = await fetch("../../api/subcuenta/")
-                                response = await response.json()
-
-                                this.filtroBeneficiarios = []
-                                for(x of response){
-                                    if(document.getElementById("beneficiario"+x.id).checked){
-                                        this.filtroBeneficiarios.push(x.id)
-                                    }
-                                }
-                                document.getElementById("cerrar_filtroBeneficiarios").click()
-                                break
-                        }
-                        
-                        this.lista_filtrada = this.lista_transacciones
-                        if(this.transaccion != "transferencia"){
-                            this.lista_filtrada = this.lista_filtrada.filter((transaccion) => {
-                                for(x of this.filtroSubcuentas){
-                                    if(transaccion.subcuenta == x){
-                                        return true
-                                    }
-                                }
-                                return false
-                            })
-                            this.lista_filtrada = this.lista_filtrada.filter((transaccion) => {
-                                for(x of this.filtroCategorias){
-                                    if(transaccion.categoria == x){
-                                        return true
-                                    }
-                                }
-                                return false
-                            })
-                        }
-                        else {
-                            console.log(this.filtroOrdenantes)
-                            this.lista_filtrada = this.lista_filtrada.filter((transaccion) => {
-                                for(x of this.filtroOrdenantes){
-                                    if(transaccion.ordenante == x){
-                                        return true
-                                    }
-                                }
-                                return false
-                            })
-                            this.lista_filtrada = this.lista_filtrada.filter((transaccion) => {
-                                for(x of this.filtroBeneficiarios){
-                                    if(transaccion.beneficiario == x){
-                                        return true
-                                    }
-                                }
-                                return false
-                            })
-                        }
-                        
-                        this.lista_filtrada = this.lista_filtrada.filter((transaccion) => {
-                            return (transaccion.fecha == this.fecha);
-                        })
                     },
                     async cambiarTransaccion(transaccion = this.transaccion){
                         this.transaccion = transaccion
@@ -540,7 +177,6 @@
                         else{
                             await this.obtenerTransferencias()
                         }
-                        // this.guardarFiltros()
                     },
                     cargarTransaccion(transaccion){
                         this.obj_transaccion = {
@@ -579,14 +215,11 @@
                         nueva_fecha = new Date(nueva_fecha.setDate(nueva_fecha.getDate() + dias));
                         this.fecha = this.cambiarFormato(nueva_fecha)
                         this.cambiarTransaccion(this.transaccion)
-                        // this.guardarFiltros()
                     }
                 },
                 async created(){
 
-                    await this.obtenerSubcuentas()
                     this.obtenerCategorias()
-                    await this.obtenerId()
                     await this.cambiarTransaccion()
                 }
             })

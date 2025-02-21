@@ -18,10 +18,8 @@ class Transaccion(models.Model):
     
     perfilOrdenante = models.ForeignKey("MiBancoVirtual.Perfil", related_name="transaccion_perfil_ordenante", on_delete=models.SET_NULL, null=True)
     cuentaOrdenante = models.ForeignKey("MiBancoVirtual.Cuenta", related_name="transaccion_cuenta_ordenante", on_delete=models.SET_NULL, null=True)
-    ordenante = models.ForeignKey("MiBancoVirtual.Subcuenta", related_name="transaccion_ordenante", on_delete=models.SET_NULL, null=True)
 
     perfilBeneficiario = models.ForeignKey("MiBancoVirtual.Perfil", related_name="transaccion_perfil_beneficiario", on_delete=models.SET_NULL, null=True)
     cuentaBeneficiaria = models.ForeignKey("MiBancoVirtual.Cuenta", related_name="transaccion_cuenta_beneficiaria", on_delete=models.SET_NULL, null=True)
-    beneficiario = models.ForeignKey("MiBancoVirtual.Subcuenta", related_name="transaccion_beneficiario", on_delete=models.SET_NULL, null=True)
     
     categoria = models.ForeignKey("MiBancoVirtual.Categoria", on_delete=models.PROTECT)

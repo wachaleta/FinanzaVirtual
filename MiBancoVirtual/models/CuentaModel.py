@@ -2,7 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 
 class Cuenta(models.Model):
-    """ Cuenta base que contiene subcuentas """
+    """ Lugar donde está almacenado el dinero """
 
     id = models.AutoField(primary_key=True, unique=True)
     nombre = models.CharField(max_length=50)

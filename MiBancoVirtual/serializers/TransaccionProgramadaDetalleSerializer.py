@@ -4,8 +4,6 @@ from . import *
 
 class TransaccionProgramadaDetalleSerializer(serializers.ModelSerializer):
     Categoria = CategoriaSerializer()
-    Ordenante = SubcuentaSerializer()
-    Beneficiario = SubcuentaSerializer()
 
     class Meta:
         model = TransaccionProgramadaDetalle

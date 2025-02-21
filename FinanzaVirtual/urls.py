@@ -28,15 +28,12 @@ router.register(r"cuenta", CuentaViewSet, basename="cuenta")
 router.register(r"transaccion", TransaccionViewSet, basename="transaccion")
 router.register(r"transaccion-crear", TransaccionCrearViewSet, basename="transaccion-crear")
 router.register(r"transaccion-por-id", TransaccionPorIdViewSet, basename="transaccion-por-id")
-router.register(r"transaccion-por-subcuenta", TransaccionPorSubcuentaViewSet, basename="transaccion-por-subcuenta")
 
 router.register(r"transacciones-programadas", TransaccionProgramadaViewSet, basename="transacciones-programadas")
 router.register(r"transaccion-programada-por-id", TransaccionProgramadaPorIdViewSet, basename="transaccion-programada-por-id")
 
 router.register(r"transaccion-programada-detalle", TransaccionProgramadaDetallePorIdTransaccionProgramadaViewSet, basename="transaccion-programada-detalle")
 router.register(r"transaccion-programada-detalle-por-id", TransaccionProgramadaDetallePorIdViewSet, basename="transaccion-programada-detalle-por-id")
-
-router.register(r"subcuenta", SubcuentaViewSet, basename="subcuenta")
 
 router.register(r"categoria", CategoriaViewSet, basename="categoria")
 router.register(r"gasto", GastoViewSet, basename="gasto")

@@ -58,37 +58,9 @@
                                                         <td> [[ detalle.Ordenante? detalle.Ordenante.perfil.nombre : '' ]] - [[ detalle.Ordenante? detalle.Ordenante.cuenta.nombre : '' ]] </td>
                                                         <td> [[ detalle.Beneficiario? detalle.Beneficiario.perfil.nombre : '']] - [[ detalle.Beneficiario? detalle.Beneficiario.cuenta.nombre : '' ]] </td>
                                                         <td> [[ detalle.Categoria.nombre ]] </td>
-                                                        <!-- <td v-if="subcuenta.cuenta == tp.Id">[[subcuenta.subcuenta_nombre]]</td>
-                                                        <td v-if="subcuenta.cuenta == tp.Id && subcuenta.saldo >= 0">Q[[subcuenta.saldo]]</td>
-                                                        <td v-else-if="subcuenta.cuenta == tp.Id && subcuenta.saldo < 0">-Q[[subcuenta.saldo * -1]]</td>
-                                                        <td v-if="subcuenta.cuenta == tp.Id">
-                                                            <a :href="'/Crear_Transaccion/'+subcuenta.Id+'/'">
-                                                                <i class="bx bxs-plus-square" style="position: relative; top: 5px; margin-bottom: -1px; color:#23c933; font-size: 45px;"></i>
-                                                            </a>
-                                                            <a :href="'/Ver_Transacciones/'+subcuenta.Id+'/'">
-                                                                <button type="button" class="btn btn-link">
-                                                                    <i class="bx bxs-show" style="position: relative; top: 2px; margin: -20px; color:#1693db; font-size: 45px;"></i>
-                                                                </button >
-                                                            </a>
-                                                            <button type="button" @click="cargarSubcuenta(subcuenta)" data-bs-toggle="modal" data-bs-target="#modificarSubcuenta" class="btn btn-link">
-                                                                <i class="bx bxs-pencil" style="margin: -15px; color:#faf623; font-size: 38px;"></i>
-                                                            </button >
-                                                            <button type="button" @click="cargarSubcuenta(subcuenta)" class="btn btn-link" data-bs-toggle="modal" data-bs-target="#eliminarSubcuenta">
-                                                                <i class="bx bxs-x-circle" style="margin: -15px; color:#ff0000; font-size: 38px;"></i>
-                                                            </button >
-                                                        </td> -->
                                                     </tr>
                                                 </tbody>
                                             </table>
-                                            <div class="row" style="margin: 10px;">
-                                                <div class="col-12">
-                                                    <!-- Botón Crear Subcuenta -->
-                                                    <button v-show="false" id="modalCrearSubcuenta" data-bs-toggle="modal" data-bs-target="#CrearSubcuenta"></button>
-                                                    <button class="btn btn-success btn-lg" @click="cargarNombreCuenta(cuenta)">
-                                                        Crear Subcuenta de [[tp.nombre]]
-                                                    </button>
-                                                </div>
-                                            </div>
                                         </div>
                                     </div>
                                 </div>

@@ -15,12 +15,6 @@ class TransaccionProgramadaDetalle(models.Model):
     #   Cuando se creó la transacción programada
     FechaCreacion = models.DateTimeField(auto_now_add=True)
     
-    #   Subcuenta de quien se retira el dinero
-    Ordenante = models.ForeignKey("MiBancoVirtual.Subcuenta", related_name="MiBancoVirtual.Transaccion.ordenante+", on_delete=models.SET_NULL, null=True)
-
-    #   Subcuenta que recibe el dinero
-    Beneficiario = models.ForeignKey("MiBancoVirtual.Subcuenta", related_name="MiBancoVirtual.Transaccion.beneficiario+", on_delete=models.SET_NULL, null=True)
-    
     #   Categoría de la transacción
     Categoria = models.ForeignKey("MiBancoVirtual.Categoria", on_delete=models.PROTECT)
     

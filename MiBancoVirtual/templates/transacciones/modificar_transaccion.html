@@ -46,7 +46,7 @@
                         <!-- Perfil -->
                         <div class="row d-flex align-content-center mb-2">
                             <div class="col-1">
-                                <label for="subcuenta">Perfil:</label>
+                                <label>Perfil:</label>
                             </div>
                             <div class="col-6">
                                 <select class="form-select" v-model="obj_transaccion.perfilOrdenante" name="perfil">
@@ -111,7 +111,6 @@
                     return {
                         transaccion: "",
                         transaccionBase: "",
-                        lista_subcuentas: [],
                         lista_perfiles: [],
                         lista_cuentas: [],
                         lista_categorias: [],
@@ -119,7 +118,6 @@
                         lista_beneficiarios: [],
                         obj_transaccion: {
                             id: "",
-                            subcuenta: "",
                             fecha: "",
                             monto: 0,
                             categoria: "",
@@ -128,10 +126,6 @@
                     }
                 },
                 methods: {
-                    async obtenerSubcuentas(){
-                        const response = await fetch("../../../api/subcuenta/");
-                        this.lista_subcuentas = await response.json();
-                    },
                     async obtenerPerfiles(){
                         const response = await fetch("../../../api/perfil/");
                         this.lista_perfiles = await response.json();
@@ -162,7 +156,6 @@
                         this.obj_transaccion = await response.json()
 
                         this.cambiarTransaccion(this.transaccionBase)
-                        this.obj_transaccion.subcuenta = (this.obj_transaccion.ordenante)? this.obj_transaccion.ordenante : this.obj_transaccion.beneficiario
 
                         if(this.transaccionBase == "ingreso"){
                             this.obj_transaccion.cuentaOrdenante = this.obj_transaccion.cuentaBeneficiaria
@@ -171,7 +164,6 @@
                             this.obj_transaccion.cuentaBeneficiaria = ""
                             this.obj_transaccion.perfilBeneficiario = ""
                         }
-                        console.log(this.obj_transaccion.subcuenta)
                     },
                     async modificarTransaccion(){
                         if(this.obj_transaccion.perfilOrdenante == ""){
@@ -199,9 +191,6 @@
                             this.obj_transaccion.cuentaOrdenante = ""
                             this.obj_transaccion.perfilOrdenante = ""
                         }
-
-                        // this.obj_transaccion.ordenante = ? this.obj_transaccion.subcuenta : ""
-                        // this.obj_transaccion.beneficiario = (this.transaccion == "ingreso")? this.obj_transaccion.subcuenta : ""
 
                         formData = new FormData()
                         formData.append("perfilOrdenante", this.obj_transaccion.perfilOrdenante)
@@ -240,7 +229,6 @@
                     }
                 },
                 async created(){
-                    await this.obtenerSubcuentas()
                     await this.obtenerPerfiles()
                     await this.obtenerCuentas()
                     await this.obtenerCategorias()
