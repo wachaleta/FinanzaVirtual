@@ -22,6 +22,7 @@
                     <tr>
                         <th>Perfil</th>
                         <th>Saldo</th>
+                        <th class="">Suma Saldo Total</th>
                         <th>Acciones</th>
                     </tr>
                 </thead>
@@ -29,6 +30,8 @@
                     <tr>
                         <td>[[perfil.nombre]]</td>
                         <td>Q[[ perfil.saldo ]]</td>
+                        <td v-if="perfil.agregarTotal" class=""><span class="btn btn-success">Suma</span></td>
+                        <td v-else class=""><span class="btn btn-danger">No Suma</span></td>
                         <td>
                             <button type="button" @click="cargarPerfil(perfil)" class="btn btn-link" data-bs-toggle="modal" data-bs-target="#eliminarPerfil">
                                 <i class="bx bxs-x-circle" style="margin: -15px; color:#ff0000; font-size: 38px;"></i>
