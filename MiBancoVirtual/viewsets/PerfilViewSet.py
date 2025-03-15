@@ -43,7 +43,7 @@ class PerfilViewSet(viewsets.ModelViewSet):
                     ),
                     Value(0, DecimalField())
                 )
-        ).order_by('nombre')
+        ).order_by('-agregarTotal', 'nombre')
         
         print(connection.queries)
         return perfiles
