@@ -14,15 +14,11 @@ class ObtenerSaldoTotalPerfilesViewSet(viewsets.ViewSet):
     def list(self, request):
         idUsuario = self.request.user.id
 
-        lista_perfiles = Perfil.objects.filter(usuario=idUsuario).filter(agregarTotal=True)
+        lista_perfiles = Perfil.objects.filter(usuario=idUsuario)
 
-        saldo_total = Transaccion.objects.filter(perfilBeneficiario__in = lista_perfiles).aggregate(
-            saldo=Sum('monto')
-        )['saldo' or 0]
+        lista_perfiles = filter(lambda x: x.agregarTotal or x.saldo < 0, lista_perfiles)
 
-        saldo_total -= Transaccion.objects.filter(perfilOrdenante__in = lista_perfiles).aggregate(
-            saldo=Sum('monto')
-        )['saldo' or 0]
+        saldo_total = sum(list(map(lambda x: x.saldo, lista_perfiles)))
 
         saldo_total = round(Decimal(saldo_total), 2)
 

@@ -16,34 +16,7 @@ class PerfilViewSet(viewsets.ModelViewSet):
         idUsuario = self.request.user.id
         lista_perfiles = Perfil.objects.filter(usuario = idUsuario)
 
-        perfiles = lista_perfiles.annotate(
-            saldo = 
-                Coalesce(
-                    Subquery(
-                        Transaccion.objects.filter(
-                            perfilBeneficiario_id__in=OuterRef("id")
-                        ).values("perfilBeneficiario").annotate(
-                            total=Sum('monto', default=0)  
-                        ).values('total'),
-                        default=0,
-                        output_field=DecimalField(default=0)
-                    ),
-                    Value(0, DecimalField())
-                )
-                -
-                Coalesce(
-                    Subquery(
-                        Transaccion.objects.filter(
-                            perfilOrdenante_id__in=OuterRef("id")
-                        ).values("perfilOrdenante").annotate(
-                            total=Sum('monto', default=0)  
-                        ).values('total'),
-                        default=0,
-                        output_field=DecimalField(default=0)
-                    ),
-                    Value(0, DecimalField())
-                )
-        ).order_by('-agregarTotal', 'nombre')
+        perfiles = lista_perfiles.order_by('-agregarTotal', 'nombre')
         
         print(connection.queries)
         return perfiles
