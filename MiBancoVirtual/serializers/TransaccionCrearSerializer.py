@@ -6,6 +6,8 @@ class TransaccionCrearSerializer(serializers.ModelSerializer):
     perfil_ordenante_nombre = serializers.CharField(read_only= True)
     cuenta_beneficiario_nombre = serializers.CharField(read_only= True)
     perfil_beneficiario_nombre = serializers.CharField(read_only= True)
+    ordenante_nombre = serializers.CharField(read_only= True)
+    beneficiario_nombre = serializers.CharField(read_only= True)
     
     class Meta: 
         model = Transaccion

@@ -13,34 +13,40 @@
                 text-align: center;
             }
 
-            .transaccion {
-                font-size:x-large;
+            .Transaccion {
                 text-align: left;
+                margin-bottom: 16px;
+                padding: 10px 20px;
                 border-radius: 20px;
-                padding: 20px;
-                margin: 0 5px 5px;
                 border: 4px solid;
-                background-color: rgb(219, 219, 219);
-                border-color: rgb(66, 66, 66);
+                box-shadow: 5px 5px 8px rgb(223, 223, 223);
             }
 
-            .Gastdo {
-
-                background-color: rgb(255, 130, 130);
-                border-color: rgb(166, 16, 16);
-                color: white;
+            .Transaccion .Titulo {
+                font-weight: bold;
+                margin: 0px;
             }
 
-            .Ingresod {
-                background-color: rgb(34, 241, 58);
+            .Transaccion .Subtitulo {
+                font-size: 13px;
+                margin: 0px;
+            }
+
+            .Transaccion .Descripcion {
+                font-size: 12px;
+                margin: 0px;
+            }
+
+            .Gasto {
+                border-color: rgb(255, 0, 0);
+            }
+
+            .Ingreso {
                 border-color: rgb(24, 197, 44);
-                color: white;
             }
 
-            .Transferenciad {
-                background-color: rgb(130, 213, 255);
+            .Transferencia {
                 border-color: rgb(102, 204, 255);
-                color: white;
             }
         </style>
 
@@ -49,25 +55,59 @@
     <body>
         {% include "../nav.html" %}
         <div id="app" class="p-3">
-            <div v-for="transaccion in transacciones" class="col-12">
-                <div class="col-12 mb-2 card" :class="tipoTransaccion(transaccion)">
-                    <div class="card-body">
-                        <div class="row">
-                            <div v-if="tipoTransaccion(transaccion) == 'Transferencia'" class="col-6 card-title">
-                                <h5 class="card-title">[[ tipoTransaccion(transaccion) ]]</h5>
-                                <h5 class="card-title">[[ tituloDinamico(transaccion)[0] ]]</h5>
-                                <h5 class="card-title">[[ tituloDinamico(transaccion)[1] ]]</h5>
+            <div class="row">
+                <!-- Columna Perfiles -->
+                <div class="col-4">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Perfil</th>
+                                <th>Saldo</th>
+                            </tr>
+                        </thead>
+                        <tbody v-for="perfil in lista_perfiles">
+                            <tr>
+                                <td>[[perfil.nombre]]</td>
+                                <td>Q[[ perfil.saldo ]]</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <!-- Columna Cuentas -->
+                <div class="col-4">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Cuenta</th>
+                                <th>Saldo</th>
+                            </tr>
+                        </thead>
+                        <tbody v-for="cuenta in lista_cuentas">
+                            <tr>
+                                <td>[[cuenta.nombre]]</td>
+                                <td>Q[[ cuenta.saldo_total ]]</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div> 
+                <!-- Columna transacciones -->
+                <div class="col-4">
+                    <div v-for="transaccion in transacciones" class="col-12 Transaccion" :class="tipoTransaccion(transaccion)">
+                        <div class="col-12">
+                            <div class="row">
+                                <div class="col-6">
+                                    <p class="Titulo">[[ tipoTransaccion(transaccion) ]]</p>
+                                    <p class="Subtitulo">[[ tituloDinamico(transaccion)[0] ]]</p>
+                                    <p class="Subtitulo">[[ tituloDinamico(transaccion)[1] ]]</p>
+                                </div>
+                                <div class="col-6 text-end">
+                                    <p class="Titulo">Q[[ transaccion.monto ]]</p>
+                                </div>
                             </div>
-                            <div v-else class="col-6 card-title">
-                                <h5 class="card-title">[[ tipoTransaccion(transaccion) ]]</h5>
-                                <h5 class="card-title">[[ tituloDinamico(transaccion)[0] ]]</h5>
-                            </div>
-                            <div class="col-6 card-title text-end">
-                                <h5 class="card-title">Q[[ transaccion.monto ]]</h5>
-                            </div>
+                            <p class="Descripcion">[[ transaccion.descripcion ]]</p>
+                            <!-- <div class="card-body">
+                            </div> -->
                         </div>
-                        <h6 class="mb-2 card-text text-body-secondary">[[ descripcionDinamica(transaccion) ]]</h6>
-                        <p class="card-subtitle">[[ transaccion.descripcion ]]</p>
                     </div>
                 </div>
             </div>
@@ -85,6 +125,8 @@
                         lista_gastos: [],
                         lista_ingresos: [],
                         lista_transferencias: [],
+                        lista_perfiles: [],
+                        lista_cuentas: [],
                         transacciones: [],
                     }
                 },
@@ -105,8 +147,8 @@
                         return nueva_fecha
                     },
                     tipoTransaccion(transaccion){
-                        if(!transaccion.ordenante) return "Ingreso"
-                        if(!transaccion.beneficiario) return "Gasto"
+                        if(transaccion.perfilBeneficiario && transaccion.cuentaBeneficiaria) return "Ingreso"
+                        if(transaccion.perfilOrdenante && transaccion.cuentaOrdenante) return "Gasto"
                         return "Transferencia"
                     },
                     descripcionDinamica(transaccion){
@@ -154,6 +196,14 @@
                         const response = await fetch("../api/gasto/")
                         this.lista_gastos = await response.json()
                     },
+                    async cargarPerfiles(){
+                        const response = await fetch("../api/perfil/")
+                        this.lista_perfiles = await response.json()
+                    },
+                    async cargarCuentas(){
+                        const response = await fetch("../api/cuenta/")
+                        this.lista_cuentas = await response.json()
+                    },
                     async cargarTransacciones(){
                         const response = await fetch("../api/transaccion/?fechaInicio=" + this.hoy() + "&fechaFinal=" + this.hoy())
                         this.transacciones = await response.json()
@@ -172,6 +222,8 @@
                     // this.cargarIngresos()
                     // this.cargarTransferencias()
                     this.cargarTransacciones()
+                    this.cargarPerfiles()
+                    this.cargarCuentas()
                 }
             })
         </script>

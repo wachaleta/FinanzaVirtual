@@ -17,19 +17,20 @@ class TransaccionViewSet(viewsets.ModelViewSet):
         fechaFinal = self.request.query_params.get("fechaFinal")
 
         lista_transacciones = Transaccion.objects.filter(
-                Q(ordenante__perfil__usuario = idUsuario) | Q(beneficiario__perfil__usuario = idUsuario)
-            ).filter(fecha__gte = fechaInicio).filter(fecha__lte = fechaFinal).order_by("-fecha")
+                Q(perfilOrdenante__usuario = idUsuario) | Q(perfilBeneficiario__usuario = idUsuario) |
+                Q(cuentaOrdenante__usuario = idUsuario) | Q(cuentaBeneficiaria__usuario = idUsuario) 
+            ).filter(fecha__gte = fechaInicio).filter(fecha__lte = fechaFinal)
         
         return lista_transacciones.annotate(
             ordenante_nombre = Concat(
-                        F("ordenante__cuenta__nombre"), 
-                        Value(" - "),
-                        F("ordenante__perfil__nombre")
-                    )
+                F("cuentaOrdenante__nombre"), 
+                Value(" - "),
+                F("perfilOrdenante__nombre")
+            )
         ).annotate(
             beneficiario_nombre = Concat(
-                        F("beneficiario__cuenta__nombre"), 
-                        Value(" - "),
-                        F("beneficiario__perfil__nombre")
-                    )
-        )
+                F("cuentaBeneficiaria__nombre"), 
+                Value(" - "),
+                F("perfilBeneficiario__nombre")
+            )
+        ).order_by("-fecha").order_by("-fechaCreacion")
