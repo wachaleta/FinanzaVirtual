@@ -1,0 +1,1 @@
+from .PerfilPorIdQuery import PerfilPorIdQuery

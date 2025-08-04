@@ -17,7 +17,10 @@ from django.contrib import admin
 from django.urls import path, include
 from rest_framework import routers
 
-from MiBancoVirtual.viewsets import *
+from Core.Services.MiBancoVirtual.viewsets import *
+
+from Core.Services.Auth import urls as AuthUrls
+from Core.Services.MiBancoVirtual import urls as DebitoUrls
 
 router = routers.DefaultRouter()
 router.register(r"perfil", PerfilViewSet, basename="perfil")
@@ -42,7 +45,10 @@ router.register(r"transferencia", TransferenciaViewSet, basename="transferencia"
 
 urlpatterns = [
     path("api/", include(router.urls),),
+    path("auth/api/", include(AuthUrls),),
+    path("debito/api/", include(DebitoUrls),),
     path('admin/', admin.site.urls),
-    path('', include("MiBancoVirtual.urls")),
+    # path('', include("Core.Services.MiBancoVirtual.urls")),
+    # path('auth', include("Core.Services.MiBancoVirtual.urls")),
     path('api-auth/', include('rest_framework.urls'))
 ]
