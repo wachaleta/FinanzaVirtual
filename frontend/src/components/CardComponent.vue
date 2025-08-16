@@ -1,6 +1,13 @@
 <template>
-    <div :class="`card-container card-${color}`">
-        <slot/>
+    <div class="container px-3">
+        <h5 class="ms-2">
+            <strong>
+                <slot name="header" class="header"/>
+            </strong>
+        </h5>
+        <div :class="`card-container card-${color}`">
+            <slot name="body"/>
+        </div>
     </div>
 </template>
 
@@ -17,6 +24,15 @@ defineProps({
 </script>
 
 <style>
+
+.container {
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+
+    background-color: white;
+    border-radius: 1rem;
+    box-shadow: 0px 7px 8px rgba(138, 138, 138, 0.438);
+}
 
 .card-container {
     border-radius: 10px;

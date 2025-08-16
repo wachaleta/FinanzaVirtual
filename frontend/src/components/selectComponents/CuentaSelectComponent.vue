@@ -14,7 +14,7 @@
 <script setup>
 import { useCuentasComposable } from '@/composables/useCuentasComposable';
 
-import DynamicSelectComponent from '@/components/formComponents/DynamicSelectComponent.vue';
+import DynamicSelectComponent from './DynamicSelectComponent.vue';
 
 const model = defineModel()
 

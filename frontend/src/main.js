@@ -3,24 +3,27 @@ import { createPinia } from 'pinia'
 import './style.css'
 import App from './App.vue'
 import router from './router/'
-import store from './store'
 import Vue3Toastify, { toast } from 'vue3-toastify'
 import 'vue3-toastify/dist/index.css';
+import filters from '@/filters'
 
 import 'bootstrap'
 import 'bootstrap/dist/css/bootstrap.min.css'
 
 const pinia = createPinia()
 
-createApp(App)
-// .use(store)
-    .use(Vue3Toastify, {
-        transition: toast.TRANSITIONS.SLIDE,
-        position: toast.POSITION.BOTTOM_RIGHT,
-        theme: toast.THEME.COLORED,
-        pauseOnFocusLoss: false,
-        multiple: true,
-    })
-    .use(router)
-    .use(pinia)
-    .mount('#app')
+const appInstance = createApp(App)
+
+appInstance.use(Vue3Toastify, {
+    transition: toast.TRANSITIONS.SLIDE,
+    position: toast.POSITION.BOTTOM_RIGHT,
+    theme: toast.THEME.COLORED,
+    pauseOnFocusLoss: false,
+    multiple: true,
+})
+appInstance.use(router)
+appInstance.use(pinia)
+
+appInstance.config.globalProperties.$filters = filters
+
+appInstance.mount('#app')

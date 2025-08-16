@@ -13,7 +13,7 @@
                     <RouterLink class="nav-link active" :to="{name: 'perfil-listado'}" aria-current="page">Perfiles</RouterLink>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="/cuentas">Cuentas</a>
+                    <RouterLink class="nav-link active" :to="{name: 'cuenta-listado'}" aria-current="page">Cuentas</RouterLink>
                 </li>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false" style="color: white;">

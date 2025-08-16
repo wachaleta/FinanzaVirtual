@@ -14,7 +14,7 @@
 <script setup>
 import { useCategoriasComposable } from '@/composables/useCategoriasComposable';
 
-import DynamicSelectComponent from '@/components/formComponents/DynamicSelectComponent.vue';
+import DynamicSelectComponent from './DynamicSelectComponent.vue';
 
 const model = defineModel()
 

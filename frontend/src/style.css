@@ -1,4 +1,29 @@
-
 #app {
-  background-color: #F9FAFB;
+  /* background-color: #eceef0; */
+  background-color: #f6f8fb;
+}
+
+input.error {
+  border-style: solid;
+  border-color: rgb(255, 116, 116);
+  border-width: 2px;
+}
+
+.input-error {
+  border-style: solid;
+  border-color: rgb(255, 116, 116);
+  border-width: 2px;
+}
+
+label.error-label {
+    height: 1rem;
+    font-size: 0.9rem;
+    color: red;
+}
+
+label.input-error{
+  color:red;
+  background-color: rgb(255, 232, 232);
+  border-color: rgb(255, 116, 116);;
+  border-width: 2px;
 }

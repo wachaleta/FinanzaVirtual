@@ -8,6 +8,6 @@ class BadRequestException(APIException):
 
     def __init__(self, detail=None):
         if detail is not None:
-            self.default_detail == detail
+            self.default_detail = detail
 
         super().__init__(self.default_detail, self.default_code)

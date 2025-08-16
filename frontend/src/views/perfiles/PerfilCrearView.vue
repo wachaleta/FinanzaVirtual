@@ -1,8 +1,11 @@
 <template>
-    <form @submit.prevent="submitForm">
+    <RouterView 
+        @onAceptar="router.push({name: 'perfil-listado'})"
+        @onCancelar="router.push({name: 'perfil-crear'})"
+    />
+    <form @submit.prevent="crearPerfil">
         <DynamicModalComponent size="sm"
-            @onAceptar="aceptar"
-            @onCancelar="router.push({name: 'perfil-listado'})">
+            @onCancelar="router.push({name: 'perfil-crear-cancelar'})">
             <template v-slot:header>
                 Crear Perfil
             </template>
@@ -16,6 +19,7 @@
 <script setup>
 
 import { useRouter } from 'vue-router'
+import { useErrorsComposable } from '@/composables/useErrorsComposable';
 import { usePerfilesComposable } from '@/composables/usePerfilesComposable';
 
 import PerfilFormView from './PerfilFormView.vue';
@@ -23,22 +27,16 @@ import DynamicModalComponent from '@/components/DynamicModalComponent.vue';
 
 const router = useRouter()
 
+const { cleanErrors } = useErrorsComposable()
+
 const {
     perfil,
 
     crearPerfil,
 } = usePerfilesComposable()
 
-const aceptar = () => {
-    alert("aceptar")
-}
-
-const submitForm = async() => {
-    await crearPerfil()
-    // router.push({name: 'perfil-listado'})
-}
-
 const refresh = async() => {
+    cleanErrors()
     perfil.value = {}
 }
 

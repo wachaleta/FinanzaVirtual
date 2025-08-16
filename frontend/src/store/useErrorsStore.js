@@ -11,6 +11,10 @@ export const useErrorsStore = defineStore("errors", {
     actions: {
         setErrors(errors) {
             this.errors = errors
-        }
+        },
+
+        cleanErrors() {
+            this.errors = {}
+        },
     }
 })

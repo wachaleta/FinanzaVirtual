@@ -1,3 +1,0 @@
-from .PerfilCrearCommandHandler import PerfilCrearCommandHandler
-from .PerfilEditarCommandHandler import PerfilEditarCommandHandler
-from .PerfilEliminarCommandHandler import PerfilEliminarCommandHandler

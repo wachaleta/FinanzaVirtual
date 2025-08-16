@@ -1,19 +1,23 @@
 import { defineStore } from "pinia";
-import BancoVirtualApi from "@/helpers/BancoVirtualApi"
 import DebitoApi from "@/helpers/DebitoApi";
 import { toast } from 'vue3-toastify'
+import router from '@/router'
 
 export const usePerfilesStore = defineStore("perfiles", {
     state:() => {
         return{
             perfiles: [],
             perfil: {},
-            saldoTotalPerfiles: 0,
+            saldosPerfiles: {
+                SaldoTotal: 0,
+                SaldoSuma: 0,
+                SaldoNoSuma: 0,
+            },
         }
     },
     actions: {
         async crearPerfil() {
-            await DebitoApi().post("perfil-crear", this.perfil)
+            await DebitoApi().post("perfil/", this.perfil)
             .then(() => {
                 this.perfil = {}
                 toast.success("Perfil Creado Exitosamente!")
@@ -21,11 +25,14 @@ export const usePerfilesStore = defineStore("perfiles", {
         },
 
         async editarPerfil() {
-            await DebitoApi().put(`perfil/${this.perfil.IdPerfil}/editar`, this.perfil
+            await DebitoApi().put(`perfil/${this.perfil.IdPerfil}/`, this.perfil
             )
             .then(() => {
                 this.perfil= {}
-                toast.success("Perfil Editado Exitosamente!")
+                
+                router.push({name: 'perfil-listado'}).then(() => {
+                    toast.success("Perfil Editado Exitosamente!")
+                })
             })
         },
 
@@ -35,32 +42,34 @@ export const usePerfilesStore = defineStore("perfiles", {
                 this.perfil.IdPerfil = IdPerfil
             }
 
-            await DebitoApi().delete(`perfil/${this.perfil.IdPerfil}/eliminar`
+            await DebitoApi().delete(`perfil/${this.perfil.IdPerfil}/`
             )
             .then(() => {
-                this.perfil= {}
-                toast.success("Perfil Eliminado Exitosamente!")
+                router.push({name: 'perfil-listado'}).then(() => {
+                    toast.success(`Perfil ${this.perfil.Nombre} Eliminado Exitosamente!`)
+                    this.perfil= {}
+                })
             })
         },
 
         async cargarPerfiles(){
-            await BancoVirtualApi().get("perfil")
+            await DebitoApi().get("perfil")
             .then(res => {
                 this.perfiles = res.data
             })
         },
 
         async cargarPerfilPorId(IdPerfil){
-            await BancoVirtualApi().get(`perfil/${IdPerfil}`)
+            await DebitoApi().get(`perfil/${IdPerfil}/`)
             .then(res => {
                 this.perfil = res.data
             })
         },
 
         async obtenerSaldoTotalPerfiles(){
-            await BancoVirtualApi().get("total-saldo-perfiles")
+            await DebitoApi().get("total-saldo-perfiles")
             .then(res => {
-                this.saldoTotalPerfiles = res.data.Saldo
+                this.saldosPerfiles = res.data
             })
         },
     }

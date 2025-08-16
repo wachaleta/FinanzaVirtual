@@ -1,12 +1,20 @@
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include
+from rest_framework import routers
 from rest_framework_simplejwt.views import (
     TokenObtainPairView,
     TokenRefreshView
 )
 
+from Core.Services.MiBancoVirtual.viewsets import *
 from .views import *
-from .viewsApi import *
+
+router = routers.DefaultRouter()
+
+router.register(r"perfil", PerfilViewSet, basename="perfil")
+router.register(r"total-saldo-perfiles", ObtenerSaldoTotalPerfilesViewSet, basename="total-saldo-perfiles")
+
+router.register(r"cuenta", CuentaViewSet, basename="cuenta")
 
 urlpatterns = [
     path("", home, name="home"),
@@ -26,7 +34,5 @@ urlpatterns = [
     path("prueba-vue", vue, name="vue"),
 
     # Nuevas Apis
-    path("perfil-crear", PerfilCrearApiView.as_view(), name="perfil-crear"),
-    path("perfil/<int:pk>/editar", PerfilEditarApiView.as_view(), name="perfil-editar"),
-    path("perfil/<int:pk>/eliminar", PerfilEliminarApiView.as_view(), name="perfil-eliminar"),
+    path("", include(router.urls)),
 ]

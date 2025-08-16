@@ -14,7 +14,7 @@
 <script setup>
 import { usePerfilesComposable } from '@/composables/usePerfilesComposable';
 
-import DynamicSelectComponent from '@/components/formComponents/DynamicSelectComponent.vue';
+import DynamicSelectComponent from './DynamicSelectComponent.vue';
 
 const model = defineModel()
 

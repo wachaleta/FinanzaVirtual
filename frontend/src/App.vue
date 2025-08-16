@@ -1,6 +1,8 @@
 <template>
   <NavBar/>
-  <router-view/>
+  <div class="px-3">
+    <router-view/>
+  </div>
 </template>
 
 <script setup>

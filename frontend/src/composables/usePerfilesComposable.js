@@ -1,17 +1,21 @@
 import { usePerfilesStore } from "@/store/usePerfilesStore";
 import { storeToRefs } from "pinia";
 
+import { useErrorsComposable } from "./useErrorsComposable";
+
 export const usePerfilesComposable = () => {
     const store = usePerfilesStore()
+    const errors = useErrorsComposable()
 
     const {
         perfil,
         perfiles,
-        saldoTotalPerfiles,
+        saldosPerfiles,
     } = storeToRefs(store)
     
     const crearPerfil = async() => {
         await store.crearPerfil()
+        errors.cleanErrors()
         await store.cargarPerfiles()
     }
     
@@ -21,8 +25,8 @@ export const usePerfilesComposable = () => {
         await store.obtenerSaldoTotalPerfiles()
     }
     
-    const eliminarPerfil = async() => {
-        await store.eliminarPerfil()
+    const eliminarPerfil = async(IdPerfil) => {
+        await store.eliminarPerfil(IdPerfil)
         await store.cargarPerfiles()
         await store.obtenerSaldoTotalPerfiles()
     }
@@ -34,7 +38,7 @@ export const usePerfilesComposable = () => {
 
     return {
         perfil,
-        saldoTotalPerfiles,
+        saldosPerfiles,
         perfiles,
 
         crearPerfil,

@@ -17,12 +17,15 @@ export const useErrorsComposable = (name='') => {
         }
     })
 
-    const setErrors = errorsStore.setErrors()
+    const setErrors = (data) => errorsStore.setErrors(data)
+
+    const cleanErrors = () => errorsStore.cleanErrors()
 
     return {
         errors,
 
         getErrors,
         setErrors,
+        cleanErrors,
     }
 }

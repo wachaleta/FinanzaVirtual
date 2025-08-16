@@ -1,14 +1,18 @@
 import {
-    PerfilListView,
+    PerfilesListView,
     PerfilCrearView,
     PerfilEditarView,
+    PerfilConfirmCancelarEditarModalView,
+    ConfirmEliminarPerfilModalView,
 } from '@/views/perfiles'
+
+import ConfirmModalComponent from '@/components/ConfirmModalComponent.vue'
 
 export default [
     {
         path: '/perfil', 
         name: 'perfil-listado',
-        component: PerfilListView,
+        component: PerfilesListView,
         meta: {
             requiresAuth: true,
         },
@@ -19,6 +23,26 @@ export default [
                 component: PerfilEditarView,
                 meta: {
                 },
+                children: [
+                    {
+                        path: 'cancelar', 
+                        name: 'perfil-editar-cancelar',
+                        component: PerfilConfirmCancelarEditarModalView,
+                        meta: {
+                        },
+                    },
+                    {
+                        path: 'eliminar', 
+                        name: 'perfil-editar-eliminar',
+                        component: ConfirmEliminarPerfilModalView,
+                        params: {
+                        },
+                        meta: {
+                            title: `Eliminar Perfil`,
+                            subTitle: "Seguro que desea eliminar el perfil?"
+                        },
+                    },
+                ]
             },
             {
                 path: 'crear', 
@@ -26,6 +50,13 @@ export default [
                 component: PerfilCrearView,
                 meta: {
                 },
+                children:[
+                    {
+                        path: 'cancelar',
+                        name: 'perfil-crear-cancelar',
+                        component: ConfirmModalComponent,
+                    }
+                ]
             },
         ]
     },

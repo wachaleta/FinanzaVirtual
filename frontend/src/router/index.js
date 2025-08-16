@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from "vue-router";
 
 import authRoutes from "./auth.routes"
+import cuentaRoutes from "./cuenta.routes";
 import perfilRoutes from "./perfil.routes"
 import transaccionRoutes from "./transaccion.routes"
 
@@ -8,6 +9,7 @@ const baseRoutes = []
 
 const routes = baseRoutes
 .concat(perfilRoutes)
+.concat(cuentaRoutes)
 .concat(authRoutes)
 .concat(transaccionRoutes)
 

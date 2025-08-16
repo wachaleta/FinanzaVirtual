@@ -60,10 +60,11 @@
 </template>
 
 <script setup>
+import { DynamicInputComponent } from '@/components/inputComponents'
+
 import PerfilSelectComponent from '@/components/selectComponents/PerfilSelectComponent.vue';
 import CuentaSelectComponent from '@/components/selectComponents/CuentaSelectComponent.vue';
 import CategoriaSelectComponent from '@/components/selectComponents/CategoriaSelectComponent.vue';
-import DynamicInputComponent from '@/components/formComponents/DynamicInputComponent.vue';
 
 const model = defineModel()
 </script>

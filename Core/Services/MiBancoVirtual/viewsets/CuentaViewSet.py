@@ -1,66 +1,56 @@
-from rest_framework import viewsets
 from rest_framework.permissions import IsAuthenticated
-from django.db.models.functions import Coalesce
-from django.db.models import Sum, Subquery, OuterRef, Value, DecimalField, Case, When, F
 from decimal import Decimal
 
+from ....Application.Behaviours import FinanzasModelViewSet
+from ..validators import CuentaCrearValidator, CuentaEditarValidator
 from ..models import *
 from ..serializers import *
 
-class CuentaViewSet(viewsets.ModelViewSet):
+class CuentaViewSet(FinanzasModelViewSet):
     serializer_class = CuentaSerializer
+    create_validator = CuentaCrearValidator()
+    update_validator = CuentaEditarValidator()
     permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
 
         idUsuario = self.request.user.id
 
-        cuentas = Cuenta.objects.filter(usuario = idUsuario)
+        cuentas = Cuenta.objects.filter(IdUsuario = idUsuario).order_by("Nombre")
 
-        return cuentas.annotate(
-            # Agregar el saldo total de las transacciones en cada cuenta
-            saldo_total =
-                Coalesce(
-                    Subquery(
-                        Transaccion.objects.filter(
-                            cuentaBeneficiaria_id__in=OuterRef("id")
-                        ).values("cuentaBeneficiaria").annotate(
-                            total=Sum('monto', default=0)  
-                        ).values('total'),
-                        default=0,
-                        output_field=DecimalField(default=0)
-                    ),
-                    Value(0, DecimalField())
-                )
-                -
-                Coalesce(
-                    Subquery(
-                        Transaccion.objects.filter(
-                            cuentaOrdenante_id__in=OuterRef("id")
-                        ).values("cuentaOrdenante").annotate(
-                            total=Sum('monto', default=0)  
-                        ).values('total'),
-                        default=0,
-                        output_field=DecimalField(default=0)
-                    ),
-                    Value(0, DecimalField())
-                )
-        ).annotate(
-            # Si es efectivo toma el cálculo de las unidades del efectivo, si no toma el valor real
-            saldo_mostrar = 
-            Case(
-                When(es_efectivo = True, then=
-                    F('b_Q100') * Decimal(100)+
-                    F("b_Q50") * Decimal(50)+
-                    F("b_Q20") * Decimal(20)+
-                    F("b_Q10") * Decimal(10)+
-                    F("b_Q5")  * Decimal(5)+
-                    F("m_100c") +
-                    F("m_50c")  * Decimal(0.5)+
-                    F("m_25c") * Decimal(0.25)+
-                    F("m_10c") * Decimal(0.1)+
-                    F("m_5c") * Decimal(0.05)
-                ),
-                default=F("saldo_real")
-            )
-        )
+        return cuentas
+    
+    def get_create_validated_data(self, data):
+        return {
+            "Nombre": data.get("Nombre", ""),
+            "EsEfectivo": data.get("EsEfectivo", False),
+            "SaldoReal": data.get("SaldoReal", 0),
+            "BQ100": data.get("BQ100", 0),
+            "BQ50": data.get("BQ50", 0),
+            "BQ20": data.get("BQ20", 0),
+            "BQ10": data.get("BQ10", 0),
+            "BQ5": data.get("BQ5", 0),
+            "M100c": data.get("M100c", 0),
+            "M50c": data.get("M50c", 0),
+            "M25c": data.get("M25c", 0),
+            "M10c": data.get("M10c", 0),
+            "M5c": data.get("M5c", 0),
+        }
+    
+    def get_update_validated_data(self, data):
+        return {
+            "IdCuenta": data["IdCuenta"],
+            "Nombre": data.get("Nombre", ""),
+            "EsEfectivo": data.get("EsEfectivo", False),
+            "SaldoReal": data.get("SaldoReal", 0),
+            "BQ100": data.get("BQ100", 0),
+            "BQ50": data.get("BQ50", 0),
+            "BQ20": data.get("BQ20", 0),
+            "BQ10": data.get("BQ10", 0),
+            "BQ5": data.get("BQ5", 0),
+            "M100c": data.get("M100c", 0),
+            "M50c": data.get("M50c", 0),
+            "M25c": data.get("M25c", 0),
+            "M10c": data.get("M10c", 0),
+            "M5c": data.get("M5c", 0),
+        }

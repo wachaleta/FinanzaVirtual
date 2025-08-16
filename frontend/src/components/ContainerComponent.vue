@@ -1,15 +1,40 @@
 <template>
     <div class="container-component">
-        <slot/>
+        <div class="container-body" :class="color">
+            <slot/>
+        </div>
     </div>
 </template>
 
-<style scoped>
-.container-component {
-    background-color: white;
+<script setup>
+defineProps({
+    color: {
+        type: String,
+        default: "white"
+    }
+})
+</script>
 
-    margin-left: 2rem;
-    margin-right: 2rem;
+<style scoped>
+.white {
+    background-color: white;
+}
+
+.darken-white {
+  background-color: #f6f8fb;
+    /* background-color: #d8e9fa; */
+}
+
+.container-component {
+    padding-left: 2rem;
+    padding-right: 2rem;
+}
+
+.container-body {
+    /* margin-left: 2rem;
+    margin-right: 2rem; */
+    padding-left: 2rem;
+    padding-right: 2rem;
     margin-bottom: 1.5rem;
     
     padding-top:      1rem;

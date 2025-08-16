@@ -16,8 +16,9 @@
                 <hr>
                 <div class="modal-footer">
                     <slot name="footer">
+                        <DynamicButtonComponent v-if="showDeleteButton" @click="$emit('onEliminar')" color="danger" class="me-2">Eliminar</DynamicButtonComponent>
                         <DynamicButtonComponent @click="$emit('onCancelar')" color="danger">Cancelar</DynamicButtonComponent>
-                        <DynamicButtonComponent type="submit" class="ms-2">Guardar</DynamicButtonComponent>
+                        <DynamicButtonComponent @click="$emit('onAceptar')" type="submit" class="ms-2">{{ okLabel }}</DynamicButtonComponent>
                     </slot>
                 </div>
             </div>
@@ -27,13 +28,22 @@
 
 <script setup>
 
-import DynamicButtonComponent from '@/components/formComponents/DynamicButtonComponent.vue'
+import { DynamicButtonComponent } from '@/components/buttonComponents';
 
-defineEmits(['onAceptar', 'onCancelar'])
+defineEmits(['onAceptar', 'onCancelar', 'onEliminar'])
 const props = defineProps({
     size: {
         type: String,
         default: "lg"
+    },
+    okLabel: {
+        type: String,
+        default: "Guardar"
+    },
+
+    showDeleteButton: {
+        type: Boolean,
+        default: false
     }
 })
 
