@@ -98,19 +98,12 @@ import { useTransaccionesComposable } from '@/composables/useTransaccionesCompos
 
 import { PanelNavComponent, PanelNavItemComponent } from '@/components/panelNav';
 
-import { PerfilSelectComponent } from '@/components/selectComponents'
-
-import CardComponent from '../CardComponent.vue';
-import ContainerComponent from '../ContainerComponent.vue';
+import CardComponent from '@/components/CardComponent.vue';
 import { ref } from 'vue';
 
-const perfiles = ref([])
 
 const {
     transacciones,
-    transaccionesFiltros,
-    
-    cargarTransaccionesDiarias
 } = useTransaccionesComposable()
 
 const getColorTransaccion = (transaccion) => {

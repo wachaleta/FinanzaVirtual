@@ -36,7 +36,7 @@
 <script setup>
 import { useRouter } from 'vue-router';
 
-import { useCuentasComposable } from '../../composables/useCuentasComposable';
+import { useCuentasComposable } from '@/composables/useCuentasComposable';
 import { ButtonCrearComponent } from '@/components/buttonComponents'
 
 import CardComponent from '@/components/CardComponent.vue';

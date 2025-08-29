@@ -72,7 +72,9 @@ import {
     CategoriaSelectComponent,
 } from '@/components/selectComponents'
 
-import DynamicCheckBoxComponent from '@/components/formComponents/DynamicCheckBoxComponent.vue';
+import {
+    DynamicCheckBoxComponent,
+} from '@/components/inputComponents';
 
 const { transaccion } = useTransaccionesComposable()
 

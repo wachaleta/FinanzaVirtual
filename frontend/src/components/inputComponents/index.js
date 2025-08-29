@@ -1,6 +1,6 @@
 import DynamicInputComponent from "./DynamicInputComponent.vue";
 import InputGroupComponent from "./InputGroupComponent.vue";
-import DynamicCheckBoxComponent from "../formComponents/DynamicCheckBoxComponent.vue";
+import DynamicCheckBoxComponent from "./DynamicCheckBoxComponent.vue";
 
 export {
     DynamicInputComponent,

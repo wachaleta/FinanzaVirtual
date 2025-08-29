@@ -12,7 +12,9 @@
 <script setup>
 import { DynamicInputComponent } from '@/components/inputComponents'
 
-import DynamicCheckBoxComponent from '@/components/formComponents/DynamicCheckBoxComponent.vue';
+import {
+    DynamicCheckBoxComponent,
+} from '@/components/inputComponents';
 
 const model = defineModel()
 

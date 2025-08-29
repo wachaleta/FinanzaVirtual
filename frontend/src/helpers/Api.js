@@ -2,7 +2,7 @@ import { toast } from 'vue3-toastify'
 import { useErrorsComposable } from '@/composables/useErrorsComposable'
 import axios from 'axios'
 import router from '@/router'
-import { useErrorsStore } from '../store/useErrorsStore'
+import { useErrorsStore } from '@/store/useErrorsStore'
 
 
 export default (baseURL = "") => {

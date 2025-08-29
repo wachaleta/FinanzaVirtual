@@ -11,7 +11,7 @@ import {
     GastoCrearView,
     IngresoCrearView,
     TransferenciaCrearView,
-} from '@/components/transacciones'
+} from '@/views/transacciones'
 
 export default [
     { path: '/', redirect: { name: 'transaccion-crear' } },

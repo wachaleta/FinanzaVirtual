@@ -29,7 +29,7 @@ import {
     DynamicCheckBoxComponent,
 } from '@/components/inputComponents'
 
-import ContainerComponent from '../ContainerComponent.vue';
+import ContainerComponent from '@/components/ContainerComponent.vue';
 import TransaccionesFiltrosSelectores from './TransaccionesFiltrosSelectores.vue';
 
 const {

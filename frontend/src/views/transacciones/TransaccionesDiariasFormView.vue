@@ -1,19 +1,23 @@
 <template>
     <ContainerComponent>
-        <TransaccionesFiltrosSelectores @cargar="cargarTransaccionesSemanales"/>
+        <TransaccionesFiltrosSelectores @cargar="cargarTransaccionesDiarias"/>
         <div class="row">
             <div class="col-2 d-flex align-items-center">
-                <DynamicCheckBoxComponent v-model="transaccionesFiltros.EstablecerRango" name="rango" @onChange="cargarTransaccionesSemanales">
-                Establecer rango
+                <DynamicCheckBoxComponent v-model="transaccionesFiltros.EstablecerRango" name="EstablecerRango"
+                    @onChange="cargarTransaccionesDiarias">
+                    Establecer rango
                 </DynamicCheckBoxComponent>
             </div>
             <div class="col">
-                <DynamicInputComponent type="week" name="FechaInicialSemanal" v-model="transaccionesFiltros.FechaInicialSemanal" @onChange="cargarTransaccionesSemanales">
+                <DynamicInputComponent v-model="transaccionesFiltros.FechaInicialDiaria" type="date"
+                    name="FechaInicialDiaria" @onChange="cargarTransaccionesDiarias">
                     Fecha Inicial
                 </DynamicInputComponent>
             </div>
             <div class="col">
-                <DynamicInputComponent v-if="transaccionesFiltros.EstablecerRango" v-model="transaccionesFiltros.FechaFinalSemanal" type="week" name="FechaFinalSemanal" @onChange="cargarTransaccionesSemanales">
+                <DynamicInputComponent v-if="transaccionesFiltros.EstablecerRango"
+                    v-model="transaccionesFiltros.FechaFinalDiaria" type="date" name="FechaFinalDiaria"
+                    @onChange="cargarTransaccionesDiarias">
                     Fecha Final
                 </DynamicInputComponent>
             </div>
@@ -26,23 +30,21 @@ import { useTransaccionesComposable } from '@/composables/useTransaccionesCompos
 
 import TransaccionesFiltrosSelectores from './TransaccionesFiltrosSelectores.vue';
 
-import { 
+import {
     DynamicInputComponent,
     DynamicCheckBoxComponent,
 } from '@/components/inputComponents'
 
-import ContainerComponent from '../ContainerComponent.vue';
+import ContainerComponent from '@/components/ContainerComponent.vue';
 
 const {
     transaccionesFiltros,
-
-    cargarTransaccionesSemanales,
+    cargarTransaccionesDiarias
 } = useTransaccionesComposable()
 
 const refresh = async() => {
-    await cargarTransaccionesSemanales()
+    await cargarTransaccionesDiarias()
 }
 
 refresh()
-
 </script>
