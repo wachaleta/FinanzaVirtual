@@ -2,7 +2,7 @@
     <DynamicInputComponent name="Nombre" v-model="cuenta.Nombre">
         Nombre
     </DynamicInputComponent>
-    <DynamicCheckBoxComponent name="EsEfectivo" v-model="cuenta.EsEfectivo" id="esEfectivo">Es cuenta de efectivo?</DynamicCheckBoxComponent>
+    <DynamicCheckBoxComponent name="EsEfectivo" v-model="cuenta.EsEfectivo">Es cuenta de efectivo?</DynamicCheckBoxComponent>
     <div v-if="cuenta.EsEfectivo == true" class="row mt-3">
         <InputGroupComponent v-model="cuenta.BQ100" type="number" class="mb-2" name="BQ100">
             Q100

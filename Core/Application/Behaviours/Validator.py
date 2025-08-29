@@ -44,6 +44,17 @@ class Validator:
 
             self.outer.error_list[self.field_name] = []
 
+        
+        def WithFieldName(self, newName):
+            """ 
+            Cambia el nombre de la lista que contiene los errores
+            Debe de agregarse antes de cualquier validación, para que los errores se agreguen con el nuevo nombre
+            """
+            self.field_name = newName
+            self.outer.error_list[self.field_name] = []
+
+            return self
+
 
         def AddError(self, message="Ocurrió un error", validation=True):
             """
@@ -94,5 +105,10 @@ class Validator:
         
 
         def GreaterOrEqualTo(self, size):
-            validation = Decimal(self.value) < size
+            validation = Decimal(self.value or 0) < size
             return self.AddError(f"Debe de ser mayor o igual a {size}", validation)
+
+
+        def GreaterThan(self, size):
+            validation = Decimal(self.value or 0) <= size
+            return self.AddError(f"Debe de ser mayor a {size}", validation)

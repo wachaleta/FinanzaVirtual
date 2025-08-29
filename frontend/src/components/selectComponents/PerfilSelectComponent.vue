@@ -1,15 +1,18 @@
 <template>
     <DynamicSelectComponent
         v-model="model"
+        name="IdPerfil"
+        valueRef="IdPerfil"
+        :multiple="multiple"
+        :close-on-select="closeOnSelect"
         :items="perfiles"
-        :optionText="(item) => item.Nombre + ': Q' + item.Saldo"
-        valueRef="id"
+        :optionText="(item) => item.Nombre + ': ' + $filters.currencyGTQ(item.Saldo)"
     >
         <slot>
             Perfil
         </slot>
     </DynamicSelectComponent>
-</template>
+</template>1
 
 <script setup>
 import { usePerfilesComposable } from '@/composables/usePerfilesComposable';
@@ -17,6 +20,18 @@ import { usePerfilesComposable } from '@/composables/usePerfilesComposable';
 import DynamicSelectComponent from './DynamicSelectComponent.vue';
 
 const model = defineModel()
+
+defineProps({
+    multiple:{
+        type: Boolean,
+        default: false
+    },
+
+    closeOnSelect:{
+        type: Boolean,
+        default: true
+    }
+})
 
 const {
     perfiles,

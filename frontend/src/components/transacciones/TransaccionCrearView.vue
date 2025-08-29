@@ -46,15 +46,5 @@ const hoy =(fecha = new Date()) => {
     return nueva_fecha
 }
 
-const obj_transaccion = ref({
-    id: "",
-    monto: 1,
-    ordenante: "",
-    fecha: hoy(),
-    cuentaOrdenante: "",
-    perfilOrdenante: "",
-    cuentaBeneficiaria: "",
-    perfilBeneficiario: "",
-    descripcion: ""
-})
+
 </script>

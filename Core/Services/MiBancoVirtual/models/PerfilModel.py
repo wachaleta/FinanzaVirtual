@@ -14,15 +14,15 @@ class Perfil(models.Model):
 
     @property
     def Saldo(self):
-        saldo_ingresos = Transaccion.objects.filter(perfilBeneficiario = self.IdPerfil).aggregate(
-            saldo=Sum('monto')
+        saldo_ingresos = Transaccion.objects.filter(IdPerfilBeneficiario = self.IdPerfil).aggregate(
+            saldo=Sum('Monto')
         )['saldo' or 0]
 
         if(saldo_ingresos == None):
             saldo_ingresos = 0
 
-        saldo_gastos = Transaccion.objects.filter(perfilOrdenante = self.IdPerfil).aggregate(
-            saldo=Sum('monto')
+        saldo_gastos = Transaccion.objects.filter(IdPerfilOrdenante = self.IdPerfil).aggregate(
+            saldo=Sum('Monto')
         )['saldo' or 0]
 
         if(saldo_gastos == None):
@@ -34,3 +34,6 @@ class Perfil(models.Model):
 
     def __str__(self):
         return self.Nombre
+    
+    def __int__(self):
+        return self.IdPerfil

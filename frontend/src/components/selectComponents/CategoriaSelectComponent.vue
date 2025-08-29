@@ -1,6 +1,7 @@
 <template>
     <DynamicSelectComponent
         v-model="model"
+        name="IdCategoria"
         :items="categorias"
         :optionText="(item) => item.nombre"
         valueRef="id"

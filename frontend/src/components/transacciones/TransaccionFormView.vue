@@ -1,41 +1,40 @@
 <template>
-    <form 
-        @submit.prevent="$emit('submitForm')" 
-        class="row"
-    >
+    <div class="row">
         <div class="col-6">
-            <DynamicInputComponent type="number" name="monto" min="1" v-model="model.monto" id="monto">
+            <DynamicInputComponent type="number" name="Monto" min="0" step="0.01" v-model="transaccion.Monto">
                 Monto
             </DynamicInputComponent>
         </div>
-
+    
         <div class="col-6">
-            <DynamicInputComponent type="date" name="decha" v-model="model.fecha">Fecha:</DynamicInputComponent>
+            <DynamicInputComponent type="date" name="Fecha" v-model="transaccion.Fecha">Fecha:</DynamicInputComponent>
         </div>
-
+    
         <div class="col-6">
-            <CuentaSelectComponent v-model="model.idCuenta"/>
+            <CuentaSelectComponent v-model="transaccion.IdCuentaOrdenante" name="IdCuentaOrdenante"/>
         </div>
-
+    
         <div class="col-6">
-            <PerfilSelectComponent v-model="model.idPerfil"/>
+            <PerfilSelectComponent v-model="transaccion.IdPerfilOrdenante" name="IdPerfilOrdenante"/>
         </div>
-
+    
         <div class="col-6">
-            <CategoriaSelectComponent v-model="model.idCategoria"/>
+            <CategoriaSelectComponent v-model="transaccion.IdCategoria" name="IdCategoria"/>
         </div>
-
+    
         <div class="col-6">
-            <DynamicInputComponent v-model="model.descripcion" name="descripcion">Descripción</DynamicInputComponent>
+            <DynamicInputComponent v-model="transaccion.Descripcion" name="descripcion">Descripción</DynamicInputComponent>
         </div>
-
+    
         <div>
-            <button type="submit" class="btn btn-success">Crear {{ tipoTransaccion }}</button>
+            <button type="submit" class="btn btn-success" id="buttonCrear">Crear {{ $route.meta.tipoTransaccion }}</button>
         </div>
-    </form>
+    </div>
 </template>
 
 <script setup>
+
+import { useTransaccionesComposable } from '@/composables/useTransaccionesComposable'
 
 import {
     DynamicInputComponent
@@ -47,14 +46,6 @@ import {
     CategoriaSelectComponent,
 } from '@/components/selectComponents'
 
-const model = defineModel()
-const emit = defineEmits(["submitForm"])
-
-defineProps({
-    tipoTransaccion: {
-        type: String,
-        required: true
-    }
-})
+const { transaccion } = useTransaccionesComposable()
 
 </script>

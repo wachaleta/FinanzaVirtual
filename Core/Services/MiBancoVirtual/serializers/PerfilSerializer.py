@@ -12,17 +12,9 @@ class PerfilSerializer(serializers.ModelSerializer):
         read_only_fields = ("id", "IdUsuario", "Saldo")
 
     def create(self, validated_data):
-        # PerfilValidator(validated_data)
         x = Perfil.objects.create(
             Nombre = validated_data["Nombre"],
             AgregarTotal = validated_data["AgregarTotal"],
             IdUsuario = self.context["request"].user
         )
         return x
-    
-class PerfilValidator(Validator):
-    model = Perfil
-
-    def __init__(self, data):
-        self.NewField("Nombre", data["Nombre"]).NotEmpty().ValidateDuplicatedData()
-        super().__init__()

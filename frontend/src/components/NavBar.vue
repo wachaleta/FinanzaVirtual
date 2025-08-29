@@ -24,7 +24,7 @@
                             <RouterLink class="dropdown-item" :to="{name: 'transaccion-crear'}">Crear Transaccion</RouterLink>
                         </li>
                         <li>
-                            <!-- <RouterLink class="dropdown-item" :to="{name: 'transaccion-listado'}">Ver Transacciones</RouterLink> -->
+                            <RouterLink class="dropdown-item" :to="{name: 'transaccion-listado'}">Ver Transacciones</RouterLink>
                         </li>
                         <li>
                             <a class="dropdown-item" href="/transaccion/programada">Transacciones Programadas</a>

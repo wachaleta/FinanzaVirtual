@@ -15,9 +15,13 @@ router.register(r"perfil", PerfilViewSet, basename="perfil")
 router.register(r"total-saldo-perfiles", ObtenerSaldoTotalPerfilesViewSet, basename="total-saldo-perfiles")
 
 router.register(r"cuenta", CuentaViewSet, basename="cuenta")
+router.register(r"transaccion", TransaccionViewSet, basename="transaccion")
+router.register(r"gasto", GastoViewSet, basename="gasto")
+router.register(r"ingreso", IngresoViewSet, basename="ingreso")
+router.register(r"transferencia", TransferenciaViewSet, basename="transferencia")
 
 urlpatterns = [
-    path("", home, name="home"),
+    # path("", home, name="home"),
     path('login/', Login.as_view(), name='login'),
     path('api/token/', TokenObtainPairView.as_view(), name='token'),
     path('api/refresh/', TokenRefreshView.as_view(), name='refresh'),

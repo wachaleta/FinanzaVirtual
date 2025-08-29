@@ -2,7 +2,7 @@
     <RouterView/>
     <div class="row">
         <div class="col-6">
-            <div class="ms-4 mt-3">
+            <div class="ms-4">
                 <h3>Cuentas</h3>
                 <h6>Lugares donde se puedan almacenar dinero</h6>
             </div>

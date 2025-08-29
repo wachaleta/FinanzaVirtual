@@ -10,6 +10,8 @@ import filters from '@/filters'
 import 'bootstrap'
 import 'bootstrap/dist/css/bootstrap.min.css'
 
+import 'vue-multiselect/dist/vue-multiselect.min.css'
+
 const pinia = createPinia()
 
 const appInstance = createApp(App)

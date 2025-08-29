@@ -1,44 +1,49 @@
-from rest_framework import viewsets
-from rest_framework.permissions import IsAuthenticated
-from django.db.models import Q, F, Value
+from django.db.models import Q, Value, F
 from django.db.models.functions import Concat
 
-from ..models import *
-from ..serializers import *
+from rest_framework.permissions import IsAuthenticated
 
-class GastoViewSet(viewsets.ModelViewSet):
+from ....Application.Behaviours import FinanzasModelViewSet
+from ..models import *
+from ..serializers import GastoSerializer
+from ..validators import GastoCrearValidator
+
+class GastoViewSet(FinanzasModelViewSet):
     serializer_class = GastoSerializer
+    create_validator = GastoCrearValidator()
     permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
         idUsuario = self.request.user.id
+        # fechaInicio = self.request.query_params.get("fechaInicio")
+        # fechaFinal = self.request.query_params.get("fechaFinal")
 
-        fechaInicio = self.request.query_params.get("fechaInicio")
-        fechaFinal = self.request.query_params.get("fechaFinal")
-
-        lista_cuentas = Cuenta.objects.filter(usuario = idUsuario)
-        lista_perfiles = Perfil.objects.filter(usuario = idUsuario)
-
-        lista_gastos = Transaccion.objects.filter(
-            #   Validar que sean del usuario
-            perfilOrdenante__in = lista_perfiles,
-            cuentaOrdenante__in = lista_cuentas,
-
-            #   Validar que sea Gasto
-            cuentaBeneficiaria__isnull = True,
-            perfilBeneficiario__isnull = True,
-
-            #   Validar el rango de fechas
-            fecha__gte = fechaInicio,
-            fecha__lte = fechaFinal
-        )
-
-        return lista_gastos.annotate(
-            nombre = Concat(
-                F("cuentaOrdenante__nombre"),
+        lista_transacciones = Transaccion.objects.filter(
+                Q(IdPerfilOrdenante__IdUsuario = idUsuario) | Q(IdPerfilBeneficiario__IdUsuario = idUsuario) |
+                Q(IdCuentaOrdenante__IdUsuario = idUsuario) | Q(IdCuentaBeneficiaria__IdUsuario = idUsuario) 
+            )
+        # .filter(fecha__gte = fechaInicio).filter(fecha__lte = fechaFinal)
+        
+        return lista_transacciones.annotate(
+            ordenante_nombre = Concat(
+                F("IdCuentaOrdenante__Nombre"), 
                 Value(" - "),
-                F("perfilOrdenante__nombre")
+                F("IdPerfilOrdenante__Nombre")
             )
         ).annotate(
-            categoria_nombre = F("categoria__nombre")
-        )
+            beneficiario_nombre = Concat(
+                F("IdCuentaBeneficiaria__Nombre"), 
+                Value(" - "),
+                F("IdPerfilBeneficiario__Nombre")
+            )
+        ).order_by("-Fecha").order_by("-FechaCreacion")
+    
+    def get_create_validated_data(self, data):
+        return {
+            "Monto": data.get("Monto", 0),
+            "Fecha": data.get("Fecha", ""),
+            "IdCuentaOrdenante": data.get("IdCuentaOrdenante", ""),
+            "IdPerfilOrdenante": data.get("IdPerfilOrdenante", ""),
+            "IdCategoria": data.get("IdCategoria", ""),
+            "Descripcion": data.get("Descripcion", ""),
+        }

@@ -1,9 +1,10 @@
 <template>
     <DynamicSelectComponent
         v-model="model"
+        name="IdCuenta"
+        valueRef="IdCuenta"
         :items="cuentas"
-        :optionText="(item) => item.nombre + ': Q' + item.saldo_total"
-        valueRef="id"
+        :optionText="(item) => item.Nombre + ': ' + $filters.currencyGTQ(item.SaldoTotal)"
     >
         <slot>
             Cuenta

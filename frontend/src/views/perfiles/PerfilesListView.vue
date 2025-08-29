@@ -2,7 +2,7 @@
     <RouterView/>
     <div class="row">
         <div class="col-6">
-            <div class="ms-4 mt-3">
+            <div class="ms-4">
                 <h3>Perfiles</h3>
                 <h6>Entidades a quienes les pertenezca el dinero</h6>
             </div>
@@ -115,8 +115,6 @@
                         </div>
                     </template>
                 </CardComponent>
-                <!-- <ContainerComponent>
-                </ContainerComponent> -->
             </div>
         </div>
     </div>
@@ -126,8 +124,6 @@
 import { useRouter } from 'vue-router'
 import { usePerfilesComposable } from '@/composables/usePerfilesComposable';
 
-import ContainerComponent from '@/components/ContainerComponent.vue';
-// import ButtonCrearComponent from '@/components/formComponents/ButtonCrearComponent.vue';
 import { ButtonCrearComponent } from '@/components/buttonComponents';
 import CardComponent from '@/components/CardComponent.vue';
 

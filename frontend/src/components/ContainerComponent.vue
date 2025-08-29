@@ -1,9 +1,9 @@
 <template>
-    <div class="container-component">
-        <div class="container-body" :class="color">
-            <slot/>
-        </div>
+    <div class="container-body">
+        <slot/>
     </div>
+    <!-- <div class="container-component">
+    </div> -->
 </template>
 
 <script setup>
@@ -26,16 +26,18 @@ defineProps({
 }
 
 .container-component {
-    padding-left: 2rem;
-    padding-right: 2rem;
+    padding-left: 0.2rem;
+    padding-right: 0.2rem;
 }
 
 .container-body {
+    background-color: white;
+    color: black;
     /* margin-left: 2rem;
     margin-right: 2rem; */
     padding-left: 2rem;
     padding-right: 2rem;
-    margin-bottom: 1.5rem;
+    /* margin-bottom: 1.5rem; */
     
     padding-top:      1rem;
     padding-bottom:   1rem;

@@ -26,15 +26,15 @@ class Cuenta(models.Model):
 
     @property
     def SaldoTotal(self):
-        saldo_ingresos = Transaccion.objects.filter(cuentaBeneficiaria = self.IdCuenta).aggregate(
-            saldo=Sum('monto')
+        saldo_ingresos = Transaccion.objects.filter(IdCuentaBeneficiaria = self.IdCuenta).aggregate(
+            saldo=Sum('Monto')
         )['saldo' or 0]
 
         if(saldo_ingresos == None):
             saldo_ingresos = 0
 
-        saldo_gastos = Transaccion.objects.filter(cuentaOrdenante = self.IdCuenta).aggregate(
-            saldo=Sum('monto')
+        saldo_gastos = Transaccion.objects.filter(IdCuentaOrdenante = self.IdCuenta).aggregate(
+            saldo=Sum('Monto')
         )['saldo' or 0]
 
         if(saldo_gastos == None):
@@ -67,3 +67,6 @@ class Cuenta(models.Model):
 
     def __str__(self):
         return self.Nombre
+
+    def __int__(self):
+        return self.IdCuenta

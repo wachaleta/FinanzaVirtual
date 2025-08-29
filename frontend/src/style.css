@@ -3,7 +3,7 @@
   background-color: #f6f8fb;
 }
 
-input.error {
+input.error, select.error{
   border-style: solid;
   border-color: rgb(255, 116, 116);
   border-width: 2px;
@@ -13,6 +13,7 @@ input.error {
   border-style: solid;
   border-color: rgb(255, 116, 116);
   border-width: 2px;
+  border-radius: 7px;
 }
 
 label.error-label {

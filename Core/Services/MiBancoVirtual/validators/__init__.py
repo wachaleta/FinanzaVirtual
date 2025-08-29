@@ -3,3 +3,7 @@ from .PerfilEditarValidator import PerfilEditarValidator
 
 from .CuentaCrearValidator import CuentaCrearValidator
 from .CuentaEditarValidator import CuentaEditarValidator
+
+from .GastoCrearValidator import GastoCrearValidator
+from .IngresoCrearValidator import IngresoCrearValidator
+from .TransferenciaCrearValidator import TransferenciaCrearValidator

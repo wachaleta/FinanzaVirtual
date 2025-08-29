@@ -1,7 +1,7 @@
 <template>
     <div class="form-check form-switch pt-auto">
-        <input class="form-check-input" v-model="model" type="checkbox" role="switch" :id="id">
-        <label class="form-check-label" :for="id"><slot/></label>
+        <input class="form-check-input" v-model="model" type="checkbox" role="switch" :id="name" @change="$emit('onChange')">
+        <label class="form-check-label" :for="name"><slot/></label>
     </div>
 </template>
 
@@ -9,15 +9,16 @@
 
 const model = defineModel()
 
+defineEmits(['onChange'])
+
 defineProps({
     type: {
         type: String,
         default: "text"
     },
-    
-    id: {
+    name: {
         type: String,
-        default: ""
+        required: true
     },
 })
 </script>

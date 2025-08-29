@@ -19,7 +19,8 @@ from django.views.decorators.http import require_http_methods
 
 
 def home(request):
-    return redirect("/Crear_Transaccion/0")
+    pass
+    # return redirect("/Crear_Transaccion/0")
 
 @login_required
 def transacciones(request, id=0):

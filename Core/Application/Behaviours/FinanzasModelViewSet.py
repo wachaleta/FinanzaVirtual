@@ -3,15 +3,17 @@ from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet
 
 class FinanzasModelViewSet(ModelViewSet):
+    create_validator = None
+    update_validator = None
     
-    def get_create_validated_data(self):
-        pass
+    def get_create_validated_data(self, data):
+        return data
 
     def create(self, request, *args, **kwargs):
-        newData = self.get_create_validated_data(self.request.data)
-        print("request.data")
-        print(self.request.user)
+        newData = self.get_create_validated_data(request.data)
         newData["IdUsuario"] = self.request.user
+        print("viewSet")
+        print(newData)
         self.create_validator.SetData(newData)
         self.create_validator.SetRules()
         self.create_validator.Run()
@@ -25,8 +27,6 @@ class FinanzasModelViewSet(ModelViewSet):
         pass
 
     def update(self, request, *args, **kwargs):
-        print("request.data")
-        print(request.data)
         partial = kwargs.pop('partial', False)
         instance = self.get_object()
         newData = self.get_update_validated_data(request.data)

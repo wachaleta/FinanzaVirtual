@@ -10,10 +10,8 @@ export const useAuthStore = defineStore("auth", {
     },
     actions: {
         async iniciarSesion(){
-            console.log("logueando ando")
             await AuthApi().post("login2/", this.credenciales)
             .then(res => {
-                console.log(res)
                 localStorage.setItem("access", res.data.access)
                 localStorage.setItem("refresh", res.data.refresh)
 

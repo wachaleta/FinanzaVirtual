@@ -1,9 +1,7 @@
 <template>
-    <TransaccionFormView
-        v-model="transaccion"
-        tipoTransaccion="Ingreso"
-        @submitForm="submitForm"
-    />
+    <form @submit.prevent="crearIngreso">
+        <TransaccionFormView/>
+    </form>
 </template>
 
 <script setup>
@@ -12,11 +10,7 @@ import { useTransaccionesComposable } from '@/composables/useTransaccionesCompos
 import TransaccionFormView from './TransaccionFormView.vue';
 
 const {
-    transaccion,
+    crearIngreso,
 } = useTransaccionesComposable()
-
-const submitForm = () => {
-    alert("Crear Ingreso")
-}
 
 </script>

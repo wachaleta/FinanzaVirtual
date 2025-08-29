@@ -1,8 +1,7 @@
 <template>
-    <TransferenciaFormView
-        v-model="transaccion"
-        @submitForm="submitForm"
-    />
+    <form @submit.prevent="crearTransferencia">
+        <TransferenciaFormView/>
+    </form>
 </template>
 
 <script setup>
@@ -11,14 +10,7 @@ import { useTransaccionesComposable } from '@/composables/useTransaccionesCompos
 import TransferenciaFormView from './TransferenciaFormView.vue';
 
 const {
-    transaccion,
+    crearTransferencia,
 } = useTransaccionesComposable()
-
-const submitForm = () => {
-    alert("Crear Transferencia")
-}
-
-console.log("transaccion.value")
-console.log(transaccion.value)
 
 </script>
