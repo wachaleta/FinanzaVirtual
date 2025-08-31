@@ -13,6 +13,7 @@
                 <div class="modal-body">
                     <slot name="body">
                         {{ route.meta.subTitle ?? "Seguro que deseas cancelar la acción?" }}
+                        <form></form>
                     </slot>
                 </div>
                 <hr>

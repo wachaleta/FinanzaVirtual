@@ -20,29 +20,38 @@ const route = useRoute()
 
 
     const cargarTransaccionesDiarias = async() => {
-        const fechaInicial = transaccionesFiltros.value.FechaInicialDiaria
-        const fechaFinal = transaccionesFiltros.value.EstablecerRango? transaccionesFiltros.value.FechaFinalDiaria : fechaInicial
+        const EstablecerRango = transaccionesFiltros.value.EstablecerRango ?? false
 
-        await store.cargarTransacciones(fechaInicial, fechaFinal)
+        const fechaInicial = transaccionesFiltros.value.FechaInicialDiaria
+        const fechaFinal = EstablecerRango? transaccionesFiltros.value.FechaFinalDiaria : fechaInicial
+        
+        if(EstablecerRango == true && fechaFinal != null || EstablecerRango == false)
+            await store.cargarTransacciones(fechaInicial, fechaFinal)
     }
 
     const cargarTransaccionesSemanales = async() => {
-        console.log(filters.semanaActual())
-        
-        const fechaInicial = filters.getDateFromWeek(transaccionesFiltros.value.FechaInicialSemanal)
-        const fechaFinal = transaccionesFiltros.value.EstablecerRango? filters.addDaysToDate(filters.getDateFromWeek(transaccionesFiltros.value.FechaFinalSemanal), 6) : filters.addDaysToDate(fechaInicial, 6)
+        const EstablecerRango = transaccionesFiltros.value.EstablecerRango ?? false
 
-        await store.cargarTransacciones(fechaInicial, fechaFinal)
+        const fechaInicial = filters.getDateFromWeek(transaccionesFiltros.value.FechaInicialSemanal)
+        const fechaFinal = EstablecerRango? filters.addDaysToDate(filters.getDateFromWeek(transaccionesFiltros.value.FechaFinalSemanal), 6) : filters.addDaysToDate(fechaInicial, 6)
+
+        if(EstablecerRango == true && fechaFinal != null || EstablecerRango == false)
+            await store.cargarTransacciones(fechaInicial, fechaFinal)
     }
 
     const cargarTransaccionesMensuales = async() => {
+        const EstablecerRango = transaccionesFiltros.value.EstablecerRango ?? false
+
         const fechaInicial = filters.formatDate(transaccionesFiltros.value.FechaInicialMensual)
 
-        const fechaFinal = transaccionesFiltros.value.EstablecerRango ?
+        const fechaFinal = EstablecerRango ?
             filters.ultimoDiaMes(transaccionesFiltros.value.FechaFinalMensual) 
             : filters.ultimoDiaMes(fechaInicial)
+        
+        console.log(EstablecerRango)
 
-        await store.cargarTransacciones(fechaInicial, fechaFinal)
+        if(EstablecerRango == true && fechaFinal != null || EstablecerRango == false)
+            await store.cargarTransacciones(fechaInicial, fechaFinal)
     }
 
     return {

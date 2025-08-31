@@ -3,8 +3,8 @@
         v-model="model"
         name="IdCategoria"
         :items="categorias"
-        :optionText="(item) => item.nombre"
-        valueRef="id"
+        :optionText="(item) => item.Nombre"
+        valueRef="IdCategoria"
     >
         <slot>
             Categoría

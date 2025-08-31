@@ -7,3 +7,6 @@ from .CuentaEditarValidator import CuentaEditarValidator
 from .GastoCrearValidator import GastoCrearValidator
 from .IngresoCrearValidator import IngresoCrearValidator
 from .TransferenciaCrearValidator import TransferenciaCrearValidator
+
+from .CategoriaCrearValidator import CategoriaCrearValidator
+from .CategoriaEditarValidator import CategoriaEditarValidator

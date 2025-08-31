@@ -32,10 +32,7 @@
                     </ul>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="/categorias">Categorías</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="/prueba">Prueba</a>
+                    <RouterLink class="nav-link active" :to="{name: 'categoria-listado'}">Categorías</RouterLink>
                 </li>
             </ul>
             <div class="d-flex">

@@ -4,6 +4,7 @@ import authRoutes from "./auth.routes"
 import cuentaRoutes from "./cuenta.routes";
 import perfilRoutes from "./perfil.routes"
 import transaccionRoutes from "./transaccion.routes"
+import categoriaRoutes from "./categoria.routes";
 
 const baseRoutes = []
 
@@ -12,6 +13,7 @@ const routes = baseRoutes
 .concat(cuentaRoutes)
 .concat(authRoutes)
 .concat(transaccionRoutes)
+.concat(categoriaRoutes)
 
 
 const router = createRouter({

@@ -23,6 +23,13 @@ export default (baseURL = "") => {
         headers: headers,
     })
 
+    axiosInstance.interceptors.request.use(
+        (request) => {
+            errorsComposable.cleanErrors()
+            return request
+        }
+    )
+
     axiosInstance.interceptors.response.use(
         (response) => response,
         (error) => {

@@ -26,5 +26,5 @@ class Transaccion(models.Model):
 
     @property
     def CategoriaNombre(self):
-        categoria = Categoria.objects.filter(id = self.IdCategoria).first()
+        categoria = Categoria.objects.filter(IdCategoria = self.IdCategoria).first()
         return categoria.nombre

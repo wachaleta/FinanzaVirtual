@@ -23,8 +23,8 @@ class FinanzasModelViewSet(ModelViewSet):
         headers = self.get_success_headers(serializer.data)
         return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
     
-    def get_udpate_validated_data(self):
-        pass
+    def get_update_validated_data(self, data):
+        return data
 
     def update(self, request, *args, **kwargs):
         partial = kwargs.pop('partial', False)

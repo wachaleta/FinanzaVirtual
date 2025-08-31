@@ -1,7 +1,7 @@
 <template>
     <div class="row">
         <div class="col-6">
-            <DynamicInputComponent type="number" name="Monto" min="0" step="0.01" v-model="transaccion.Monto">
+            <DynamicInputComponent v-focus type="number" name="Monto" min="0" step="0.01" v-model="transaccion.Monto">
                 Monto
             </DynamicInputComponent>
         </div>

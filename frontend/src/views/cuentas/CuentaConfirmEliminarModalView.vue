@@ -10,7 +10,7 @@
         </template>
 
         <template v-slot:body>
-            Seguro que desea eliminar la cuenta <strong>{{ cuenta.nombre }}</strong>?
+            Seguro que desea eliminar la cuenta <strong>{{ cuenta.Nombre }}</strong>?
         </template>
     </DynamicModalComponent>
 </template>

@@ -1,8 +1,11 @@
+import { useRoute } from 'vue-router'
 import dayjs from 'dayjs'
 import weekOfYear from "dayjs/plugin/weekOfYear";
-// var weekOfYear = require("dayjs/plugin/weekOfYear");
-const formatCurrencyGTQ = new Intl.NumberFormat('es-GT', { style: 'currency', currency: 'GTQ' })
+import { onMounted } from 'vue';
 dayjs.extend(weekOfYear);
+
+const formatCurrencyGTQ = new Intl.NumberFormat('es-GT', { style: 'currency', currency: 'GTQ' })
+const route = useRoute()
 
 export default {
     currencyGTQ(value) {
@@ -12,8 +15,8 @@ export default {
         return formatCurrencyGTQ.format(value)
     },
 
-    getDateFromWeek(fecha){
-        if(!fecha){
+    getDateFromWeek(fecha) {
+        if (!fecha) {
             return null
         }
 
@@ -27,8 +30,8 @@ export default {
         return this.formatDate(newDate)
     },
 
-    addDaysToDate(fecha, dias = 1){
-        if(fecha == null){
+    addDaysToDate(fecha, dias = 1) {
+        if (fecha == null) {
             return null
         }
 
@@ -37,51 +40,53 @@ export default {
         return this.formatDate(newDate.add(dias, 'day'))
     },
 
-    addMonthsToDate(fecha, meses = 1){
-        if(fecha == null){
+    addMonthsToDate(fecha, meses = 1) {
+        if (fecha == null) {
             return null
         }
         const newDate = new dayjs(fecha)
-        
+
         return this.formatDate(newDate.add(meses, 'month'))
     },
 
-    formatDate(fecha, formato="YYYY-MM-DD"){
-        if(fecha == null)
-        {
+    formatDate(fecha, formato = "YYYY-MM-DD") {
+        if (fecha == null) {
             return null
         }
         const newFecha = new dayjs(fecha)
 
         return newFecha.format(formato)
     },
-    fechaActual(formato="YYYY-MM-DD"){
+    fechaActual(formato = "YYYY-MM-DD") {
         let hoy = new dayjs()
 
         hoy = this.formatDate(hoy, formato)
         return hoy
     },
 
-    semanaActual(){
+    semanaActual() {
         // var weekOfYear = require("dayjs/plugin/weekOfYear");
 
 
-        const semana = dayjs().week(); 
-        console.log("semana")
+        const semana = dayjs().week();
         const semanaFormateada = dayjs().year() + "-W" + dayjs().week()
-        console.log(semanaFormateada)
         return semanaFormateada
     },
 
-    ultimoDiaMes(fecha){
-        const newDate  = this.formatDate(dayjs(fecha).endOf('month'))
+    ultimoDiaMes(fecha) {
+        if(!fecha){
+            return null
+        }
+        
+        const newDate = this.formatDate(dayjs(fecha).endOf('month'))
 
         return newDate
     },
 
-    primerDiaMes(fecha){
-        const newDate  = this.formatDate(dayjs(fecha).startOf('month'))
+    primerDiaMes(fecha) {
+        const newDate = this.formatDate(dayjs(fecha).startOf('month'))
 
         return newDate
     },
+
 }

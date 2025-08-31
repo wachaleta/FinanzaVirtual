@@ -7,7 +7,7 @@
             @onEliminar="router.push({name: 'perfil-editar-eliminar'})"
         >
             <template v-slot:header>
-                Editar {{ perfil.Nombre }}
+                Editar {{ Nombre }}
             </template>
             <template v-slot:body>
                 <PerfilFormView v-model="perfil"/>
@@ -22,20 +22,17 @@
 </template>
 
 <script setup>
-
+import { ref } from 'vue';
 import { useRouter, useRoute } from 'vue-router'
-import { useErrorsComposable } from '@/composables/useErrorsComposable';
-import { usePerfilesComposable } from '@/composables/usePerfilesComposable';
 
-import { DynamicButtonComponent } from '@/components/buttonComponents';
+import { usePerfilesComposable } from '@/composables/usePerfilesComposable';
 
 import PerfilFormView from './PerfilFormView.vue';
 import DynamicModalComponent from '@/components/DynamicModalComponent.vue';
 
 const router = useRouter()
 const route = useRoute()
-
-const { cleanErrors } = useErrorsComposable()
+const Nombre = ref("")
 
 const {
     perfil,
@@ -44,18 +41,13 @@ const {
     cargarPerfilPorId,
 } = usePerfilesComposable()
 
-const aceptar = () => {
-    alert("aceptar")
-}
-
 const submitForm = async() => {
     await editarPerfil()
-    // router.push({name: 'perfil-listado'})
 }
 
 const refresh = async() => {
-    cleanErrors()
     await cargarPerfilPorId(route.params.idPerfil)
+    Nombre.value = perfil.value.Nombre
 }
 
 refresh()

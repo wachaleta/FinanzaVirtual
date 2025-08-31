@@ -5,11 +5,11 @@ class CategoriaSerializer(serializers.ModelSerializer):
     class Meta: 
         model = Categoria
         fields = "__all__"
-        read_only_fields = ("id", "usuario")
+        read_only_fields = ("IdCategoria", "IdUsuario")
 
     def create(self, validated_data):
         x = Categoria.objects.create(
-            nombre = validated_data["nombre"],
-            usuario = self.context["request"].user
+            Nombre = validated_data["Nombre"],
+            IdUsuario = self.context["request"].user
         )
         return x

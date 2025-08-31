@@ -6,6 +6,9 @@ import router from './router/'
 import Vue3Toastify, { toast } from 'vue3-toastify'
 import 'vue3-toastify/dist/index.css';
 import filters from '@/filters'
+import {
+    focus
+} from '@/directives'
 
 import 'bootstrap'
 import 'bootstrap/dist/css/bootstrap.min.css'
@@ -27,5 +30,7 @@ appInstance.use(router)
 appInstance.use(pinia)
 
 appInstance.config.globalProperties.$filters = filters
+
+appInstance.directive("focus", focus)
 
 appInstance.mount('#app')
