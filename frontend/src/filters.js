@@ -1,11 +1,8 @@
-import { useRoute } from 'vue-router'
 import dayjs from 'dayjs'
 import weekOfYear from "dayjs/plugin/weekOfYear";
-import { onMounted } from 'vue';
 dayjs.extend(weekOfYear);
 
 const formatCurrencyGTQ = new Intl.NumberFormat('es-GT', { style: 'currency', currency: 'GTQ' })
-const route = useRoute()
 
 export default {
     currencyGTQ(value) {
@@ -65,22 +62,8 @@ export default {
     },
 
     semanaActual() {
-        // var weekOfYear = require("dayjs/plugin/weekOfYear");
-
-
-        const semana = dayjs().week();
         const semanaFormateada = dayjs().year() + "-W" + dayjs().week()
         return semanaFormateada
-    },
-
-    ultimoDiaMes(fecha) {
-        if(!fecha){
-            return null
-        }
-        
-        const newDate = this.formatDate(dayjs(fecha).endOf('month'))
-
-        return newDate
     },
 
     primerDiaMes(fecha) {
@@ -89,4 +72,27 @@ export default {
         return newDate
     },
 
+    ultimoDiaMes(fecha) {
+        if (!fecha) {
+            return null
+        }
+
+        const newDate = this.formatDate(dayjs(fecha).endOf('month'))
+
+        return newDate
+    },
+
+    primerDiaAnio(fecha){
+        console.log(fecha)
+        console.log(dayjs(fecha))
+        const newDate = dayjs(fecha.toString()).startOf('year')
+
+        return this.formatDate(newDate)
+    },
+
+    ultimoDiaAnio(fecha){
+        const newDate = dayjs(fecha.toString()).endOf('year')
+
+        return this.formatDate(newDate)
+    },
 }

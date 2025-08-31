@@ -48,7 +48,20 @@ const route = useRoute()
             filters.ultimoDiaMes(transaccionesFiltros.value.FechaFinalMensual) 
             : filters.ultimoDiaMes(fechaInicial)
         
-        console.log(EstablecerRango)
+
+        if(EstablecerRango == true && fechaFinal != null || EstablecerRango == false)
+            await store.cargarTransacciones(fechaInicial, fechaFinal)
+    }
+
+    const cargarTransaccionesAnuales = async() => {
+        const EstablecerRango = transaccionesFiltros.value.EstablecerRango ?? false
+
+        const fechaInicial = filters.primerDiaAnio(transaccionesFiltros.value.FechaInicialAnual)
+
+        const fechaFinal = EstablecerRango ?
+            filters.ultimoDiaAnio(transaccionesFiltros.value.FechaFinalAnual) 
+            : filters.ultimoDiaAnio(fechaInicial)
+        
 
         if(EstablecerRango == true && fechaFinal != null || EstablecerRango == false)
             await store.cargarTransacciones(fechaInicial, fechaFinal)
@@ -66,5 +79,6 @@ const route = useRoute()
         cargarTransaccionesDiarias,
         cargarTransaccionesSemanales,
         cargarTransaccionesMensuales,
+        cargarTransaccionesAnuales,
     }
 }

@@ -9,8 +9,10 @@ export const useTransaccionesStore = defineStore("transacciones", {
             transacciones: [],
             transaccionesFiltros: {
                 FechaInicialDiaria: filters.fechaActual(),
-                FechaInicialMensual: filters.formatDate(filters.primerDiaMes(filters.fechaActual()), "YYYY-MM"),
                 FechaInicialSemanal: filters.semanaActual(),
+                FechaInicialMensual: filters.formatDate(filters.primerDiaMes(filters.fechaActual()), "YYYY-MM"),
+                FechaInicialAnual: filters.formatDate(filters.fechaActual(), "YYYY"),
+                FechaFinalAnual: filters.formatDate(filters.fechaActual(), "YYYY"),
             },
             transaccion: {
                 Fecha: filters.fechaActual()

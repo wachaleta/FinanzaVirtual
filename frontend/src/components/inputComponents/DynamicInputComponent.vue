@@ -7,7 +7,6 @@
         </label>
         <input 
             class="form-control"
-            :ref="ref"
             :class="{error: getErrors}"
             v-model="model"
             :type="type"
@@ -41,10 +40,6 @@ const props = defineProps({
     step: {
         type: String,
         default: "1"
-    },
-
-    ref: {
-        type: String,
     },
 
     min: {
