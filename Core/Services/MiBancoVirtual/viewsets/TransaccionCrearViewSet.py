@@ -5,7 +5,7 @@ from ..models import *
 from ..serializers import *
 
 class TransaccionCrearViewSet(viewsets.ModelViewSet):
-    serializer_class = TransaccionSerializer
+    serializer_class = TransaccionesRangoFechasSerializer
     permission_classes = [IsAuthenticated]
 
     def get_queryset(self):

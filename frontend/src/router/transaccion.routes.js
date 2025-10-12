@@ -7,7 +7,8 @@ import {
 
     TransaccionCrearView,
     TransaccionEditarView,
-    
+    TransaccionEliminarModalView,
+
     GastoCrearView,
     GastoEditarView,
 
@@ -29,7 +30,7 @@ export default [
                 path: 'listado',
                 name: 'transaccion-listado',
                 component: TransaccionesListView,
-                redirect: {name: 'transaccion-listado-diario'},
+                redirect: { name: 'transaccion-listado-diario' },
                 children: [
                     {
                         path: 'diario',
@@ -95,23 +96,49 @@ export default [
                 path: ':idTransaccion/editar',
                 name: 'transaccion-editar',
                 component: TransaccionEditarView,
-                redirect: {name: 'gasto-editar'},
+                redirect: { name: 'gasto-editar' },
                 children: [
                     {
                         path: 'gasto',
                         name: 'gasto-editar',
                         component: GastoEditarView,
                         meta: {
+                            keepQuery: true,
                             tipoTransaccion: "Gasto"
-                        }
+                        },
+                        children: [
+                            {
+                                path: 'eliminar',
+                                name: 'gasto-eliminar',
+                                component: TransaccionEliminarModalView,
+                                meta: {
+                                    keepQuery: true,
+                                    tipoTransaccion: "Gasto"
+                                },
+                            },
+                        ]
                     },
                     {
                         path: 'ingreso',
                         name: 'ingreso-editar',
                         component: IngresoEditarView,
                         meta: {
+                            keepQuery: true,
                             tipoTransaccion: "Ingreso"
-                        }
+                        },
+                        children: [
+                            {
+                                path: 'eliminar',
+                                name: 'ingreso-eliminar',
+                                component: TransaccionEliminarModalView,
+                                meta: {
+                                    keepQuery: true,
+                                    title: 'Eliminar Ingreso',
+                                    subtitle: '¿Seguro que deseas eliminar el ingreso?',
+                                    tipoTransaccion: "Ingreso"
+                                },
+                            },
+                        ]
                     },
                 ]
             },
@@ -119,6 +146,21 @@ export default [
                 path: 'transferencia/:idTransaccion/editar',
                 name: 'transferencia-editar',
                 component: TransferenciaEditarView,
+                meta: {
+                    keepQuery: true
+                },
+                children: [
+                    {
+                        path: 'eliminar',
+                        name: 'transferencia-eliminar',
+                        component: TransaccionEliminarModalView,
+                        meta: {
+                            keepQuery: true,
+                            title: "Eliminar Transferencia",
+                            subtitle: '¿Seguro que deseas eliminar la transferencia?'
+                        },
+                    },
+                ]
             },
         ]
     },

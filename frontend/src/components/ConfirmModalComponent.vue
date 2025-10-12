@@ -12,7 +12,7 @@
                 <hr>
                 <div class="modal-body">
                     <slot name="body">
-                        {{ route.meta.subTitle ?? "Seguro que deseas cancelar la acción?" }}
+                        {{ route.meta.subtitle ?? "Seguro que deseas cancelar la acción?" }}
                         <form></form>
                     </slot>
                 </div>
@@ -20,7 +20,7 @@
                 <div class="modal-footer">
                     <slot name="footer">
                         <DynamicButtonComponent @click="$emit('onCancelar')" color="danger">No</DynamicButtonComponent>
-                        <DynamicButtonComponent @click="$emit('onAceptar')" class="ms-2">Sí, cancelar</DynamicButtonComponent>
+                        <DynamicButtonComponent @click="$emit('onAceptar')" class="ms-2">{{ aceptarLabel }}</DynamicButtonComponent>
                     </slot>
                 </div>
             </div>
@@ -32,7 +32,6 @@
 
 import { useRoute } from 'vue-router'
 
-// import DynamicButtonComponent from '@/components/formComponents/DynamicButtonComponent.vue'
 import { DynamicButtonComponent } from '@/components/buttonComponents';
 
 const route = useRoute();
@@ -42,7 +41,12 @@ const props = defineProps({
     size: {
         type: String,
         default: "xs"
-    }
+    },
+
+    aceptarLabel: {
+        type: String,
+        default: "Sí, cancelar"
+    },
 })
 
 const dynamicSize = (size) => {

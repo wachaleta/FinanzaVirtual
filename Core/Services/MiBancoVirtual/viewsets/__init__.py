@@ -8,7 +8,9 @@ from .ObtenerSaldoTotalPerfilesViewSet import ObtenerSaldoTotalPerfilesViewSet
 from .TransferenciaViewSet import TransferenciaViewSet
 
 # from .TransaccionCrearViewSet import TransaccionCrearViewSet
+from .TransaccionesRangoFechasViewSet import TransaccionesRangoFechasViewSet
 from .TransaccionViewSet import TransaccionViewSet
+
 from .GastoViewSet import GastoViewSet
 from .IngresoViewSet import IngresoViewSet
 

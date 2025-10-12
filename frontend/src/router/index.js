@@ -9,11 +9,11 @@ import categoriaRoutes from "./categoria.routes";
 const baseRoutes = []
 
 const routes = baseRoutes
-.concat(perfilRoutes)
-.concat(cuentaRoutes)
-.concat(authRoutes)
-.concat(transaccionRoutes)
-.concat(categoriaRoutes)
+    .concat(perfilRoutes)
+    .concat(cuentaRoutes)
+    .concat(authRoutes)
+    .concat(transaccionRoutes)
+    .concat(categoriaRoutes)
 
 
 const router = createRouter({
@@ -22,12 +22,17 @@ const router = createRouter({
 })
 
 router.beforeEach((to, from, next) => {
-    if(to.meta.requiresAuth && localStorage.getItem("access") == null) { 
-        next({ 
+    if (to.meta.requiresAuth && localStorage.getItem("access") == null) {
+        next({
             name: 'login',
             query: {
                 nextUrl: to.name
             }
+        })
+    } else if (Object.keys(to.query).length === 0 && Object.keys(from.query).length > 0 && to.meta.keepQuery === true) {
+        next({
+            ...to,
+            query: from.query
         })
     } else {
         next()

@@ -17,6 +17,7 @@ router.register(r"total-saldo-perfiles", ObtenerSaldoTotalPerfilesViewSet, basen
 router.register(r"cuenta", CuentaViewSet, basename="cuenta")
 
 router.register(r"transaccion", TransaccionViewSet, basename="transaccion")
+router.register(r"transacciones-rango-fechas", TransaccionesRangoFechasViewSet, basename="transacciones-rango-fechas")
 router.register(r"gasto", GastoViewSet, basename="gasto")
 router.register(r"ingreso", IngresoViewSet, basename="ingreso")
 router.register(r"transferencia", TransferenciaViewSet, basename="transferencia")

@@ -1,5 +1,5 @@
 <template>
-    <RouterView/>
+    <RouterView />
     <!-- Formulario para gastos e ingresos -->
     <div class="col-11 px-5 m-4">
         <div class="form-control m-3 px-4">
@@ -7,7 +7,19 @@
                 <div>
                     <form @submit.prevent="editarTransferencia()">
                         <TransferenciaFormView />
-                        <button type="submit" class="btn btn-success" id="buttonCrear">Editar Transferencia</button>
+                        <div class="row">
+                            <div class="col-6">
+                                <DynamicButtonComponent type="submit" color="success" icon="edit">
+                                    Editar Transferencia
+                                </DynamicButtonComponent>
+                            </div>
+                            <div class="col-6 text-end">
+                                <DynamicButtonComponent icon="delete" color="danger"
+                                    @click="router.push({ name: 'transferencia-eliminar' })">
+                                    Eliminar Transferencia
+                                </DynamicButtonComponent>
+                            </div>
+                        </div>
                     </form>
                 </div>
             </div>
@@ -16,20 +28,20 @@
 </template>
 
 <script setup>
-import { useRoute } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 
 import { useTransaccionesComposable } from '@/composables/useTransaccionesComposable';
 
-import TransaccionFormView from './TransaccionFormView.vue';
+import {
+    DynamicButtonComponent
+} from '@/components/buttonComponents'
+
 import TransferenciaFormView from './TransferenciaFormView.vue';
 
 const route = useRoute()
+const router = useRouter()
 
 const {
-    transaccion,
-
-    editarGasto,
-    editarIngreso,
     editarTransferencia,
 
     cargarTransaccionPorId,
@@ -38,14 +50,6 @@ const {
 
 const refresh = async () => {
     await cargarTransaccionPorId(route.params.idTransaccion)
-
-    // if (transaccion.value.IdPerfilBeneficiario) {
-    //     transaccion.value.IdPerfilOrdenante = transaccion.value.IdPerfilBeneficiario
-    //     transaccion.value.IdCuentaOrdenante = transaccion.value.IdCuentaBeneficiaria
-
-    //     transaccion.value.IdPerfilBeneficiario = null
-    //     transaccion.value.IdCuentaBeneficiaria = null
-    // }
 }
 
 refresh()

@@ -103,6 +103,17 @@ export const useTransaccionesComposable = () => {
             await store.cargarTransacciones(fechaInicial, fechaFinal)
     }
 
+    //  DELETE
+    const eliminarTransaccion = async () => {
+        await store.eliminarTransaccion()
+            .then(() => {
+                const next = route.query.next ?? 'transaccion-listado'
+                router.push({ name: next }).then(() => {
+                    toast.success("Transacción Eliminada Exitosamente!")
+                })
+            })
+    }
+
     return {
         transaccion,
         transacciones,
@@ -121,5 +132,7 @@ export const useTransaccionesComposable = () => {
         cargarTransaccionesSemanales,
         cargarTransaccionesMensuales,
         cargarTransaccionesAnuales,
+
+        eliminarTransaccion,
     }
 }

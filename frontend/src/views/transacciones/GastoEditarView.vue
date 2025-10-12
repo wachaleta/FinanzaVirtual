@@ -1,4 +1,5 @@
 <template>
+    <RouterView/>
     <div class="row d-flex justify-content-evenly">
         <!-- Botón de gasto -->
         <div class="col-1">

@@ -6,6 +6,7 @@ import TransaccionesAnualesFormView from './TransaccionesAnualesFormView.vue'
 
 import TransaccionCrearView from './TransaccionCrearView.vue'
 import TransaccionEditarView from './TransaccionEditarView.vue'
+import TransaccionEliminarModalView from './TransaccionEliminarModalView.vue'
 
 import GastoCrearView from './GastoCrearView.vue'
 import GastoEditarView from './GastoEditarView.vue'
@@ -25,6 +26,7 @@ export {
 
     TransaccionCrearView,
     TransaccionEditarView,
+    TransaccionEliminarModalView,
 
     GastoCrearView,
     GastoEditarView,

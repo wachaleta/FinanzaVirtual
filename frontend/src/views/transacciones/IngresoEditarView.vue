@@ -1,4 +1,5 @@
 <template>
+    <RouterView/>
     <div class="row d-flex justify-content-evenly">
         <!-- Botón de gasto -->
         <div class="col-1">
@@ -14,7 +15,7 @@
 </template>
 
 <script setup>
-import { useRouter } from 'vue-router'
+import { RouterView, useRouter } from 'vue-router'
 
 const router = useRouter()
 

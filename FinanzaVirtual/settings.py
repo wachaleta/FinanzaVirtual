@@ -28,7 +28,12 @@ SECRET_KEY = 'django-insecure-1pe&ps*jrv(prj5r1duu3eum$+4&$zabok!zlb%##w@e79kzs*
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1', "fabriciomejia.pythonanywhere.com", 'restaurantelaantigua.pythonanywhere.com']
+ALLOWED_HOSTS = [
+    '127.0.0.1',
+    '192.168.0.138',
+    "fabriciomejia.pythonanywhere.com",
+    'restaurantelaantigua.pythonanywhere.com'
+]
 
 
 # Application definition
@@ -59,7 +64,8 @@ MIDDLEWARE = [
 ]
 
 CORS_ALLOWED_ORIGINS = [
-    'http://localhost:5173'
+    'http://localhost:5173',
+    'http://192.168.0.138:5173',
 ]
 
 ROOT_URLCONF = 'FinanzaVirtual.urls'

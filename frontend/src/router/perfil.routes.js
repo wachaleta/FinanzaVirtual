@@ -39,7 +39,7 @@ export default [
                         },
                         meta: {
                             title: `Eliminar Perfil`,
-                            subTitle: "Seguro que desea eliminar el perfil?"
+                            subtitle: "Seguro que desea eliminar el perfil?"
                         },
                     },
                 ]

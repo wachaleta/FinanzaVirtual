@@ -3,7 +3,9 @@ from .CuentaSerializer import CuentaSerializer
 
 from .PerfilSerializer import PerfilSerializer
 
+from .TransaccionesRangoFechasSerializer import TransaccionesRangoFechasSerializer
 from .TransaccionSerializer import TransaccionSerializer
+
 from .GastoSerializer import GastoSerializer
 from .IngresoSerializer import IngresoSerializer
 from .TransferenciaSerializer import TransferenciaSerializer
