@@ -2,6 +2,7 @@ import { defineStore } from "pinia";
 import { toast } from 'vue3-toastify'
 import DebitoApi from "@/helpers/DebitoApi";
 import filters from "@/filters";
+import router from "@/router"
 
 export const useTransaccionesStore = defineStore("transacciones", {
     state: () => {
@@ -20,6 +21,7 @@ export const useTransaccionesStore = defineStore("transacciones", {
         }
     },
     actions: {
+        //  POST
         async crearGasto() {
             await DebitoApi().post("gasto/", this.transaccion)
                 .then(() => {
@@ -50,6 +52,20 @@ export const useTransaccionesStore = defineStore("transacciones", {
                 })
         },
 
+        //  PUT
+        async editarGasto() {
+            await DebitoApi().put(`gasto/${this.transaccion.IdTransaccion}/`, this.transaccion)
+        },
+
+        async editarIngreso() {
+            await DebitoApi().put(`ingreso/${this.transaccion.IdTransaccion}/`, this.transaccion)
+        },
+
+        async editarTransferencia() {
+            await DebitoApi().put(`transferencia/${this.transaccion.IdTransaccion}/`, this.transaccion)
+        },
+
+        //  GET
         async cargarTransacciones(fechaInicial = null, fechaFinal = null) {
             const queryParams = {
                 fechaInicial: fechaInicial,
@@ -63,15 +79,15 @@ export const useTransaccionesStore = defineStore("transacciones", {
                 }
             }
 
-            for(const id in this.transaccionesFiltros.IdPerfiles){
+            for (const id in this.transaccionesFiltros.IdPerfiles) {
                 params.append("IdPerfiles", this.transaccionesFiltros.IdPerfiles[id])
             }
 
-            for(const id in this.transaccionesFiltros.IdCuentas){
+            for (const id in this.transaccionesFiltros.IdCuentas) {
                 params.append("IdCuentas", this.transaccionesFiltros.IdCuentas[id])
             }
 
-            for(const id in this.transaccionesFiltros.IdCategorias){
+            for (const id in this.transaccionesFiltros.IdCategorias) {
                 params.append("IdCategorias", this.transaccionesFiltros.IdCategorias[id])
             }
 
@@ -79,6 +95,18 @@ export const useTransaccionesStore = defineStore("transacciones", {
             await DebitoApi().get("transaccion?" + querySearch)
                 .then(res => {
                     this.transacciones = res.data
+                })
+        },
+
+        async cargarTransaccionPorId(idTransaccion) {
+
+            if (idTransaccion) {
+                this.transaccion.IdTransaccion = idTransaccion
+            }
+
+            await DebitoApi().get(`gasto/${this.transaccion.IdTransaccion}`)
+                .then(res => {
+                    this.transaccion = res.data
                 })
         }
     }

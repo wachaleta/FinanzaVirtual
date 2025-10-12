@@ -26,5 +26,8 @@ class Transaccion(models.Model):
 
     @property
     def CategoriaNombre(self):
-        categoria = Categoria.objects.filter(IdCategoria = self.IdCategoria).first()
-        return categoria.nombre
+        return self.IdCategoria.Nombre
+
+    @property
+    def TransferenciaEntrePerfiles(self):
+        return self.IdPerfilBeneficiario is not None and self.IdPerfilOrdenante is not None

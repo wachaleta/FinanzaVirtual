@@ -6,11 +6,12 @@ from rest_framework.permissions import IsAuthenticated
 from ....Application.Behaviours import FinanzasModelViewSet
 from ..models import *
 from ..serializers import IngresoSerializer
-from ..validators import IngresoCrearValidator
+from ..validators import IngresoCrearValidator, IngresoEditarValidator
 
 class IngresoViewSet(FinanzasModelViewSet):
     serializer_class = IngresoSerializer
-    create_validator = IngresoCrearValidator()
+    create_validator = IngresoCrearValidator
+    update_validator = IngresoEditarValidator
     permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
@@ -40,6 +41,17 @@ class IngresoViewSet(FinanzasModelViewSet):
     
     def get_create_validated_data(self, data):
         return {
+            "Monto": data.get("Monto", 0),
+            "Fecha": data.get("Fecha", ""),
+            "IdCuentaBeneficiaria": data.get("IdCuentaOrdenante", ""),
+            "IdPerfilBeneficiario": data.get("IdPerfilOrdenante", ""),
+            "IdCategoria": data.get("IdCategoria", ""),
+            "Descripcion": data.get("Descripcion", ""),
+        }
+    
+    def get_update_validated_data(self, data):
+        return {
+            "IdTransaccion": data.get("IdTransaccion"),
             "Monto": data.get("Monto", 0),
             "Fecha": data.get("Fecha", ""),
             "IdCuentaBeneficiaria": data.get("IdCuentaOrdenante", ""),

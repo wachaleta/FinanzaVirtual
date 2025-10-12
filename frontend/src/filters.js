@@ -62,7 +62,7 @@ export default {
     },
 
     semanaActual() {
-        const semanaFormateada = dayjs().year() + "-W" + dayjs().week()
+        const semanaFormateada = dayjs().year() + "-W" + dayjs().add(-1, "day").week()
         return semanaFormateada
     },
 

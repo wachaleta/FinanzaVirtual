@@ -8,8 +8,8 @@ from ..serializers import *
 
 class PerfilViewSet(FinanzasModelViewSet):
     serializer_class = PerfilSerializer
-    create_validator = PerfilCrearValidator()
-    update_validator = PerfilEditarValidator()
+    create_validator = PerfilCrearValidator
+    update_validator = PerfilEditarValidator
     permission_classes = [IsAuthenticated]
 
     def get_queryset(self):

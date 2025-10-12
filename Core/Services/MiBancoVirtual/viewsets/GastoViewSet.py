@@ -6,11 +6,12 @@ from rest_framework.permissions import IsAuthenticated
 from ....Application.Behaviours import FinanzasModelViewSet
 from ..models import *
 from ..serializers import GastoSerializer
-from ..validators import GastoCrearValidator
+from ..validators import GastoCrearValidator, GastoEditarValidator
 
 class GastoViewSet(FinanzasModelViewSet):
     serializer_class = GastoSerializer
-    create_validator = GastoCrearValidator()
+    create_validator = GastoCrearValidator
+    update_validator = GastoEditarValidator
     permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
@@ -37,9 +38,20 @@ class GastoViewSet(FinanzasModelViewSet):
                 F("IdPerfilBeneficiario__Nombre")
             )
         ).order_by("-Fecha").order_by("-FechaCreacion")
-    
+
     def get_create_validated_data(self, data):
         return {
+            "Monto": data.get("Monto", 0),
+            "Fecha": data.get("Fecha", ""),
+            "IdCuentaOrdenante": data.get("IdCuentaOrdenante", ""),
+            "IdPerfilOrdenante": data.get("IdPerfilOrdenante", ""),
+            "IdCategoria": data.get("IdCategoria", ""),
+            "Descripcion": data.get("Descripcion", ""),
+        }
+    
+    def get_update_validated_data(self, data):
+        return {
+            "IdTransaccion": data.get("IdTransaccion"),
             "Monto": data.get("Monto", 0),
             "Fecha": data.get("Fecha", ""),
             "IdCuentaOrdenante": data.get("IdCuentaOrdenante", ""),

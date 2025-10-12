@@ -9,8 +9,8 @@ from ..serializers import *
 
 class CategoriaViewSet(FinanzasModelViewSet):
     serializer_class = CategoriaSerializer
-    create_validator = CategoriaCrearValidator()
-    update_validator = CategoriaEditarValidator()
+    create_validator = CategoriaCrearValidator
+    update_validator = CategoriaEditarValidator
     permission_classes = [IsAuthenticated]
 
     def get_queryset(self):

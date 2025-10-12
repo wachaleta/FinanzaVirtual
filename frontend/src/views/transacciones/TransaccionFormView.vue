@@ -26,9 +26,6 @@
             <DynamicInputComponent v-model="transaccion.Descripcion" name="descripcion">Descripción</DynamicInputComponent>
         </div>
     
-        <div>
-            <button type="submit" class="btn btn-success" id="buttonCrear">Crear {{ $route.meta.tipoTransaccion }}</button>
-        </div>
     </div>
 </template>
 

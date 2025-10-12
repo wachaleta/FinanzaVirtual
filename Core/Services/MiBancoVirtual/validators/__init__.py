@@ -5,8 +5,13 @@ from .CuentaCrearValidator import CuentaCrearValidator
 from .CuentaEditarValidator import CuentaEditarValidator
 
 from .GastoCrearValidator import GastoCrearValidator
+from .GastoEditarValidator import GastoEditarValidator
+
 from .IngresoCrearValidator import IngresoCrearValidator
+from .IngresoEditarValidator import IngresoEditarValidator
+
 from .TransferenciaCrearValidator import TransferenciaCrearValidator
+from .TransferenciaEditarValidator import TransferenciaEditarValidator
 
 from .CategoriaCrearValidator import CategoriaCrearValidator
 from .CategoriaEditarValidator import CategoriaEditarValidator

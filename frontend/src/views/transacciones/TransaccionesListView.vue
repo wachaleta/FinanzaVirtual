@@ -42,7 +42,7 @@
     </div>
 
     <h3 class="ms-4">Filtros</h3>
-    
+
     <PanelNavComponent class="mb-5">
         <PanelNavItemComponent to="transaccion-listado-diario" class="me-2">
             Diario
@@ -65,7 +65,7 @@
 
     <div class="row">
         <div v-for="transaccion in transacciones.Items" class="col-4 mb-3">
-            <CardComponent :color="getColorTransaccion(transaccion)">
+            <CardComponent :color="getColorTransaccion(transaccion)" @click="editarTransaccion(transaccion)">
                 <template v-slot:header>
                     {{ transaccion.ordenante_nombre }} {{ transaccion.beneficiario_nombre }}
                 </template>
@@ -93,29 +93,57 @@
 </template>
 
 <script setup>
+import { useRoute, useRouter } from 'vue-router';
 
 import { useTransaccionesComposable } from '@/composables/useTransaccionesComposable';
 
 import { PanelNavComponent, PanelNavItemComponent } from '@/components/panelNav';
 
 import CardComponent from '@/components/CardComponent.vue';
-import { ref } from 'vue';
 
+const route = useRoute()
+const router = useRouter()
 
 const {
     transacciones,
 } = useTransaccionesComposable()
 
 const getColorTransaccion = (transaccion) => {
-    if(transaccion.IdPerfilOrdenante == null && transaccion.IdCuentaOrdenante == null){
+    if (transaccion.IdPerfilOrdenante == null && transaccion.IdCuentaOrdenante == null) {
         return 'success'
     }
 
-    if(transaccion.IdPerfilBeneficiario == null && transaccion.IdCuentaBeneficiaria == null){
+    if (transaccion.IdPerfilBeneficiario == null && transaccion.IdCuentaBeneficiaria == null) {
         return 'danger'
     }
 
     return 'info'
+}
+
+const editarTransaccion = (transaccion) => {
+    router.push(
+        {
+            name: getTransaccionEditarRoute(transaccion),
+            params: {
+                idTransaccion: transaccion.IdTransaccion
+            },
+            query: {
+                next: route.name
+            }
+        }
+    )
+}
+
+const getTransaccionEditarRoute = (transaccion) => {
+    if (transaccion.IdPerfilOrdenante == null && transaccion.IdCuentaOrdenante == null) {
+        return 'ingreso-editar'
+    }
+
+    if (transaccion.IdPerfilBeneficiario == null && transaccion.IdCuentaBeneficiaria == null) {
+        return 'gasto-editar'
+    }
+
+    return 'transferencia-editar'
 }
 
 </script>

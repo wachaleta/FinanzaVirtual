@@ -31,9 +31,6 @@ const route = useRoute()
 
 const nombre = ref("")
 
-const xd = () => {
-    alert("xe")
-}
 const {
     categoria,
 

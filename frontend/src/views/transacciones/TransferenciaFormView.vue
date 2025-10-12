@@ -1,7 +1,7 @@
 <template>
     <div class="row">
         <div class="col-6">
-            <DynamicInputComponent v-focus type="number" min="1" v-model="transaccion.Monto" name="Monto">
+            <DynamicInputComponent v-focus type="number" name="Monto" min="0" step="0.01" v-model="transaccion.Monto">
                 Monto
             </DynamicInputComponent>
         </div>
@@ -55,9 +55,6 @@
         <div class="col-6">
             <DynamicInputComponent v-model="transaccion.Descripcion" name="Descripcion">Descripción</DynamicInputComponent>
         </div>
-    </div>
-    <div>
-        <button type="submit" class="btn btn-success">Crear Transferencia</button>
     </div>
 </template>
 

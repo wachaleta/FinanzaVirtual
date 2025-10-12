@@ -6,7 +6,7 @@ class TransaccionProgramada(models.Model):
     """ Transacciones estáticas para ejecutar frecuentemente """
 
     #   Llave primaria
-    Id = models.AutoField(primary_key=True, unique=True)
+    IdTransaccionProgramada = models.AutoField(primary_key=True, unique=True)
     
     #   Nombre del encabezado
     Nombre = models.CharField(max_length=25)
@@ -17,7 +17,7 @@ class TransaccionProgramada(models.Model):
     #   Cuando se creó la transacción programada
     FechaCreacion = models.DateTimeField(auto_now_add=True)
 
-    Usuario = models.ForeignKey(User, on_delete=models.CASCADE)
+    IdUsuario = models.ForeignKey(User, on_delete=models.CASCADE)
 
     def __str__(self):
         return self.Nombre

@@ -8,8 +8,8 @@ from ..serializers import *
 
 class CuentaViewSet(FinanzasModelViewSet):
     serializer_class = CuentaSerializer
-    create_validator = CuentaCrearValidator()
-    update_validator = CuentaEditarValidator()
+    create_validator = CuentaCrearValidator
+    update_validator = CuentaEditarValidator
     permission_classes = [IsAuthenticated]
 
     def get_queryset(self):

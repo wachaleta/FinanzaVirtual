@@ -33,8 +33,6 @@ export default (baseURL = "") => {
     axiosInstance.interceptors.response.use(
         (response) => response,
         (error) => {
-            console.log(error)
-            
             errorsComposable.setErrors(error.response.data)
 
             if(error.response.data.code == 'token_not_valid')

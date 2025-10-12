@@ -4,7 +4,7 @@ from ..models import *
 class TransferenciaSerializer(serializers.ModelSerializer):
     # ordenante_nombre = serializers.CharField(read_only = True)
     # beneficiario_nombre = serializers.CharField(read_only = True)
-    TransferenciaEntrePerfiles = serializers.BooleanField(write_only=True)
+    # TransferenciaEntrePerfiles = serializers.BooleanField(write_only=True)
     # categoria_nombre = serializers.CharField()
     class Meta: 
 

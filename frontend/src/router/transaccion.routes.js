@@ -1,5 +1,3 @@
-import { useTransaccionesComposable } from '@/composables/useTransaccionesComposable'
-
 import {
     TransaccionesListView,
     TransaccionesDiariasFormView,
@@ -8,9 +6,16 @@ import {
     TransaccionesAnualesFormView,
 
     TransaccionCrearView,
+    TransaccionEditarView,
+    
     GastoCrearView,
+    GastoEditarView,
+
     IngresoCrearView,
+    IngresoEditarView,
+
     TransferenciaCrearView,
+    TransferenciaEditarView,
 } from '@/views/transacciones'
 
 export default [
@@ -75,16 +80,45 @@ export default [
                             tipoTransaccion: "Ingreso",
                         },
                     },
+                ]
+            },
+            {
+                path: 'transferencia/crear',
+                name: 'transaccion-crear-transferencia',
+                component: TransferenciaCrearView,
+                meta: {
+                    requiresAuth: true,
+                    tipoTransaccion: "Transferencia",
+                },
+            },
+            {
+                path: ':idTransaccion/editar',
+                name: 'transaccion-editar',
+                component: TransaccionEditarView,
+                redirect: {name: 'gasto-editar'},
+                children: [
                     {
-                        path: 'transferencia',
-                        name: 'transaccion-crear-transferencia',
-                        component: TransferenciaCrearView,
+                        path: 'gasto',
+                        name: 'gasto-editar',
+                        component: GastoEditarView,
                         meta: {
-                            requiresAuth: true,
-                            tipoTransaccion: "Transferencia",
-                        },
+                            tipoTransaccion: "Gasto"
+                        }
+                    },
+                    {
+                        path: 'ingreso',
+                        name: 'ingreso-editar',
+                        component: IngresoEditarView,
+                        meta: {
+                            tipoTransaccion: "Ingreso"
+                        }
                     },
                 ]
+            },
+            {
+                path: 'transferencia/:idTransaccion/editar',
+                name: 'transferencia-editar',
+                component: TransferenciaEditarView,
             },
         ]
     },

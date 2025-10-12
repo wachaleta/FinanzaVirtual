@@ -1,6 +1,4 @@
 import { defineStore } from "pinia";
-import AuthApi from "@/helpers/AuthApi";
-import router from "@/router/";
 
 export const useErrorsStore = defineStore("errors", {
     state:() => {

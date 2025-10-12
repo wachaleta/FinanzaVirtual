@@ -1,5 +1,6 @@
 <template>
     <DynamicSelectComponent
+        v-if="cargado"
         v-model="model"
         name="IdCuenta"
         valueRef="IdCuenta"
@@ -16,8 +17,10 @@
 import { useCuentasComposable } from '@/composables/useCuentasComposable';
 
 import DynamicSelectComponent from './DynamicSelectComponent.vue';
+import { ref } from 'vue';
 
 const model = defineModel()
+const cargado = ref(false)
 
 const {
     cuentas,
@@ -27,6 +30,7 @@ const {
 
 const refresh = async() =>{
     await cargarCuentas()
+    cargado.value = true
 }
 
 refresh()

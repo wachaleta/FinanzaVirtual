@@ -1,5 +1,6 @@
 <template>
     <DynamicSelectComponent
+        v-if="cargado"
         v-model="model"
         name="IdPerfil"
         valueRef="IdPerfil"
@@ -15,11 +16,13 @@
 </template>1
 
 <script setup>
+import { ref } from 'vue'
 import { usePerfilesComposable } from '@/composables/usePerfilesComposable';
 
 import DynamicSelectComponent from './DynamicSelectComponent.vue';
 
 const model = defineModel()
+const cargado = ref(false)
 
 defineProps({
     multiple:{
@@ -41,6 +44,7 @@ const {
 
 const refresh = async() =>{
     await cargarPerfiles()
+    cargado.value = true
 }
 
 refresh()

@@ -14,7 +14,7 @@ from ..validators import GastoCrearValidator
 
 class TransaccionViewSet(FinanzasModelViewSet):
     serializer_class = TransaccionSerializer
-    create_validator = GastoCrearValidator()
+    create_validator = GastoCrearValidator
     permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
