@@ -2,17 +2,17 @@
     <ContainerComponent>
         <TransaccionesFiltrosSelectores @cargar="cargarTransaccionesSemanales"/>
         <div class="row">
-            <div class="col-2 d-flex align-items-center">
+            <div class="col-12 col-sm-12 col-md-2 mb-3 mb-md-0 d-flex align-items-center">
                 <DynamicCheckBoxComponent v-model="transaccionesFiltros.EstablecerRango" name="rango" @onChange="cargarTransaccionesSemanales">
                 Establecer rango
                 </DynamicCheckBoxComponent>
             </div>
-            <div class="col">
+            <div class="col-6 col-md-5 ps-md-5 ps-lg-0">
                 <DynamicInputComponent type="week" name="FechaInicialSemanal" v-model="transaccionesFiltros.FechaInicialSemanal" @onChange="cargarTransaccionesSemanales">
                     Fecha Inicial
                 </DynamicInputComponent>
             </div>
-            <div class="col">
+            <div class="col-6 col-md-5">
                 <DynamicInputComponent v-if="transaccionesFiltros.EstablecerRango" v-model="transaccionesFiltros.FechaFinalSemanal" type="week" name="FechaFinalSemanal" @onChange="cargarTransaccionesSemanales">
                     Fecha Final
                 </DynamicInputComponent>

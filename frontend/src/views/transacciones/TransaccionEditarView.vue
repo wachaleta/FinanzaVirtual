@@ -1,14 +1,14 @@
 <template>
     <RouterView/>
     <!-- Formulario para gastos e ingresos -->
-    <div class="col-11 px-5 m-4">
-        <div class="form-control m-3 px-4">
+    <div class="col-12 mt-3">
+        <div class="form-control px-4">
             <div class="row d-flex align-content-center mb-2">
                 <form @submit.prevent="submitForm">
                     <TransaccionFormView />
                     <div class="row">
                         <div class="col-6">
-                            <DynamicButtonComponent type="submit" icon="edit" color="success">
+                            <DynamicButtonComponent type="submit" icon="edit" color="success" style="height: 100%;">
                                 Editar {{ $route.meta.tipoTransaccion }}
                             </DynamicButtonComponent>
                         </div>

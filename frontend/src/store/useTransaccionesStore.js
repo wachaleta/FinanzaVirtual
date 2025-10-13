@@ -35,7 +35,7 @@ export const useTransaccionesStore = defineStore("transacciones", {
         async crearIngreso() {
             await DebitoApi().post("ingreso/", this.transaccion)
                 .then(() => {
-                    toast.success("Ingreso Creada Exitosamente!")
+                    toast.success("Ingreso Creado Exitosamente!")
                     const fecha = this.transaccion.Fecha
                     this.transaccion = {}
                     this.transaccion.Fecha = fecha

@@ -1,7 +1,7 @@
 <template>
     <h3 class="ms-4">Saldos</h3>
-    <div class="row">
-        <div class="col mb-4">
+    <div class="row mb-4">
+        <div class="col-12 col-sm-6 col-md-4 mt-3">
             <CardComponent color="success">
                 <template v-slot:header>
                     Entradas
@@ -13,19 +13,19 @@
                 </template>
             </CardComponent>
         </div>
-        <div class="col">
+        <div class="col-12 col-sm-6 col-md-4 mt-3">
             <CardComponent color="danger">
                 <template v-slot:header>
                     Salidas
                 </template>
                 <template v-slot:body>
                     <div class="mt-2" style="font-size: 1.7rem;">
-                        <strong>{{ $filters.currencyGTQ(-transacciones.TotalSalidas) }}</strong>
+                        <strong>{{ $filters.currencyGTQ(transacciones.TotalSalidas) }}</strong>
                     </div>
                 </template>
             </CardComponent>
         </div>
-        <div class="col">
+        <div class="col-12 col-md-4 mt-3">
             <CardComponent :color="transacciones.TotalBalance < 0 ? 'danger' : 'success'">
                 <template v-slot:header>
                     Balance
@@ -38,33 +38,41 @@
             </CardComponent>
         </div>
     </div>
-    <div>
-    </div>
 
     <h3 class="ms-4">Filtros</h3>
 
-    <PanelNavComponent class="mb-5">
-        <PanelNavItemComponent to="transaccion-listado-diario" class="me-2">
-            Diario
-        </PanelNavItemComponent>
+    <div class="row mb-5">
+        <div class="col-6 col-sm-3 col-md-2">
+            <PanelNavItemComponent to="transaccion-listado-diario" class="me-2">
+                Diario
+            </PanelNavItemComponent>
+        </div>
 
-        <PanelNavItemComponent to="transaccion-listado-semanal" class="me-2">
-            Semanal
-        </PanelNavItemComponent>
+        <div class="col-6 col-sm-3 col-md-2">
+            <PanelNavItemComponent to="transaccion-listado-semanal" class="me-2">
+                Semanal
+            </PanelNavItemComponent>
+        </div>
 
-        <PanelNavItemComponent to="transaccion-listado-mensual" class="me-2">
-            Mensual
-        </PanelNavItemComponent>
+        <div class="col-6 col-sm-3 col-md-2">
+            <PanelNavItemComponent to="transaccion-listado-mensual" class="me-2">
+                Mensual
+            </PanelNavItemComponent>
+        </div>
 
-        <PanelNavItemComponent to="transaccion-listado-anual" class="me-2">
-            Anual
-        </PanelNavItemComponent>
-    </PanelNavComponent>
+        <div class="col-6 col-sm-3 col-md-2">
+            <PanelNavItemComponent to="transaccion-listado-anual" class="me-2">
+                Anual
+            </PanelNavItemComponent>
+        </div>
+        <RouterView/>
+
+    </div>
 
     <h3 class="ms-4">Transacciones</h3>
 
     <div class="row">
-        <div v-for="transaccion in transacciones.Items" class="col-4 mb-3">
+        <div v-for="transaccion in transacciones.Items" class="col-12  col-md-6 col-lg-4 mb-3">
             <CardComponent :color="getColorTransaccion(transaccion)" @click="editarTransaccion(transaccion)">
                 <template v-slot:header>
                     {{ transaccion.ordenante_nombre }} {{ transaccion.beneficiario_nombre }}

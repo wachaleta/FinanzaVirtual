@@ -9,7 +9,7 @@
 </template>
 
 <style scoped>
-ul {
+wul {
     list-style: none;
     display: flex;
     margin-bottom: 1.6rem;

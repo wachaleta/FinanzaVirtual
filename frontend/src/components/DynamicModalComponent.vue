@@ -146,4 +146,34 @@ const dynamicSize = (size) => {
     overflow-y: auto;
 }
 
+@media (max-width: 991px){
+    .modal-size-extra-small{
+        max-width: 30%;
+    }
+
+    .modal-size-small{
+        max-width: 50%;
+    }
+}
+
+@media (max-width: 767px){
+    .modal-size-extra-small{
+        max-width: 50%;
+    }
+
+    .modal-size-small{
+        max-width: 70%;
+    }
+}
+
+@media (max-width: 575px){
+    .modal-size-extra-small{
+        max-width: 70%;
+    }
+
+    .modal-size-small{
+        max-width: 95%;
+    }
+}
+
 </style>

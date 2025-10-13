@@ -17,7 +17,7 @@
                 </div>
             </div>
 
-            <div class="col-3">
+            <div class="col-4">
 
                 <span class="fecha text-end">
                     <slot name="fecha">
@@ -56,7 +56,7 @@ defineProps({
 
 .fecha {
     color: #787878;
-    font-size: 0.91rem;
+    font-size: 0.87rem;
 }
 
 .card-container {

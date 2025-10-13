@@ -1,16 +1,16 @@
 <template>
     <div class="row">
-        <div class="col">
+        <div class="col-12 col-md-4">
             <PerfilSelectComponent v-model="transaccionesFiltros.IdPerfiles" :multiple="true" :closeOnSelect="false"
                 @onSelect="$emit('cargar')" @onRemove="$emit('cargar')" />
         </div>
 
-        <div class="col">
+        <div class="col-12 col-sm-6 col-md-4">
             <CuentaSelectComponent v-model="transaccionesFiltros.IdCuentas" :multiple="true" :closeOnSelect="false"
                 @onSelect="$emit('cargar')" @onRemove="$emit('cargar')" />
         </div>
 
-        <div class="col">
+        <div class="col-12 col-sm-6 col-md-4">
             <CategoriaSelectComponent v-model="transaccionesFiltros.IdCategorias" :multiple="true"
                 :closeOnSelect="false" @onSelect="$emit('cargar')" @onRemove="$emit('cargar')" />
         </div>

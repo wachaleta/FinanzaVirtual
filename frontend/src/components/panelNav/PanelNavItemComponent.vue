@@ -1,6 +1,6 @@
 <template>
     <RouterLink :to="{name: to}">
-        <div class="panel-nav-item">
+        <div class="panel-nav-item px-0 text-center">
             <slot/>
         </div>
     </RouterLink>

@@ -10,50 +10,41 @@
         </div>
     </div>
     <div class="row my-2">
-        <!-- Ordenante -->
-        <DynamicCheckBoxComponent v-model="transaccion.TransferenciaEntrePerfiles" name="TransferenciaEntrePerfiles">
+        <DynamicCheckBoxComponent v-model="transaccion.TransferenciaEntrePerfiles" class="mb-3 ms-2" name="TransferenciaEntrePerfiles">
             Transferir entre perfiles
         </DynamicCheckBoxComponent>
-        <div class="col border">
-            <div class="row">
-                <div class="col-1">
-                    <p>De:</p>
-                </div>
-            </div>
-            <!-- Perfil -->
-            <div v-if="transaccion.TransferenciaEntrePerfiles == true" class="row">
-                <PerfilSelectComponent v-model="transaccion.IdPerfilOrdenante" name="IdPerfilOrdenante"/>
-            </div>
-            <!-- Cuenta -->
-            <div v-else class="row">
-                <CuentaSelectComponent v-model="transaccion.IdCuentaOrdenante" name="IdCuentaOrdenante"/>
-            </div>
+
+        <div v-if="transaccion.TransferenciaEntrePerfiles == true" class="col-12 col-sm-6">
+            <PerfilSelectComponent v-model="transaccion.IdPerfilOrdenante" name="IdPerfilOrdenante">
+                De:
+            </PerfilSelectComponent>
+        </div>
+        <div v-else class="col-12 col-sm-6">
+            <CuentaSelectComponent v-model="transaccion.IdCuentaOrdenante" name="IdCuentaOrdenante">
+                De:
+            </CuentaSelectComponent>
         </div>
 
-        <!-- Beneficiario -->
-        <div class="col border ms-2">
-            <div class="row">
-                <div class="col-1">
-                    <p>Para:</p>
-                </div>
-            </div>
-            <!-- Perfil -->
-            <div v-if="transaccion.TransferenciaEntrePerfiles" class="row">
-                <PerfilSelectComponent v-model="transaccion.IdPerfilBeneficiario" name="IdPerfilBeneficiario"/>
-            </div>
-            <!-- Cuenta -->
-            <div v-else class="row">
-                <CuentaSelectComponent v-model="transaccion.IdCuentaBeneficiaria" name="IdCuentaBeneficiaria"/>
-            </div>
+        <div v-if="transaccion.TransferenciaEntrePerfiles" class="col-12 col-sm-6">
+            <PerfilSelectComponent v-model="transaccion.IdPerfilBeneficiario" name="IdPerfilBeneficiario">
+                Para:
+            </PerfilSelectComponent>
+        </div>
+        <div v-else class="col-12 col-sm-6">
+            <CuentaSelectComponent v-model="transaccion.IdCuentaBeneficiaria" name="IdCuentaBeneficiaria">
+                Para:
+            </CuentaSelectComponent>
         </div>
     </div>
     <!-- Categorias -->
     <div class="row">
-        <div class="col-6">
-            <CategoriaSelectComponent v-model="transaccion.IdCategoria" name="IdCategoria"/>
+        <div class="col-12 col-sm-6">
+            <CategoriaSelectComponent v-model="transaccion.IdCategoria" name="IdCategoria" />
         </div>
-        <div class="col-6">
-            <DynamicInputComponent v-model="transaccion.Descripcion" name="Descripcion">Descripción</DynamicInputComponent>
+        <div class="col-12 col-sm-6">
+            <DynamicInputComponent v-model="transaccion.Descripcion" name="Descripcion">
+                Descripción
+            </DynamicInputComponent>
         </div>
     </div>
 </template>

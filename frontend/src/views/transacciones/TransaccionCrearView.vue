@@ -1,15 +1,15 @@
 <template>
     <RouterView/>
     <!-- Formulario para gastos e ingresos -->
-    <div class="col-11 px-5 m-4">
-        <div class="form-control m-3 px-4">
+    <div class="col-12 mt-3">
+        <div class="form-control px-4">
             <div class="row d-flex align-content-center mb-2">
-                <div>
-                    <form @submit.prevent="submitForm">
-                        <TransaccionFormView />
-                        <button type="submit" class="btn btn-success" id="buttonCrear">Crear {{ $route.meta.tipoTransaccion }}</button>
-                    </form>
-                </div>
+                <form @submit.prevent="submitForm">
+                    <TransaccionFormView />
+                    <DynamicButtonComponent icon="save" color="success" type="submit">
+                        Crear {{ $route.meta.tipoTransaccion }}
+                    </DynamicButtonComponent>
+                </form>
             </div>
         </div>
     </div>
@@ -19,6 +19,10 @@
 import { useRoute, useRouter } from 'vue-router'
 
 import { useTransaccionesComposable } from '@/composables/useTransaccionesComposable'
+
+import {
+    DynamicButtonComponent,
+} from '@/components/buttonComponents'
 
 import TransaccionFormView from './TransaccionFormView.vue'
 

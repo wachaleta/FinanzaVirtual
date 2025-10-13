@@ -2,19 +2,19 @@
     <ContainerComponent>
         <TransaccionesFiltrosSelectores @cargar="cargarTransaccionesDiarias"/>
         <div class="row">
-            <div class="col-2 d-flex align-items-center">
+            <div class="col-12 col-sm-12 col-md-2 mb-3 mb-md-0 d-flex align-items-center">
                 <DynamicCheckBoxComponent v-model="transaccionesFiltros.EstablecerRango" name="EstablecerRango"
                     @onChange="cargarTransaccionesDiarias">
                     Establecer rango
                 </DynamicCheckBoxComponent>
             </div>
-            <div class="col">
+            <div class="col-6 col-md-5 ps-md-5 ps-lg-0">
                 <DynamicInputComponent v-model="transaccionesFiltros.FechaInicialDiaria" type="date"
                     name="FechaInicialDiaria" @onChange="cargarTransaccionesDiarias">
                     Fecha Inicial
                 </DynamicInputComponent>
             </div>
-            <div class="col">
+            <div class="col-6 col-md-5">
                 <DynamicInputComponent v-if="transaccionesFiltros.EstablecerRango"
                     v-model="transaccionesFiltros.FechaFinalDiaria" type="date" name="FechaFinalDiaria"
                     @onChange="cargarTransaccionesDiarias">
