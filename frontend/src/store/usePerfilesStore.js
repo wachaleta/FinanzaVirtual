@@ -10,8 +10,8 @@ export const usePerfilesStore = defineStore("perfiles", {
             perfil: {},
             saldosPerfiles: {
                 SaldoTotal: 0,
-                SaldoSuma: 0,
-                SaldoNoSuma: 0,
+                SaldoDisponible: 0,
+                SaldoNoDisponible: 0,
             },
         }
     },

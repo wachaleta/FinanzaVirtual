@@ -14,23 +14,23 @@ class ObtenerSaldoTotalPerfilesViewSet(viewsets.ViewSet):
     def list(self, request):
         idUsuario = self.request.user.id
 
-        lista_perfiles = Perfil.objects.filter(IdUsuario=idUsuario)
+        perfiles = Perfil.objects.filter(IdUsuario=idUsuario)
 
-        lista_perfiles_suman = filter(lambda x: x.SumaDisponible or x.Saldo < 0, lista_perfiles)
+        perfilesDisponible = filter(lambda x: x.SumaDisponible or x.Saldo < 0, perfiles)
 
-        saldo_suma = sum(list(map(lambda x: x.Saldo, lista_perfiles_suman)))
-        saldo_suma = round(Decimal(saldo_suma), 2)
+        saldoDisponible = sum(list(map(lambda x: x.Saldo, perfilesDisponible)))
+        saldoDisponible = round(Decimal(saldoDisponible), 2)
 
-        lista_perfiles_no_suman = filter(lambda x: not x.SumaDisponible and x.Saldo >= 0, lista_perfiles)
-        saldo_no_suma = sum(list(map(lambda x: x.Saldo, lista_perfiles_no_suman)))
-        saldo_no_suma = round(Decimal(saldo_no_suma), 2)
+        perfilesNoDisponible = filter(lambda x: not x.SumaDisponible and x.Saldo >= 0, perfiles)
+        saldoNoDisponible = sum(list(map(lambda x: x.Saldo, perfilesNoDisponible)))
+        saldoNoDisponible = round(Decimal(saldoNoDisponible), 2)
 
-        saldo_total = saldo_suma + saldo_no_suma
+        saldo_total = saldoDisponible + saldoNoDisponible
 
         return Response(
             {
                 'SaldoTotal': saldo_total,
-                'SaldoSuma': saldo_suma,
-                'SaldoNoSuma': saldo_no_suma
+                'SaldoDisponible': saldoDisponible,
+                'SaldoNoDisponible': saldoNoDisponible
             }
         )

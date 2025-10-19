@@ -32,7 +32,7 @@
         </div>
 
         <div class="col-12 col-sm-6 col-md-4 mt-3">
-            <CardComponent :color="saldosPerfiles.SaldoSuma >= 0 ? 'success' : 'danger'" class="h-100">
+            <CardComponent :color="saldosPerfiles.SaldoDisponible >= 0 ? 'success' : 'danger'" class="h-100">
                 <template v-slot:header>
                     Saldo disponible
                 </template>
@@ -41,14 +41,14 @@
                         Balance:
                     </div>
                     <div class="mt-2" style="font-size: 1.7rem;">
-                        <strong>{{ $filters.currencyGTQ(saldosPerfiles.SaldoSuma) }}</strong>
+                        <strong>{{ $filters.currencyGTQ(saldosPerfiles.SaldoDisponible) }}</strong>
                     </div>
                 </template>
             </CardComponent>
         </div>
 
         <div class="col-12 col-sm-6 col-md-4 mt-3">
-            <CardComponent :color="saldosPerfiles.SaldoNoSuma >= 0 ? 'success' : 'danger'" class="h-100">
+            <CardComponent :color="saldosPerfiles.SaldoNoDisponible >= 0 ? 'success' : 'danger'" class="h-100">
                 <template v-slot:header>
                     Saldo no disponible
                 </template>
@@ -57,7 +57,7 @@
                         Balance:
                     </div>
                     <div class="mt-2" style="font-size: 1.7rem;">
-                        <strong>{{ $filters.currencyGTQ(saldosPerfiles.SaldoNoSuma) }}</strong>
+                        <strong>{{ $filters.currencyGTQ(saldosPerfiles.SaldoNoDisponible) }}</strong>
                     </div>
                 </template>
             </CardComponent>
