@@ -2,6 +2,8 @@ from rest_framework import serializers
 from ..models import *
 
 class TransaccionesRangoFechasSerializer(serializers.ModelSerializer):
+    EsTransferencia = serializers.BooleanField(read_only=True)
+
     CategoriaNombre = serializers.CharField(read_only=True)
     ordenante_nombre = serializers.CharField(read_only= True)
     beneficiario_nombre = serializers.CharField(read_only= True)

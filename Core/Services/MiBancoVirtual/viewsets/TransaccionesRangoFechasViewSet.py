@@ -1,7 +1,7 @@
 from datetime import date
 from decimal import Decimal
 
-from django.db.models import Q, Value, F
+from django.db.models import Q, Value, F, Case, When, Value, BooleanField
 from django.db.models.functions import Concat
 
 from rest_framework.permissions import IsAuthenticated
@@ -25,29 +25,51 @@ class TransaccionesRangoFechasViewSet(FinanzasModelViewSet):
         IdCuentas = self.request.query_params.getlist("IdCuentas", [])
         IdCategorias = self.request.query_params.getlist("IdCategorias", [])
 
-        lista_transacciones = Transaccion.objects.filter(
-                Q(IdPerfilOrdenante__IdUsuario = idUsuario) | Q(IdPerfilBeneficiario__IdUsuario = idUsuario) |
-                Q(IdCuentaOrdenante__IdUsuario = idUsuario) | Q(IdCuentaBeneficiaria__IdUsuario = idUsuario) 
-            ).filter(Fecha__gte = fechaInicial).filter(Fecha__lte = fechaFinal)
-        
+        filtros = Q(
+            Q(
+                IdPerfilOrdenante__IdUsuario = idUsuario
+            ) | Q(
+                IdPerfilBeneficiario__IdUsuario = idUsuario
+            ) | Q(
+                IdCuentaOrdenante__IdUsuario = idUsuario
+            ) | Q(
+                IdCuentaBeneficiaria__IdUsuario = idUsuario
+            ), 
+            Q(Fecha__gte = fechaInicial),
+            Q(Fecha__lte = fechaFinal)
+        )
+
+        filtrosExtra = Q()
+        filtrosCategorias = Q()
+
         if IdPerfiles != []:
-            lista_transacciones = lista_transacciones.filter(
-                Q(IdPerfilOrdenante__IdPerfil__in = IdPerfiles) | Q(IdPerfilBeneficiario__IdPerfil__in = IdPerfiles)
-            )
+            filtrosExtra |= Q(IdPerfilOrdenante__IdPerfil__in = IdPerfiles) | Q(IdPerfilBeneficiario__IdPerfil__in = IdPerfiles)
+            
 
         if IdCuentas != []:
-            lista_transacciones = lista_transacciones.filter(
-                Q(IdCuentaOrdenante__IdCuenta__in = IdCuentas) | Q(IdCuentaBeneficiaria__IdCuenta__in = IdCuentas)
-            )
+            filtrosExtra |= Q(IdCuentaOrdenante__IdCuenta__in = IdCuentas) | Q(IdCuentaBeneficiaria__IdCuenta__in = IdCuentas)
+        
 
         if IdCategorias != []:
-            lista_transacciones = lista_transacciones.filter(IdCategoria__in = IdCategorias)
+            filtrosCategorias |= Q(IdCategoria__in = IdCategorias)
+
+        listaTransacciones = Transaccion.objects.filter(filtros, filtrosExtra, filtrosCategorias)
         
-        return lista_transacciones.annotate(
+        return listaTransacciones.annotate(
             ordenante_nombre = Concat(
                 F("IdCuentaOrdenante__Nombre"), 
                 Value(" - "),
                 F("IdPerfilOrdenante__Nombre")
+            )
+        ).annotate(
+            EsTransferencia = Case(
+                When(
+                    Q(IdPerfilOrdenante__isnull = False, IdPerfilBeneficiario__isnull = False)
+                    | Q(IdCuentaOrdenante__isnull = False, IdCuentaBeneficiaria__isnull = False),
+                    then=True
+                ),
+                default=Value(False),
+                output_field=BooleanField()
             )
         ).annotate(
             beneficiario_nombre = Concat(
@@ -63,40 +85,40 @@ class TransaccionesRangoFechasViewSet(FinanzasModelViewSet):
         IdPerfiles = request.query_params.getlist("IdPerfiles", [])
         IdCuentas = request.query_params.getlist("IdCuentas", [])
 
-        query = {
-            "IdPerfilOrdenante": None,
-            "IdCuentaOrdenante": None,
-        }
-        listaSalidas = queryset.exclude(**query)
+        filtrosSalidas = Q(IdPerfilOrdenante__isnull=False) | Q(IdCuentaOrdenante__isnull=False)
+        filtrosEntradas = Q(IdPerfilBeneficiario__isnull=False) | Q(IdCuentaBeneficiaria__isnull=False)
+        filtrosExclude = Q(IdPerfilOrdenante__in=IdPerfiles, IdPerfilBeneficiario__in=IdPerfiles) | Q(IdCuentaOrdenante__in=IdCuentas, IdCuentaBeneficiaria__in=IdCuentas)
 
-        query = {
-            "IdPerfilBeneficiario": None,
-            "IdCuentaBeneficiaria": None,
-        }
-        listaEntradas = queryset.exclude(**query)
+        filtrosExtra = Q()
 
-        if IdPerfiles != []:
-            query = {
-                "IdPerfilOrdenante__in": IdPerfiles,
-            }
-            listaSalidas = listaSalidas.filter(**query)
+        if(IdPerfiles == [] and IdCuentas == []):
+            filtrosExtra |= Q(EsTransferencia=False)
 
-            query = {
-                "IdPerfilBeneficiario__in": IdPerfiles,
-            }
-            listaEntradas = listaEntradas.filter(**query)
+        filtrosExtraSalidas = filtrosExtra
+        filtrosExtraEntradas = filtrosExtra
+        
+        if(IdPerfiles != []):
+            filtrosExtraSalidas |= Q(IdPerfilOrdenante__in=IdPerfiles)
+            filtrosExtraEntradas |= Q(IdPerfilBeneficiario__in=IdPerfiles)
 
-        if IdCuentas != []:
-            query = {
-                "IdCuentaOrdenante__in": IdCuentas,
-            }
-            listaSalidas = listaSalidas.filter(**query)
+        if(IdCuentas != []):
+            filtrosExtraSalidas |= Q(IdCuentaOrdenante__in=IdCuentas)
+            filtrosExtraEntradas |= Q(IdCuentaBeneficiaria__in=IdCuentas)
 
-            query = {
-                "IdCuentaBeneficiaria__in": IdCuentas,
-            }
-            listaEntradas = listaEntradas.filter(**query)
-            
+        listaSalidas = queryset.filter(
+                filtrosSalidas,
+                filtrosExtraSalidas
+            ).exclude(
+                filtrosExclude
+            )
+
+        listaEntradas = queryset.filter(
+                filtrosEntradas,
+                filtrosExtraEntradas
+            ).exclude(
+                filtrosExclude
+            )
+
         totalSalidas = sum(list(map(lambda x: x.Monto, listaSalidas)))
         totalEntradas = sum(list(map(lambda x: x.Monto, listaEntradas)))
 

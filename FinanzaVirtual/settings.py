@@ -30,7 +30,6 @@ DEBUG = True
 
 ALLOWED_HOSTS = [
     '127.0.0.1',
-    '192.168.0.138',
     "fabriciomejia.pythonanywhere.com",
     'restaurantelaantigua.pythonanywhere.com'
 ]
@@ -65,7 +64,7 @@ MIDDLEWARE = [
 
 CORS_ALLOWED_ORIGINS = [
     'http://localhost:5173',
-    'http://192.168.0.138:5173',
+    'http://192.168.0.99:5173',
 ]
 
 ROOT_URLCONF = 'FinanzaVirtual.urls'
