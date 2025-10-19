@@ -9,8 +9,9 @@ class Perfil(models.Model):
 
     IdPerfil = models.AutoField(primary_key=True, unique=True)
     Nombre = models.CharField(max_length=50)
-    AgregarTotal = models.BooleanField(default=True)
+    SumaDisponible = models.BooleanField(default=True)
     IdUsuario = models.ForeignKey(User, on_delete=models.CASCADE)
+    Activo = models.BooleanField(default=True)
 
     @property
     def Saldo(self):

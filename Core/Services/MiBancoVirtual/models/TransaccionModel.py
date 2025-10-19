@@ -25,9 +25,5 @@ class Transaccion(models.Model):
     IdCategoria = models.ForeignKey("MiBancoVirtual.Categoria", on_delete=models.PROTECT)
 
     @property
-    def CategoriaNombre(self):
-        return self.IdCategoria.Nombre
-
-    @property
     def TransferenciaEntrePerfiles(self):
         return self.IdPerfilBeneficiario is not None and self.IdPerfilOrdenante is not None

@@ -1,5 +1,7 @@
 from rest_framework import viewsets
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.decorators import action
+from rest_framework.response import Response
 
 from ....Application.Behaviours import FinanzasModelViewSet
 from ....Application.Exceptions import BadRequestException
@@ -14,7 +16,7 @@ class CategoriaViewSet(FinanzasModelViewSet):
     permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
-        return Categoria.objects.filter(IdUsuario=self.request.user.id)
+        return Categoria.objects.filter(IdUsuario=self.request.user.id, Activo=True)
 
     def get_create_validated_data(self, data):
         return {
@@ -33,3 +35,15 @@ class CategoriaViewSet(FinanzasModelViewSet):
         if coincidencia : 
             raise BadRequestException("No se puede eliminar la categoría porque ya existen transacciones que dependen de esta")
         return super().perform_destroy(instance)
+
+    @action(methods=['put'], detail=True)
+    def inactivar(self, request, pk=None):
+        categoria = self.get_object()
+
+        categoria.Activo = False
+
+        categoria.save()
+
+        return Response({
+            'id': pk
+        })

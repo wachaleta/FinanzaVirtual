@@ -35,7 +35,7 @@ export const useCuentasStore = defineStore("cuentas", {
                 this.cuenta.IdCuenta = idCuenta
             }
 
-            await DebitoApi().delete(`cuenta/${this.cuenta.IdCuenta}/`)
+            await DebitoApi().put(`cuenta/${this.cuenta.IdCuenta}/inactivar/`)
             .then(() => {
                 
                 router.push({name: 'cuenta-listado'}).then(() => {
@@ -57,7 +57,7 @@ export const useCuentasStore = defineStore("cuentas", {
                 this.cuenta.IdCuenta = idCuenta
             }
 
-            await DebitoApi().get(`cuenta/${this.cuenta.IdCuenta}`)
+            await DebitoApi().get(`cuenta/${this.cuenta.IdCuenta}/`)
             .then(res => {
                 this.cuenta = res.data
             })

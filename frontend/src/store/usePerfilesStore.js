@@ -42,7 +42,7 @@ export const usePerfilesStore = defineStore("perfiles", {
                 this.perfil.IdPerfil = IdPerfil
             }
 
-            await DebitoApi().delete(`perfil/${this.perfil.IdPerfil}/`
+            await DebitoApi().put(`perfil/${this.perfil.IdPerfil}/inactivar/`
             )
             .then(() => {
                 router.push({name: 'perfil-listado'}).then(() => {

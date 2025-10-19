@@ -81,7 +81,8 @@ class Validator:
         def ValidateDuplicatedData(self):
             query = {
                 f"{self.field_name}__iexact": self.value,
-                "IdUsuario": self.outer.data["IdUsuario"]
+                "IdUsuario": self.outer.data["IdUsuario"],
+                "Activo": True
             }
 
             validation = self.outer.model.objects.filter(**query).exists()
@@ -92,7 +93,8 @@ class Validator:
         def ValidateDuplicatedDataExceptPk(self, Pk):
             query = {
                 f"{self.field_name}__iexact": self.value,
-                "IdUsuario": self.outer.data["IdUsuario"]
+                "IdUsuario": self.outer.data["IdUsuario"],
+                "Activo": True
             }
             validation = self.outer.model.objects.filter(**query).exclude(pk=Pk).exists()
 

@@ -29,7 +29,7 @@ export const useCategoriasStore = defineStore("categorias", {
         },
 
         async eliminarCategoria(){
-            await DebitoApi().delete(`categoria/${this.categoria.IdCategoria}/`, this.categoria)
+            await DebitoApi().put(`categoria/${this.categoria.IdCategoria}/inactivar/`)
                 .then(() => {
                     router.push({name: 'categoria-listado'}).then(() => {
                         toast.success(`Categoría ${this.categoria.Nombre} Eliminada Exitosamente!`)

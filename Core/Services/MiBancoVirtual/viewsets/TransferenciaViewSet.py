@@ -1,5 +1,4 @@
-from django.db.models import Q, Value, F
-from django.db.models.functions import Concat
+from django.db.models import Q
 
 from rest_framework.permissions import IsAuthenticated
 
@@ -22,19 +21,7 @@ class TransferenciaViewSet(FinanzasModelViewSet):
                 Q(IdCuentaOrdenante__IdUsuario = idUsuario) | Q(IdCuentaBeneficiaria__IdUsuario = idUsuario) 
             )
         
-        return lista_transacciones.annotate(
-            ordenante_nombre = Concat(
-                F("IdCuentaOrdenante__Nombre"), 
-                Value(" - "),
-                F("IdPerfilOrdenante__Nombre")
-            )
-        ).annotate(
-            beneficiario_nombre = Concat(
-                F("IdCuentaBeneficiaria__Nombre"), 
-                Value(" - "),
-                F("IdPerfilBeneficiario__Nombre")
-            )
-        ).order_by("-Fecha").order_by("-FechaCreacion")
+        return lista_transacciones.order_by("-Fecha").order_by("-FechaCreacion")
     
     def get_create_validated_data(self, data):
         validated_data = {

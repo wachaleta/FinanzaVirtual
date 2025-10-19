@@ -16,12 +16,12 @@ class ObtenerSaldoTotalPerfilesViewSet(viewsets.ViewSet):
 
         lista_perfiles = Perfil.objects.filter(IdUsuario=idUsuario)
 
-        lista_perfiles_suman = filter(lambda x: x.AgregarTotal or x.Saldo < 0, lista_perfiles)
+        lista_perfiles_suman = filter(lambda x: x.SumaDisponible or x.Saldo < 0, lista_perfiles)
 
         saldo_suma = sum(list(map(lambda x: x.Saldo, lista_perfiles_suman)))
         saldo_suma = round(Decimal(saldo_suma), 2)
 
-        lista_perfiles_no_suman = filter(lambda x: not x.AgregarTotal and x.Saldo >= 0, lista_perfiles)
+        lista_perfiles_no_suman = filter(lambda x: not x.SumaDisponible and x.Saldo >= 0, lista_perfiles)
         saldo_no_suma = sum(list(map(lambda x: x.Saldo, lista_perfiles_no_suman)))
         saldo_no_suma = round(Decimal(saldo_no_suma), 2)
 

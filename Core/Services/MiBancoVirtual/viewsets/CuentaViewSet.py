@@ -1,7 +1,9 @@
 from rest_framework.permissions import IsAuthenticated
-from decimal import Decimal
+from rest_framework.decorators import action
+from rest_framework.response import Response
 
 from ....Application.Behaviours import FinanzasModelViewSet
+from ....Application.Exceptions import BadRequestException
 from ..validators import CuentaCrearValidator, CuentaEditarValidator
 from ..models import *
 from ..serializers import *
@@ -16,7 +18,7 @@ class CuentaViewSet(FinanzasModelViewSet):
 
         idUsuario = self.request.user.id
 
-        cuentas = Cuenta.objects.filter(IdUsuario = idUsuario).order_by("Nombre")
+        cuentas = Cuenta.objects.filter(IdUsuario=idUsuario, Activo=True).order_by("Nombre")
 
         return cuentas
     
@@ -54,3 +56,18 @@ class CuentaViewSet(FinanzasModelViewSet):
             "M10c": data.get("M10c", 0),
             "M5c": data.get("M5c", 0),
         }
+
+    @action(methods=['put'], detail=True)
+    def inactivar(self, request, pk=None):
+        cuenta = self.get_object()
+
+        if(cuenta.SaldoTotal != 0):
+            raise BadRequestException("Esta cuenta aún tiene saldo")
+
+        cuenta.Activo = False
+
+        cuenta.save()
+
+        return Response({
+            'id': pk
+        })

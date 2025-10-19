@@ -1,7 +1,7 @@
 from datetime import date
 from decimal import Decimal
 
-from django.db.models import Q, Value, F, Case, When, Value, BooleanField
+from django.db.models import Q, Value, F, Case, When, Value, BooleanField, CharField
 from django.db.models.functions import Concat
 
 from rest_framework.permissions import IsAuthenticated
@@ -10,11 +10,9 @@ from rest_framework.response import Response
 from ....Application.Behaviours import FinanzasModelViewSet
 from ..models import *
 from ..serializers import TransaccionesRangoFechasSerializer
-from ..validators import GastoCrearValidator
 
 class TransaccionesRangoFechasViewSet(FinanzasModelViewSet):
     serializer_class = TransaccionesRangoFechasSerializer
-    create_validator = GastoCrearValidator
     permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
@@ -56,12 +54,6 @@ class TransaccionesRangoFechasViewSet(FinanzasModelViewSet):
         listaTransacciones = Transaccion.objects.filter(filtros, filtrosExtra, filtrosCategorias)
         
         return listaTransacciones.annotate(
-            ordenante_nombre = Concat(
-                F("IdCuentaOrdenante__Nombre"), 
-                Value(" - "),
-                F("IdPerfilOrdenante__Nombre")
-            )
-        ).annotate(
             EsTransferencia = Case(
                 When(
                     Q(IdPerfilOrdenante__isnull = False, IdPerfilBeneficiario__isnull = False)
@@ -72,11 +64,58 @@ class TransaccionesRangoFechasViewSet(FinanzasModelViewSet):
                 output_field=BooleanField()
             )
         ).annotate(
-            beneficiario_nombre = Concat(
-                F("IdCuentaBeneficiaria__Nombre"), 
-                Value(" - "),
-                F("IdPerfilBeneficiario__Nombre")
+            EsIngreso = Case(
+                When(
+                    Q(IdPerfilBeneficiario__isnull=False, IdCuentaBeneficiaria__isnull=False),
+                    then=True
+                ),
+                default=Value(False),
+                output_field=BooleanField()
             )
+        ).annotate(
+            EsGasto = Case(
+                When(
+                    Q(IdPerfilOrdenante__isnull=False, IdCuentaOrdenante__isnull=False),
+                    then=True
+                ),
+                default=Value(False),
+                output_field=BooleanField()
+            )
+        ).annotate(
+            Nombre = Case(
+                When(
+                    Q(EsGasto=True),
+                    then=Concat(
+                        F("IdCuentaOrdenante__Nombre"),
+                        Value(" - "),
+                        F("IdPerfilOrdenante__Nombre")
+                    )
+                ),
+                When(
+                    Q(EsIngreso=True),
+                    then=Concat(
+                        F("IdCuentaBeneficiaria__Nombre"),
+                        Value(" - "),
+                        F("IdPerfilBeneficiario__Nombre")
+                    )
+                ),
+                When(
+                    Q(EsTransferencia=True, IdPerfilOrdenante__isnull=False),
+                    then=Concat(
+                        F("IdPerfilOrdenante__Nombre"),
+                        Value(" -> "),
+                        F("IdPerfilBeneficiario__Nombre")
+                    )
+                ),
+                default=Concat(
+                        F("IdCuentaOrdenante__Nombre"),
+                        Value(" -> "),
+                        F("IdCuentaBeneficiaria__Nombre")
+                    ),
+                output_field=CharField()
+            )
+        ).annotate(
+            CategoriaNombre = F("IdCategoria__Nombre")
         ).order_by("-Fecha").order_by("-FechaCreacion")
     
     def list(self, request, *args, **kwargs):

@@ -14,7 +14,7 @@ class PerfilSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         x = Perfil.objects.create(
             Nombre = validated_data["Nombre"],
-            AgregarTotal = validated_data["AgregarTotal"],
+            SumaDisponible = validated_data["SumaDisponible"],
             IdUsuario = self.context["request"].user
         )
         return x

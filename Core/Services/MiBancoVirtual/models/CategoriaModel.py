@@ -6,6 +6,7 @@ class Categoria(models.Model):
     IdCategoria = models.AutoField(primary_key=True, unique=True)
     Nombre = models.CharField(max_length=50)
     IdUsuario = models.ForeignKey(User, on_delete=models.CASCADE)
+    Activo = models.BooleanField(default=True)
 
     def __str__(self):
         return self.nombre

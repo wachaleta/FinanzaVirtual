@@ -23,6 +23,7 @@ class Cuenta(models.Model):
     M25c = models.IntegerField(default=0)
     M10c = models.IntegerField(default=0)
     M5c = models.IntegerField(default=0)
+    Activo = models.BooleanField(default=True)
 
     @property
     def SaldoTotal(self):

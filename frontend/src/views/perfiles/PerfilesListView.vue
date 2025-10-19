@@ -71,7 +71,7 @@
         </div>
 
         <div class="row mt-4">
-            <div class="col-12 col-sm-6 col-md-4" v-for="perfil in perfiles.filter(v => v.AgregarTotal == true || v.Saldo < 0)">
+            <div class="col-12 col-sm-6 col-md-4" v-for="perfil in perfiles.filter(v => v.SumaDisponible == true || v.Saldo < 0)">
                 <CardComponent @click="router.push({name: 'perfil-editar', params:{idPerfil: perfil.IdPerfil}})"
                 class="mb-3"
                 :color="perfil.Saldo >= 0 ? 'success' : 'danger'"
@@ -98,7 +98,7 @@
         </div>
 
         <div class="row mt-4">
-            <div class="col-12 col-sm-6 col-md-4" v-for="perfil in perfiles.filter(v => v.AgregarTotal == false && v.Saldo >= 0)">
+            <div class="col-12 col-sm-6 col-md-4" v-for="perfil in perfiles.filter(v => v.SumaDisponible == false && v.Saldo >= 0)">
                 <CardComponent @click="router.push({name: 'perfil-editar', params:{idPerfil: perfil.IdPerfil}})"
                 class="mb-3"
                 :color="perfil.Saldo >= 0 ? 'success' : 'danger'"
