@@ -73,7 +73,7 @@
 
     <div class="row">
         <div v-for="transaccion in transacciones.Items" class="col-12  col-md-6 col-lg-4 mb-3">
-            <CardComponent :color="getColorTransaccion(transaccion)" @click="editarTransaccion(transaccion)">
+            <CardComponent :color="getColorTransaccion(transaccion)" @click="editarTransaccion(transaccion)" class="h-100">
                 <template v-slot:header>
                     {{ transaccion.ordenante_nombre }} {{ transaccion.beneficiario_nombre }}
                 </template>

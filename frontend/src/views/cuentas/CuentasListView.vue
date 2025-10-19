@@ -14,7 +14,7 @@
 
     <div class="row">
         <div v-for="cuenta in cuentas" class="col-12 col-sm-6 col-md-4 mt-3">
-            <CardComponent @click="router.push({name: 'cuenta-editar', params: {idCuenta: cuenta.IdCuenta}})" :color="cuenta.SaldoTotal == cuenta.SaldoCalculado? 'success':'danger'">
+            <CardComponent @click="router.push({name: 'cuenta-editar', params: {idCuenta: cuenta.IdCuenta}})" :color="cuenta.SaldoTotal == cuenta.SaldoCalculado? 'success':'danger'" class="h-100">
                 <template v-slot:header>
                     {{ cuenta.Nombre }}
                 </template>
