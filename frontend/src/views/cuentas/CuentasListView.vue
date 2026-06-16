@@ -4,7 +4,7 @@
         <div class="col-7">
             <div class="ms-3">
                 <h3>Cuentas</h3>
-                <h6>Lugares donde se puedan almacenar dinero</h6>
+                <h6>Lugares donde se puede almacenar dinero</h6>
             </div>
         </div>
         <div class="col-5 text-end">

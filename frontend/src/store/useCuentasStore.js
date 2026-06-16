@@ -46,7 +46,7 @@ export const useCuentasStore = defineStore("cuentas", {
         },
 
         async cargarCuentas(){
-            await DebitoApi().get("cuenta")
+            await DebitoApi().get("cuenta/")
             .then(res => {
                 this.cuentas = res.data
             })

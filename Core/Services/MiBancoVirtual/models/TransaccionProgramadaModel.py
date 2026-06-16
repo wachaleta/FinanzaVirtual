@@ -16,6 +16,9 @@ class TransaccionProgramada(models.Model):
 
     #   Cuando se creó la transacción programada
     FechaCreacion = models.DateTimeField(auto_now_add=True)
+    
+    FechaUltimaVez = models.DateTimeField(auto_now_add=False, null=True)
+    FechaSiguienteVez = models.DateTimeField(auto_now_add=False, null=True)
 
     IdUsuario = models.ForeignKey(User, on_delete=models.CASCADE)
 

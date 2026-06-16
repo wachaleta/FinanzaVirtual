@@ -92,7 +92,7 @@ export const useTransaccionesStore = defineStore("transacciones", {
             }
 
             const querySearch = params.toString()
-            await DebitoApi().get("transacciones-rango-fechas?" + querySearch)
+            await DebitoApi().get("transacciones-rango-fechas/?" + querySearch)
                 .then(res => {
                     this.transacciones = res.data
                 })
@@ -104,7 +104,7 @@ export const useTransaccionesStore = defineStore("transacciones", {
                 this.transaccion.IdTransaccion = idTransaccion
             }
 
-            await DebitoApi().get(`transaccion/${this.transaccion.IdTransaccion}`)
+            await DebitoApi().get(`transaccion/${this.transaccion.IdTransaccion}/`)
                 .then(res => {
                     this.transaccion = res.data
                 })

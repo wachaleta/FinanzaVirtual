@@ -1,6 +1,9 @@
-#app {
-  /* background-color: #eceef0; */
-  background-color: #f6f8fb;
+:root {
+  --background: #f6f8fb
+}
+
+body {
+  background-color: var(--background);
 }
 
 input.error, select.error{

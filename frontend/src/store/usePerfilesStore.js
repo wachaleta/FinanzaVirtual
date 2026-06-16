@@ -53,7 +53,7 @@ export const usePerfilesStore = defineStore("perfiles", {
         },
 
         async cargarPerfiles(){
-            await DebitoApi().get("perfil")
+            await DebitoApi().get("perfil/")
             .then(res => {
                 this.perfiles = res.data
             })
@@ -67,7 +67,7 @@ export const usePerfilesStore = defineStore("perfiles", {
         },
 
         async obtenerSaldoTotalPerfiles(){
-            await DebitoApi().get("total-saldo-perfiles")
+            await DebitoApi().get("total-saldo-perfiles/")
             .then(res => {
                 this.saldosPerfiles = res.data
             })

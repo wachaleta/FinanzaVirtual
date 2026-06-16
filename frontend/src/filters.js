@@ -54,6 +54,7 @@ export default {
 
         return newFecha.format(formato)
     },
+    
     fechaActual(formato = "YYYY-MM-DD") {
         let hoy = new dayjs()
 
