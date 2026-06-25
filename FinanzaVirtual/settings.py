@@ -133,13 +133,17 @@ WSGI_APPLICATION = 'FinanzaVirtual.wsgi.application'
 DATABASES = {
     'default': {
         "ENGINE": "django.db.backends.postgresql",
-        "NAME":             DB_NAME,
-        "USER":             DB_USER,
-        "PASSWORD":         DB_PASSWORD,
-        "HOST":             DB_HOST,
-        "DATABASE_PORT":    DB_DATABASE_PORT,
+        "NAME": DB_NAME,
+        "USER": DB_USER,
+        "PASSWORD": DB_PASSWORD,
+        "HOST": DB_HOST,
+        "PORT": DB_DATABASE_PORT,
+        "OPTIONS": {
+            "options": "-c search_path=produccion"
+        }
     }
 }
+
 
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
