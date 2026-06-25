@@ -21,10 +21,10 @@ load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-# config_path = BASE_DIR / "db_config.appsettings.json"
+config_path = BASE_DIR / "db_config.appsettings.json"
 
-# with open(config_path) as f:
-#     db_config = json.load(f)
+with open(config_path) as f:
+    db_config = json.load(f)
 
 
 # Quick-start development settings - unsuitable for production
@@ -36,24 +36,24 @@ SECRET_KEY = 'django-insecure-1pe&ps*jrv(prj5r1duu3eum$+4&$zabok!zlb%##w@e79kzs*
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv('DEBUG', True)
 
-DB_NAME = os.getenv('DB_NAME',)
-DB_USER = os.getenv('DB_USER',)
-DB_PASSWORD = os.getenv('DB_PASSWORD',)
-DB_HOST = os.getenv('DB_HOST',)
-DB_DATABASE_PORT = os.getenv('DB_DATABASE_PORT',)
+# DB_NAME = os.getenv('DB_NAME',)
+# DB_USER = os.getenv('DB_USER',)
+# DB_PASSWORD = os.getenv('DB_PASSWORD',)
+# DB_HOST = os.getenv('DB_HOST',)
+# DB_DATABASE_PORT = os.getenv('DB_DATABASE_PORT',)
 
-VARIABLES_DB = {
-    "DB_NAME": DB_NAME,
-    "DB_USER": DB_USER,
-    "DB_PASSWORD": DB_PASSWORD,
-    "DB_HOST": DB_HOST,
-    "DB_DATABASE_PORT": DB_DATABASE_PORT,
-}
+# VARIABLES_DB = {
+#     "DB_NAME": DB_NAME,
+#     "DB_USER": DB_USER,
+#     "DB_PASSWORD": DB_PASSWORD,
+#     "DB_HOST": DB_HOST,
+#     "DB_DATABASE_PORT": DB_DATABASE_PORT,
+# }
 
-VARIABLES_DB_NULAS = [k for k, v in VARIABLES_DB.items() if v is None]
+# VARIABLES_DB_NULAS = [k for k, v in VARIABLES_DB.items() if v is None]
 
-if VARIABLES_DB_NULAS:
-    raise Exception(f"Hacen falta las variables de entorno: {VARIABLES_DB_NULAS}")
+# if VARIABLES_DB_NULAS:
+#     raise Exception(f"Hacen falta las variables de entorno: {VARIABLES_DB_NULAS}")
 
 APPEND_SLASH = False
 
@@ -131,18 +131,22 @@ WSGI_APPLICATION = 'FinanzaVirtual.wsgi.application'
 # }
 
 DATABASES = {
-    'default': {
-        "ENGINE": "django.db.backends.postgresql",
-        "NAME": DB_NAME,
-        "USER": DB_USER,
-        "PASSWORD": DB_PASSWORD,
-        "HOST": DB_HOST,
-        "PORT": DB_DATABASE_PORT,
-        "OPTIONS": {
-            "options": "-c search_path=produccion"
-        }
-    }
+    'default': db_config
 }
+
+# DATABASES = {
+#     'default': {
+#         "ENGINE": "django.db.backends.postgresql",
+#         "NAME": DB_NAME,
+#         "USER": DB_USER,
+#         "PASSWORD": DB_PASSWORD,
+#         "HOST": DB_HOST,
+#         "PORT": DB_DATABASE_PORT,
+#         "OPTIONS": {
+#             "options": "-c search_path=produccion"
+#         }
+#     }
+# }
 
 
 # Password validation
