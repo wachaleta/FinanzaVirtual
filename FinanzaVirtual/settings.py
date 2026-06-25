@@ -21,10 +21,10 @@ load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-config_path = BASE_DIR / "db_config.appsettings.json"
+# config_path = BASE_DIR / "db_config.appsettings.json"
 
-with open(config_path) as f:
-    db_config = json.load(f)
+# with open(config_path) as f:
+#     db_config = json.load(f)
 
 
 # Quick-start development settings - unsuitable for production
