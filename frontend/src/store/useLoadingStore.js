@@ -4,7 +4,7 @@ export const useLoadingStore = defineStore("loading", {
     state:() => {
         return{
             loads: 0,
-            show: true
+            show: false
         }
     },
     actions: {
