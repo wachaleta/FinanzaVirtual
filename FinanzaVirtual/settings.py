@@ -60,7 +60,8 @@ APPEND_SLASH = False
 ALLOWED_HOSTS = [
     '127.0.0.1',
     "fabriciomejia.pythonanywhere.com",
-    'restaurantelaantigua.pythonanywhere.com'
+    'restaurantelaantigua.pythonanywhere.com',
+    'finanzavirtual.onrender.com',
 ]
 
 
