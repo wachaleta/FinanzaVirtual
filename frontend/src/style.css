@@ -31,3 +31,8 @@ label.input-error{
   border-color: rgb(255, 116, 116);;
   border-width: 2px;
 }
+
+.cargando {
+    overflow: hidden;
+    height: 100%;
+}

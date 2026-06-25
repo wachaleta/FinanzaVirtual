@@ -138,8 +138,8 @@ const {
 } = usePerfilesComposable()
 
 const refresh = async() => {
-    await cargarPerfiles()
-    await obtenerSaldoTotalPerfiles()
+    cargarPerfiles()
+    obtenerSaldoTotalPerfiles()
 }
 
 refresh()
