@@ -62,7 +62,7 @@ ALLOWED_HOSTS = [
     "fabriciomejia.pythonanywhere.com",
     'restaurantelaantigua.pythonanywhere.com',
     'finanzavirtual.onrender.com',
-    '142.93.254.184',
+    '142.93.254.184:8000',
 ]
 
 
