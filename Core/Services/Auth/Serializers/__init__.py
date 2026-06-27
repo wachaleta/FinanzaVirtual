@@ -1,1 +1,2 @@
 from .IniciarSesionSerializer import IniciarSesionSerializer
+from .RegisterSerializer import RegisterSerializer

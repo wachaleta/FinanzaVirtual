@@ -6,6 +6,7 @@
     </label>
     <input 
         class="form-control"
+        :placeholder="placeholder"
         :class="{error: getErrors}"
         v-model="model"
         :type="type"
@@ -33,6 +34,10 @@ const props = defineProps({
     type: {
         type: String,
         default: "text"
+    },
+
+    placeholder: {
+        type: String,
     },
 
     step: {

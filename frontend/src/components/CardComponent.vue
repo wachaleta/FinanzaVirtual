@@ -38,7 +38,6 @@
 defineProps({
     color: {
         type: String,
-        required: true
     }
 })
 

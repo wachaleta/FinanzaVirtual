@@ -1,30 +1,37 @@
 <template>
-  <form @submit.prevent="iniciarSesion()">
+  <form @submit.prevent="registrarse()">
     <div class="row h-100vh justify-content-center pb-5 align-items-center">
       <div class="col-6">
         <CardComponent class="pb-4">
           <template #body>
             <div class="row justify-content-center">
               <div class="col-9">
-                <h3 class="text-center text-title">Iniciar Sesión</h3>
+                <h3 class="text-center text-title">Registrarse</h3>
                 <div class="mb-3">
                   <DynamicInputComponent v-model="credenciales.username" name="username" placeholder="Nombre de Usuario">
                     Usuario
                   </DynamicInputComponent>
                 </div>
+
                 <div class="mb-3">
                   <DynamicInputComponent v-model="credenciales.password" name="password" type="password" placeholder="Ingrese la Contraseña">
                     Contraseña
                   </DynamicInputComponent>
                 </div>
+
+                <div class="mb-3">
+                  <DynamicInputComponent v-model="credenciales.password_again" name="password_again" type="password" placeholder="Ingrese la Contraseña de nuevo">
+                    Repetir Contraseña
+                  </DynamicInputComponent>
+                </div>
               </div>
               <!-- <button type="submit" class="btn btn-light"><i class="bx bxs-lock-open"></i>Iniciar Sesión</button> -->
               <div class="text-end me-3">
-                <DynamicButtonComponent class="me-3" color="info" @click="irRegister()">
-                  No tienes una cuenta? Crear una
+                <DynamicButtonComponent class="me-3" color="info" @click="router.push({name: 'login'})">
+                  Ya tienes una cuenta? Iniciar Sesión
                 </DynamicButtonComponent>
                 <DynamicButtonComponent type="submit" color="info">
-                  Iniciar Sesión
+                  Crear Cuenta
                 </DynamicButtonComponent>
               </div>
             </div>
@@ -74,7 +81,7 @@ const router = useRouter()
 const {
   credenciales,
 
-  iniciarSesion,
+  registrarse,
 } = useAuthComposable()
 
 const refresh = async () => {
@@ -82,10 +89,5 @@ const refresh = async () => {
 }
 
 refresh()
-
-const irRegister = () => {
-  console.log("yendo a register")
-  router.push({name: 'register'})
-}
 
 </script>

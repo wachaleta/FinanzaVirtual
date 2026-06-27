@@ -1,5 +1,3 @@
-import ConfirmModalComponent from '@/components/ConfirmModalComponent.vue'
-
 import {
     CategoriasListView,
     
@@ -17,6 +15,9 @@ export default [
         path: '/categoria',
         name: 'categoria-listado',
         component: CategoriasListView,
+        meta: {
+            useNavBar: true,
+        },
         children: [
             {
                 path: 'crear',

@@ -25,6 +25,9 @@ export default [
         path: '/transaccion',
         name: 'transaccion',
         redirect: { name: 'transaccion-listado' },
+        meta:{
+            useNavBar: true,
+        },
         children: [
             {
                 path: 'listado',

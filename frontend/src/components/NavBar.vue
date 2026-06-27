@@ -49,7 +49,7 @@
                             <hr class="dropdown-divider">
                         </li>
                         <li>
-                            <a class="dropdown-item" href="/logout">Cerrar Sesión</a>
+                            <a class="dropdown-item" @click="cerrarSesion()">Cerrar Sesión</a>
                         </li>
                     </ul>
                     </li>
@@ -62,7 +62,11 @@
 </template>
 
 <script setup>
-
 import { RouterLink } from 'vue-router';
+import { useAuthComposable } from '../composables/useAuthComposable';
+
+const {
+    cerrarSesion,
+} = useAuthComposable()
 
 </script>

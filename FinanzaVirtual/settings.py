@@ -21,10 +21,10 @@ load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-config_path = BASE_DIR / "db_config.appsettings.json"
+config_path = BASE_DIR / "settings.appsettings.json"
 
 with open(config_path) as f:
-    db_config = json.load(f)
+    settings = json.load(f)
 
 
 # Quick-start development settings - unsuitable for production
@@ -80,6 +80,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'Core.Services.MiBancoVirtual',
+    'Core.Services.Auth',
     # 'rest_framework.authtoken',
 ]
 
@@ -135,7 +136,7 @@ WSGI_APPLICATION = 'FinanzaVirtual.wsgi.application'
 # }
 
 DATABASES = {
-    'default': db_config
+    'default': settings.get('DATABASE')
 }
 
 # DATABASES = {

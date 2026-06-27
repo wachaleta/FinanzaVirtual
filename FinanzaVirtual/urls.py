@@ -44,7 +44,7 @@ router.register(r"transferencia", TransferenciaViewSet, basename="transferencia"
 
 urlpatterns = [
     path("api/", include(router.urls),),
-    path("auth/api/", include(AuthUrls),),
+    path("api/auth/", include(AuthUrls),),
     path("debito/api/", include(DebitoUrls),),
     path('admin/', admin.site.urls),
     # path('', include("Core.Services.MiBancoVirtual.urls")),

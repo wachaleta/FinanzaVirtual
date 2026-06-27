@@ -17,9 +17,13 @@ export const useAuthStore = defineStore("auth", {
 
                 router.push({name: 'transaccion-crear'} )
             })
-            // .catch((e) => {
-            //     toast.error(e)
-            // })
-        }
+        },
+
+        async registrarse(){
+            await AuthApi().post("register/", this.credenciales)
+            .then(res => {
+                router.push({name: 'login'} )
+            })
+        },
     }
 })

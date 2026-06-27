@@ -15,6 +15,7 @@ export default [
         component: PerfilesListView,
         meta: {
             requiresAuth: true,
+            useNavBar: true,
         },
         children: [
             {

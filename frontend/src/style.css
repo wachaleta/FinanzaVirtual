@@ -36,3 +36,11 @@ label.input-error{
     overflow: hidden;
     height: 100%;
 }
+
+.h-100vh {
+  height: 100vh;
+}
+
+.text-title{
+  font-family: 'Playfair Display', serif;
+}

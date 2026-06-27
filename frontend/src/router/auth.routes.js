@@ -1,9 +1,25 @@
-import LoginView from '@/components/auth/LoginView.vue'
+import { 
+    LoginView,
+    RegisterView,
+} from "@/components/auth"
 
 export default [
     {
         path: '/login', 
         name: 'login',
-        component: LoginView
+        component: LoginView,
+        meta: {
+            keepQuery: true
+        }
+    },
+    {
+        path: '/register', 
+        name: 'register',
+        component: RegisterView,
+        meta: {
+            requiresAuth: false,
+            keepQuery: true,
+            ignoreFromNextUrl: true,
+        }
     },
 ]

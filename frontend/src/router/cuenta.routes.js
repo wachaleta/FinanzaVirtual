@@ -15,6 +15,7 @@ export default [
         component: CuentasListView,
         meta: {
             requiresAuth: true,
+            useNavBar: true,
         },
         children: [
             {
