@@ -29,8 +29,6 @@ def profile_validar_pago(
     usuario: User = None,
 ):
     profile = models.Profile.objects.filter(usuario=usuario).first()
-    
-    print(usuario.username)
 
     if not profile:
         raise BadRequestException("El usuario no cuenta con un registro profile")

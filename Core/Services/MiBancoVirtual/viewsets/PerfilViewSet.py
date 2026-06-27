@@ -20,8 +20,6 @@ class PerfilViewSet(FinanzasModelViewSet):
     def get_queryset(self):
 
         searchText = self.request.query_params.get('searchText')
-        print("searchText")
-        print(searchText)
 
         idUsuario = self.request.user.id
         lista_perfiles = Perfil.objects.filter(IdUsuario = idUsuario, Activo=True)
@@ -43,32 +41,29 @@ class PerfilViewSet(FinanzasModelViewSet):
         )
 
         return Response({'id': perfil.IdPerfil}, status=status.HTTP_201_CREATED)
+    
+    def update(self, request, *args, **kwargs):
+        perfil = self.get_object()
 
-    
-    def get_create_validated_data(self, data):
-        return {
-            "Nombre": data.get("Nombre", ""),
-            "SumaDisponible": data.get("SumaDisponible", False)
-        }
-    
-    def get_update_validated_data(self, data):
-        return {
-            "IdPerfil": data["IdPerfil"],
-            "Nombre": data.get("Nombre", ""),
-            "SumaDisponible": data.get("SumaDisponible", False)
-        }
+        serializer = self.serializer_class(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        
+        perfil = PerfilFunciones.perfil_editar(
+            usuario=request.user,
+            perfil=perfil,
+            **serializer.validated_data,
+        )
+
+        return Response({'id': perfil.IdPerfil}, status=status.HTTP_200_OK)
+
 
     @action(methods=['put'], detail=True)
     def inactivar(self, request, pk=None):
         perfil = self.get_object()
 
-        if(perfil.Saldo != 0):
-            raise BadRequestException("Este perfil aún tiene saldo")
+        perfil = PerfilFunciones.perfil_inactivar(
+            usuario=request.user,
+            perfil=perfil,
+        )
 
-        perfil.Activo = False
-
-        perfil.save()
-
-        return Response({
-            'id': pk
-        })
+        return Response({'id': perfil.IdPerfil}, status=status.HTTP_200_OK)

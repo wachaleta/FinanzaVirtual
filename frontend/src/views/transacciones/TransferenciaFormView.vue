@@ -19,23 +19,23 @@
         </DynamicCheckBoxComponent>
 
         <div v-if="transaccion.TransferenciaEntrePerfiles == true" class="col-12 col-sm-6">
-            <PerfilSelectComponent v-model="transaccion.IdPerfilOrdenante" name="IdPerfilOrdenante">
+            <PerfilSelectComponent v-model="transaccion.IdPerfilOrdenante" :cargar-items="false" name="IdPerfilOrdenante">
                 De:
             </PerfilSelectComponent>
         </div>
         <div v-else class="col-12 col-sm-6">
-            <CuentaSelectComponent v-model="transaccion.IdCuentaOrdenante" name="IdCuentaOrdenante">
+            <CuentaSelectComponent v-model="transaccion.IdCuentaOrdenante" :cargar-items="false" name="IdCuentaOrdenante">
                 De:
             </CuentaSelectComponent>
         </div>
 
         <div v-if="transaccion.TransferenciaEntrePerfiles" class="col-12 col-sm-6">
-            <PerfilSelectComponent v-model="transaccion.IdPerfilBeneficiario" name="IdPerfilBeneficiario">
+            <PerfilSelectComponent v-model="transaccion.IdPerfilBeneficiario" :cargar-items="false" name="IdPerfilBeneficiario">
                 Para:
             </PerfilSelectComponent>
         </div>
         <div v-else class="col-12 col-sm-6">
-            <CuentaSelectComponent v-model="transaccion.IdCuentaBeneficiaria" name="IdCuentaBeneficiaria">
+            <CuentaSelectComponent v-model="transaccion.IdCuentaBeneficiaria" :cargar-items="false" name="IdCuentaBeneficiaria">
                 Para:
             </CuentaSelectComponent>
         </div>
@@ -69,10 +69,23 @@ import {
 import {
     DynamicCheckBoxComponent,
 } from '@/components/inputComponents';
+import { usePerfilesComposable } from '@/composables/usePerfilesComposable';
+import { useCuentasComposable } from '@/composables/useCuentasComposable';
 
 const { transaccion } = useTransaccionesComposable()
 
+const {
+    cargarPerfiles,
+} = usePerfilesComposable()
+
+const {
+    cargarCuentas,
+} = useCuentasComposable()
+
 const refresh = async () => {
+    cargarPerfiles()
+    cargarCuentas()
+
     transaccion.value.TransferenciaEntrePerfiles = true
 }
 

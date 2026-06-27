@@ -1,33 +1,23 @@
 from rest_framework import serializers
-from ..models import *
+
+from Core.Services.MiBancoVirtual import models
 
 class CuentaSerializer(serializers.ModelSerializer):
     Nombre = serializers.CharField(allow_null=True)
     SaldoTotal = serializers.DecimalField(max_digits=10, decimal_places=2, read_only=True)
     SaldoCalculado = serializers.DecimalField(max_digits=10, decimal_places=2, read_only=True)
 
+    def validate_Nombre(self, value):
+        user = self.context['request'].user
+
+        repetido = models.Cuenta.objects.filter(Nombre__iexact=value, IdUsuario=user).exists()
+
+        if repetido:
+            raise serializers.ValidationError("Ese nombre se encuentra repetido")
+
+        return value
+
     class Meta: 
-        model = Cuenta
+        model = models.Cuenta
         fields = "__all__"
         read_only_fields = ("IdCuenta", "IdUsuario", "SaldoTotal")
-    
-    def create(self, validated_data):
-        
-        instance = Cuenta.objects.create(
-            Nombre = validated_data["Nombre"],
-            SaldoReal = validated_data["SaldoReal"],
-            EsEfectivo = validated_data["EsEfectivo"],
-            BQ100 = validated_data["BQ100"],
-            BQ50 = validated_data["BQ50"],
-            BQ20 = validated_data["BQ20"],
-            BQ10 = validated_data["BQ10"],
-            BQ5 = validated_data["BQ5"],
-            M100c = validated_data["M100c"],
-            M50c = validated_data["M50c"],
-            M25c = validated_data["M25c"],
-            M10c = validated_data["M10c"],
-            M5c = validated_data["M5c"],
-            IdUsuario = self.context["request"].user
-        )
-
-        return instance

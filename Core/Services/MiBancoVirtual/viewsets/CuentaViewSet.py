@@ -10,11 +10,10 @@ from ..models import *
 from ..serializers import *
 
 from Core.Services.MiBancoVirtual.Funciones import CuentaFunciones
+from Core.Services.MiBancoVirtual import serializers
 
 class CuentaViewSet(FinanzasModelViewSet):
     serializer_class = CuentaSerializer
-    create_validator = CuentaCrearValidator
-    update_validator = CuentaEditarValidator
     permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
@@ -26,7 +25,11 @@ class CuentaViewSet(FinanzasModelViewSet):
         return cuentas
     
     def create(self, request, *args, **kwargs):
-        serializer = self.serializer_class(data=request.data)
+        serializer = self.serializer_class(
+            data=request.data,
+            context={'request': request}
+        )
+        
         serializer.is_valid(raise_exception=True)
 
         cuenta = CuentaFunciones.cuenta_crear(
@@ -36,35 +39,27 @@ class CuentaViewSet(FinanzasModelViewSet):
 
         return Response({'id': cuenta.IdCuenta}, status=status.HTTP_201_CREATED)
     
-    def get_update_validated_data(self, data):
-        return {
-            "IdCuenta": data["IdCuenta"],
-            "Nombre": data.get("Nombre", ""),
-            "EsEfectivo": data.get("EsEfectivo", False),
-            "SaldoReal": data.get("SaldoReal", 0),
-            "BQ100": data.get("BQ100", 0),
-            "BQ50": data.get("BQ50", 0),
-            "BQ20": data.get("BQ20", 0),
-            "BQ10": data.get("BQ10", 0),
-            "BQ5": data.get("BQ5", 0),
-            "M100c": data.get("M100c", 0),
-            "M50c": data.get("M50c", 0),
-            "M25c": data.get("M25c", 0),
-            "M10c": data.get("M10c", 0),
-            "M5c": data.get("M5c", 0),
-        }
+    def update(self, request, *args, **kwargs):
+        cuenta = self.get_object()
+
+        serializer = serializers.CuentaEditarSerializer(data=request.data, context={'request': request}, instance=cuenta)
+        serializer.is_valid(raise_exception=True)
+
+        cuenta = CuentaFunciones.cuenta_editar(
+            usuario=request.user,
+            cuenta=cuenta,
+            **serializer.validated_data,
+        ) 
+
+        return Response({'id': cuenta.IdCuenta}, status=status.HTTP_200_OK)
 
     @action(methods=['put'], detail=True)
     def inactivar(self, request, pk=None):
         cuenta = self.get_object()
 
-        if(cuenta.SaldoTotal != 0):
-            raise BadRequestException("Esta cuenta aún tiene saldo")
+        cuenta = CuentaFunciones.cuenta_inactivar(
+            usuario=request.user,
+            cuenta=cuenta,
+        )
 
-        cuenta.Activo = False
-
-        cuenta.save()
-
-        return Response({
-            'id': pk
-        })
+        return Response({'id': cuenta.IdCuenta}, status=status.HTTP_200_OK)

@@ -8,7 +8,6 @@ class TransferenciaSerializer(serializers.ModelSerializer):
     # categoria_nombre = serializers.CharField()
     
     def validate(self, attrs):
-        print("Validando")
         transferencia = attrs.get('TransferenciaEntrePerfiles')
         cuenta_ordenante = attrs.get('IdCuentaOrdenante')
         perfil_ordenante = attrs.get('IdPerfilOrdenante')

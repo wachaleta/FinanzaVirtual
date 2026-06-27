@@ -22,6 +22,13 @@ import { ref } from 'vue';
 const model = defineModel()
 const cargado = ref(false)
 
+const props = defineProps({
+    cargarItems: {
+        type: Boolean,
+        default: true
+    }
+})
+
 const {
     cuentas,
 
@@ -29,7 +36,10 @@ const {
 } = useCuentasComposable()
 
 const refresh = async() =>{
-    await cargarCuentas()
+    if(props.cargarItems){
+        await cargarCuentas()
+    }
+    
     cargado.value = true
 }
 

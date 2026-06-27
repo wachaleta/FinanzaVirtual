@@ -1,5 +1,7 @@
 from .CategoriaSerializer import CategoriaSerializer
+
 from .CuentaSerializer import CuentaSerializer
+from .CuentaEditarSerializer import CuentaEditarSerializer
 
 from .PerfilSerializer import PerfilSerializer
 
@@ -7,7 +9,11 @@ from .TransaccionesRangoFechasSerializer import TransaccionesRangoFechasSerializ
 from .TransaccionSerializer import TransaccionSerializer
 
 from .GastoSerializer import GastoSerializer
+from .GastoEditarSerializer import GastoEditarSerializer
+
 from .IngresoSerializer import IngresoSerializer
+from .IngresoEditarSerializer import IngresoEditarSerializer
+
 from .TransferenciaSerializer import TransferenciaSerializer
 
 from .TransaccionProgramadaSerializer import TransaccionProgramadaSerializer

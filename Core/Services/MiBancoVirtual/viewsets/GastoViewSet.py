@@ -7,7 +7,7 @@ from rest_framework import status
 
 from ....Application.Behaviours import FinanzasModelViewSet
 from ..models import *
-from ..serializers import GastoSerializer
+from ..serializers import GastoSerializer, GastoEditarSerializer
 from ..validators import GastoCrearValidator, GastoEditarValidator
 
 from Core.Services.MiBancoVirtual.Funciones import TransaccionFunciones
@@ -52,14 +52,17 @@ class GastoViewSet(FinanzasModelViewSet):
         )
 
         return Response({'id': transaccion.IdTransaccion}, status=status.HTTP_201_CREATED)
-    
-    def get_update_validated_data(self, data):
-        return {
-            "IdTransaccion": data.get("IdTransaccion"),
-            "Monto": data.get("Monto", 0),
-            "Fecha": data.get("Fecha", ""),
-            "IdCuentaOrdenante": data.get("IdCuentaOrdenante", ""),
-            "IdPerfilOrdenante": data.get("IdPerfilOrdenante", ""),
-            "IdCategoria": data.get("IdCategoria", ""),
-            "Descripcion": data.get("Descripcion", ""),
-        }
+
+    def update(self, request, *args, **kwargs):
+        transaccion = self.get_object()
+
+        serializer = GastoEditarSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+
+        transaccion = TransaccionFunciones.gasto_editar(
+            usuario=request.user,
+            transaccion=transaccion,
+            **serializer.validated_data,
+        )
+
+        return Response({'id': transaccion.IdTransaccion}, status=status.HTTP_200_OK)

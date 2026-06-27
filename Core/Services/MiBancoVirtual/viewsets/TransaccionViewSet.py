@@ -47,3 +47,12 @@ class TransaccionViewSet(FinanzasModelViewSet):
     #     )
 
     #     return Response({'id': transaccion.IdTransaccion}, status=status.HTTP_201_CREATED)
+    def destroy(self, request, *args, **kwargs):
+        transaccion = self.get_object()
+
+        id = TransaccionFunciones.transaccion_eliminar(
+            usuario=request.user,
+            transaccion=transaccion,
+        )
+
+        return Response({'id': id}, status=status.HTTP_201_CREATED)

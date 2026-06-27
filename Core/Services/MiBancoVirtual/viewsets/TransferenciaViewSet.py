@@ -36,24 +36,17 @@ class TransferenciaViewSet(FinanzasModelViewSet):
         )
 
         return Response({'id': transaccion.IdTransaccion}, status=status.HTTP_201_CREATED)
-    
-    def get_update_validated_data(self, data):
-        validated_data = {
-            "IdTransaccion": data.get("IdTransaccion"),
-            "Monto": data.get("Monto", 0),
-            "Fecha": data.get("Fecha", ""),
-            "IdCategoria": data.get("IdCategoria", ""),
-            "Descripcion": data.get("Descripcion", ""),
-            "TransferenciaEntrePerfiles": data.get("TransferenciaEntrePerfiles", ""),
-        }
-        
 
-        if data.get("TransferenciaEntrePerfiles") == True:
-            validated_data["IdPerfilOrdenante"] = data.get("IdPerfilOrdenante", "")
-            validated_data["IdPerfilBeneficiario"] = data.get("IdPerfilBeneficiario", "")
-        
-        else:
-            validated_data["IdCuentaOrdenante"] = data.get("IdCuentaOrdenante", "")
-            validated_data["IdCuentaBeneficiaria"] = data.get("IdCuentaBeneficiaria", "")
-            
-        return  validated_data
+    def update(self, request, *args, **kwargs):
+        transaccion = self.get_object()
+
+        serializer = self.serializer_class(data=request.data)
+        serializer.is_valid(raise_exception=True)
+
+        transaccion = TransaccionFunciones.transferencia_editar(
+            usuario=request.user,
+            transaccion=transaccion,
+            **serializer.validated_data,
+        )
+
+        return Response({'id': transaccion.IdTransaccion}, status=status.HTTP_201_CREATED)

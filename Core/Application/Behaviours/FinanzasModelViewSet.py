@@ -12,8 +12,6 @@ class FinanzasModelViewSet(ModelViewSet):
     def create(self, request, *args, **kwargs):
         newData = self.get_create_validated_data(request.data)
         newData["IdUsuario"] = self.request.user
-        print("viewSet")
-        print(newData)
         validator = self.create_validator()
         validator.SetData(newData)
         validator.SetRules()

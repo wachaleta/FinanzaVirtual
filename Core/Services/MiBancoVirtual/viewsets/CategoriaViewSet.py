@@ -31,12 +31,19 @@ class CategoriaViewSet(FinanzasModelViewSet):
 
         return Response({'id': categoria.IdCategoria}, status=status.HTTP_201_CREATED)
 
+    def update(self, request, *args, **kwargs):
+        categoria = self.get_object()
 
-    def get_update_validated_data(self, data):
-        return {
-            "IdCategoria": data.get("IdCategoria", ""),
-            "Nombre": data.get("Nombre", "")
-        }
+        serializer = self.serializer_class(data=request.data)
+        serializer.is_valid(raise_exception=True)
+
+        categoria = CategoriaFunciones.categoria_editar(
+            usuario=request.user,
+            categoria=categoria,
+            **serializer.validated_data,
+        )
+
+        return Response({'id': categoria.IdCategoria}, status=status.HTTP_200_OK)
     
     def perform_destroy(self, instance):
         coincidencia = Transaccion.objects.filter(IdCategoria=instance.IdCategoria).exists()
@@ -49,10 +56,9 @@ class CategoriaViewSet(FinanzasModelViewSet):
     def inactivar(self, request, pk=None):
         categoria = self.get_object()
 
-        categoria.Activo = False
+        categoria = CategoriaFunciones.categoria_inactivar(
+            usuario=request.user,
+            categoria=categoria,
+        )
 
-        categoria.save()
-
-        return Response({
-            'id': pk
-        })
+        return Response({'id': categoria.IdCategoria}, status=status.HTTP_200_OK)

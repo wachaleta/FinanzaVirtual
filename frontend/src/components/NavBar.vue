@@ -26,9 +26,6 @@
                         <li>
                             <RouterLink class="dropdown-item" :to="{name: 'transaccion-listado'}">Ver Transacciones</RouterLink>
                         </li>
-                        <li>
-                            <a class="dropdown-item" href="/transaccion/programada">Transacciones Programadas</a>
-                        </li>
                     </ul>
                 </li>
                 <li class="nav-item">

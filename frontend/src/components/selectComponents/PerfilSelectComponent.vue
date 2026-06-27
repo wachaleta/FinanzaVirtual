@@ -24,7 +24,7 @@ import DynamicSelectComponent from './DynamicSelectComponent.vue';
 const model = defineModel()
 const cargado = ref(false)
 
-defineProps({
+const props = defineProps({
     multiple:{
         type: Boolean,
         default: false
@@ -33,7 +33,12 @@ defineProps({
     closeOnSelect:{
         type: Boolean,
         default: true
-    }
+    },
+
+    cargarItems:{
+        type: Boolean,
+        default: true
+    },
 })
 
 const {
@@ -44,9 +49,13 @@ const {
 } = usePerfilesComposable()
 
 const refresh = async() =>{
+    console.log("props")
+    console.log(props.cargarItems)
+    if(props.cargarItems){
+        perfilesFiltros.value = {}
+        await cargarPerfiles()
+    }
 
-    perfilesFiltros.value = {}
-    await cargarPerfiles()
     cargado.value = true
 }
 
