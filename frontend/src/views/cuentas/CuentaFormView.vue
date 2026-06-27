@@ -1,7 +1,9 @@
 <template>
-    <DynamicInputComponent name="Nombre" v-model="cuenta.Nombre">
-        Nombre
-    </DynamicInputComponent>
+    <div class="mb-3">
+        <DynamicInputComponent name="Nombre" v-model="cuenta.Nombre">
+            Nombre
+        </DynamicInputComponent>
+    </div>
     <DynamicCheckBoxComponent name="EsEfectivo" v-model="cuenta.EsEfectivo">Es cuenta de efectivo?</DynamicCheckBoxComponent>
     <div v-if="cuenta.EsEfectivo == true" class="row mt-3">
         <InputGroupComponent v-model="cuenta.BQ100" type="number" class="mb-2" name="BQ100">
@@ -44,7 +46,9 @@
             Q0.05
         </InputGroupComponent>
     </div>
-    <DynamicInputComponent v-else type="number" min="0" step="0.01" name="SaldoReal" v-model="cuenta.SaldoReal">Saldo real</DynamicInputComponent>
+    <div v-else class="mt-3">
+        <DynamicInputComponent type="number" min="0" step="0.01" name="SaldoReal" v-model="cuenta.SaldoReal">Saldo real</DynamicInputComponent>
+    </div>
 </template>
 
 <script setup>

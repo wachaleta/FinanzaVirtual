@@ -21,7 +21,7 @@ class TransferenciaViewSet(FinanzasModelViewSet):
                 Q(IdCuentaOrdenante__IdUsuario = idUsuario) | Q(IdCuentaBeneficiaria__IdUsuario = idUsuario) 
             )
         
-        return lista_transacciones.order_by("-Fecha").order_by("-FechaCreacion")
+        return lista_transacciones.order_by("-Fecha", "-FechaCreacion")
     
     def get_create_validated_data(self, data):
         validated_data = {

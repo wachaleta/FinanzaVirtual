@@ -1,12 +1,16 @@
 <template>
     <div class="row">
         <div class="col-6">
-            <DynamicInputComponent v-focus type="number" name="Monto" min="0" step="0.01" v-model="transaccion.Monto">
-                Monto
-            </DynamicInputComponent>
+            <div class="mb-3">
+                <DynamicInputComponent v-focus type="number" name="Monto" min="0" step="0.01" v-model="transaccion.Monto">
+                    Monto
+                </DynamicInputComponent>
+            </div>
         </div>
         <div class="col-6">
-            <DynamicInputComponent type="date" v-model="transaccion.Fecha" name="Fecha">Fecha:</DynamicInputComponent>
+            <div class="mb-3">
+                <DynamicInputComponent type="date" v-model="transaccion.Fecha" name="Fecha">Fecha:</DynamicInputComponent>
+            </div>
         </div>
     </div>
     <div class="row my-2">
@@ -42,9 +46,11 @@
             <CategoriaSelectComponent v-model="transaccion.IdCategoria" name="IdCategoria" />
         </div>
         <div class="col-12 col-sm-6">
-            <DynamicInputComponent v-model="transaccion.Descripcion" name="Descripcion">
-                Descripción
-            </DynamicInputComponent>
+            <div class="mb-3">
+                <DynamicInputComponent v-model="transaccion.Descripcion" name="Descripcion">
+                    Descripción
+                </DynamicInputComponent>
+            </div>
         </div>
     </div>
 </template>
@@ -65,5 +71,11 @@ import {
 } from '@/components/inputComponents';
 
 const { transaccion } = useTransaccionesComposable()
+
+const refresh = async () => {
+    transaccion.value.TransferenciaEntrePerfiles = true
+}
+
+refresh()
 
 </script>

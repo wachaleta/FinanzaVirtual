@@ -2,8 +2,6 @@
     <div class="container-body">
         <slot/>
     </div>
-    <!-- <div class="container-component">
-    </div> -->
 </template>
 
 <script setup>
@@ -40,7 +38,7 @@ defineProps({
     /* margin-bottom: 1.5rem; */
     
     padding-top:      1rem;
-    padding-bottom:   1rem;
+    padding-bottom:   1.5rem;
     
     /* border-color: #b3b3b3; */
     /* border-style: solid; */

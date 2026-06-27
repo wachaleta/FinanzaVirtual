@@ -16,8 +16,15 @@ class PerfilViewSet(FinanzasModelViewSet):
 
     def get_queryset(self):
 
+        searchText = self.request.query_params.get('searchText')
+        print("searchText")
+        print(searchText)
+
         idUsuario = self.request.user.id
         lista_perfiles = Perfil.objects.filter(IdUsuario = idUsuario, Activo=True)
+
+        if searchText:
+            lista_perfiles = lista_perfiles.filter(Nombre__icontains=searchText)
 
         perfiles = lista_perfiles.order_by('Nombre')
         

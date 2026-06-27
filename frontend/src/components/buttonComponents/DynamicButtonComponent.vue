@@ -1,7 +1,7 @@
 <template>
     <button class="align-middle" :class="`btn btn-${color}`" :type="type" @click="$emit('click')">
         <div class="row align-items-center">
-            <div v-if="icon" class="col-2 pe-0" style="font-size: 0px;">
+            <div v-if="icon" class="col-2 me-1 pe-0" style="font-size: 0px;">
                 <span class="material-symbols-outlined">
                     {{ icon }}
                 </span>

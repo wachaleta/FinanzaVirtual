@@ -7,6 +7,7 @@ export const usePerfilesStore = defineStore("perfiles", {
     state:() => {
         return{
             perfiles: [],
+            perfilesFiltros: {},
             perfil: {},
             saldosPerfiles: {
                 SaldoTotal: 0,
@@ -53,7 +54,11 @@ export const usePerfilesStore = defineStore("perfiles", {
         },
 
         async cargarPerfiles(){
-            await DebitoApi().get("perfil/")
+            await DebitoApi().get("perfil/",
+                {
+                    params: this.perfilesFiltros
+                }
+            )
             .then(res => {
                 this.perfiles = res.data
             })

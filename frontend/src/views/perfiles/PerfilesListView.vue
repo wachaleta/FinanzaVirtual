@@ -64,6 +64,17 @@
         </div>
     </div>
 
+    <form @submit.prevent="cargarPerfiles()">
+        <div class="d-flex gap-3 px-3 mt-4 align-items-end">
+            <div>
+                <ButtonBuscarComponent type="submit"/>
+            </div>
+            <div class="w-100">
+                <DynamicInputComponent v-model="perfilesFiltros.searchText"/>
+            </div>
+        </div>
+    </form>
+
     <div class="col-12 mt-5">
         <div class="ms-4">
             <h3>Perfiles con saldo disponible</h3>
@@ -126,11 +137,15 @@ import { usePerfilesComposable } from '@/composables/usePerfilesComposable';
 
 import { ButtonCrearComponent } from '@/components/buttonComponents';
 import CardComponent from '@/components/CardComponent.vue';
+import DynamicInputComponent from '../../components/inputComponents/DynamicInputComponent.vue';
+import DynamicButtonComponent from '../../components/buttonComponents/DynamicButtonComponent.vue';
+import ButtonBuscarComponent from '../../components/buttonComponents/ButtonBuscarComponent.vue';
 
 const router = useRouter()
 
 const {
     perfiles,
+    perfilesFiltros,
     saldosPerfiles,
 
     cargarPerfiles,

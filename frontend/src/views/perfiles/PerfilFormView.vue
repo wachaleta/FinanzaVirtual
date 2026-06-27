@@ -1,6 +1,6 @@
 <template>
     <div class="row">
-        <div class="col-12">
+        <div class="col-12 mb-3">
             <DynamicInputComponent v-focus v-model="model.Nombre" name="Nombre">Nombre</DynamicInputComponent>
         </div>
         <div class="col-12">

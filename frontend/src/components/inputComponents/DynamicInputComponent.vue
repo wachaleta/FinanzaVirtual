@@ -1,24 +1,22 @@
 <template>
-    <div class="mb-3">
-        <label :for="name"
-            :class="{'error-label': getErrors}"
-        >
-            <slot/>
-        </label>
-        <input 
-            class="form-control"
-            :class="{error: getErrors}"
-            v-model="model"
-            :type="type"
-            :step="step"
-            :min="min"
-            :id="name"
-            @change="$emit('onChange')"
-        >
-        <div v-if="getErrors">
-            <div v-for="error in getErrors" class="row">
-                <label class="error-label">{{ error }}</label>
-            </div>
+    <label :for="name"
+        :class="{'error-label': getErrors}"
+    >
+        <slot/>
+    </label>
+    <input 
+        class="form-control"
+        :class="{error: getErrors}"
+        v-model="model"
+        :type="type"
+        :step="step"
+        :min="min"
+        :id="name"
+        @change="$emit('onChange')"
+    >
+    <div v-if="getErrors">
+        <div v-for="error in getErrors" class="row">
+            <label class="error-label">{{ error }}</label>
         </div>
     </div>
 </template>

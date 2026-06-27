@@ -10,6 +10,7 @@ export const usePerfilesComposable = () => {
     const {
         perfil,
         perfiles,
+        perfilesFiltros,
         saldosPerfiles,
     } = storeToRefs(store)
     
@@ -40,6 +41,7 @@ export const usePerfilesComposable = () => {
         perfil,
         saldosPerfiles,
         perfiles,
+        perfilesFiltros,
 
         crearPerfil,
         editarPerfil,

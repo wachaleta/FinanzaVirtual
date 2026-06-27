@@ -116,7 +116,7 @@ class TransaccionesRangoFechasViewSet(FinanzasModelViewSet):
             )
         ).annotate(
             CategoriaNombre = F("IdCategoria__Nombre")
-        ).order_by("-Fecha").order_by("-FechaCreacion")
+        ).order_by("-Fecha", "-FechaCreacion")
     
     def list(self, request, *args, **kwargs):
         

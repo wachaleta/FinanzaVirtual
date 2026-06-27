@@ -31,4 +31,4 @@ class TransaccionViewSet(FinanzasModelViewSet):
                 Value(" - "),
                 F("IdPerfilBeneficiario__Nombre")
             )
-        ).order_by("-Fecha").order_by("-FechaCreacion")
+        ).order_by("-Fecha", "-FechaCreacion")

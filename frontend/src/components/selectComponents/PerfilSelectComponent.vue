@@ -38,11 +38,14 @@ defineProps({
 
 const {
     perfiles,
+    perfilesFiltros,
 
     cargarPerfiles
 } = usePerfilesComposable()
 
 const refresh = async() =>{
+
+    perfilesFiltros.value = {}
     await cargarPerfiles()
     cargado.value = true
 }

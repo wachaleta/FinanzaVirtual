@@ -79,7 +79,7 @@
                 </template>
                 <template #fecha>
                     <div>
-                        {{ transaccion.Fecha }}
+                        {{ $filters.formatDate(transaccion.Fecha, 'DD-MM-YYYY') }}
                     </div>
                     <div>
                         {{ transaccion.CategoriaNombre }}

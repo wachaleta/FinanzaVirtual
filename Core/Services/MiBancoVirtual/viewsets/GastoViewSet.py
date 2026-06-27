@@ -37,7 +37,7 @@ class GastoViewSet(FinanzasModelViewSet):
                 Value(" - "),
                 F("IdPerfilBeneficiario__Nombre")
             )
-        ).order_by("-Fecha").order_by("-FechaCreacion")
+        ).order_by("-Fecha", "-FechaCreacion")
 
     def get_create_validated_data(self, data):
         return {
