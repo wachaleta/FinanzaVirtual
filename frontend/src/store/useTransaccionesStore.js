@@ -49,6 +49,7 @@ export const useTransaccionesStore = defineStore("transacciones", {
                     const fecha = this.transaccion.Fecha
                     this.transaccion = {}
                     this.transaccion.Fecha = fecha
+                    this.transaccion.TransferenciaEntrePerfiles = true
                 })
         },
 

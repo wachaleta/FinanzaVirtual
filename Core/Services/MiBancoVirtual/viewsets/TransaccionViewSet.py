@@ -2,10 +2,14 @@ from django.db.models import Q, Value, F
 from django.db.models.functions import Concat
 
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
+from rest_framework import status
 
 from ....Application.Behaviours import FinanzasModelViewSet
 from ..models import *
 from ..serializers import TransaccionSerializer
+
+from Core.Services.MiBancoVirtual.Funciones import TransaccionFunciones
 
 class TransaccionViewSet(FinanzasModelViewSet):
     serializer_class = TransaccionSerializer
@@ -32,3 +36,14 @@ class TransaccionViewSet(FinanzasModelViewSet):
                 F("IdPerfilBeneficiario__Nombre")
             )
         ).order_by("-Fecha", "-FechaCreacion")
+
+    # def create(self, request, *args, **kwargs):
+    #     serializer = self.serializer_class(data=request.data)
+    #     serializer.is_valid(raise_exception=True)
+
+    #     transaccion = TransaccionFunciones.transaccion_crear(
+    #         usuario=request.user,
+    #         **serializer.validated_data,
+    #     )
+
+    #     return Response({'id': transaccion.IdTransaccion}, status=status.HTTP_201_CREATED)

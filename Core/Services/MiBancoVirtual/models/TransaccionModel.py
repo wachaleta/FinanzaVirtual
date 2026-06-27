@@ -16,11 +16,11 @@ class Transaccion(models.Model):
     Fecha = models.DateField(auto_now_add=False)
     FechaCreacion = models.DateTimeField(auto_now_add=True)
     
-    IdPerfilOrdenante = models.ForeignKey("MiBancoVirtual.Perfil", related_name="transaccion_perfil_ordenante", on_delete=models.SET_NULL, null=True)
-    IdCuentaOrdenante = models.ForeignKey("MiBancoVirtual.Cuenta", related_name="transaccion_cuenta_ordenante", on_delete=models.SET_NULL, null=True)
+    IdPerfilOrdenante = models.ForeignKey("MiBancoVirtual.Perfil", related_name="transaccion_perfil_ordenante", on_delete=models.SET_NULL, null=True, blank=True)
+    IdCuentaOrdenante = models.ForeignKey("MiBancoVirtual.Cuenta", related_name="transaccion_cuenta_ordenante", on_delete=models.SET_NULL, null=True, blank=True)
 
-    IdPerfilBeneficiario = models.ForeignKey("MiBancoVirtual.Perfil", related_name="transaccion_perfil_beneficiario", on_delete=models.SET_NULL, null=True)
-    IdCuentaBeneficiaria = models.ForeignKey("MiBancoVirtual.Cuenta", related_name="transaccion_cuenta_beneficiaria", on_delete=models.SET_NULL, null=True)
+    IdPerfilBeneficiario = models.ForeignKey("MiBancoVirtual.Perfil", related_name="transaccion_perfil_beneficiario", on_delete=models.SET_NULL, null=True, blank=True)
+    IdCuentaBeneficiaria = models.ForeignKey("MiBancoVirtual.Cuenta", related_name="transaccion_cuenta_beneficiaria", on_delete=models.SET_NULL, null=True, blank=True)
     
     IdCategoria = models.ForeignKey("MiBancoVirtual.Categoria", on_delete=models.PROTECT)
 

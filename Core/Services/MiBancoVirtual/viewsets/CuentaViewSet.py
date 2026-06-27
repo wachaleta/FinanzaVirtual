@@ -1,12 +1,15 @@
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.decorators import action
 from rest_framework.response import Response
+from rest_framework import status
 
 from ....Application.Behaviours import FinanzasModelViewSet
 from ....Application.Exceptions import BadRequestException
 from ..validators import CuentaCrearValidator, CuentaEditarValidator
 from ..models import *
 from ..serializers import *
+
+from Core.Services.MiBancoVirtual.Funciones import CuentaFunciones
 
 class CuentaViewSet(FinanzasModelViewSet):
     serializer_class = CuentaSerializer
@@ -22,22 +25,16 @@ class CuentaViewSet(FinanzasModelViewSet):
 
         return cuentas
     
-    def get_create_validated_data(self, data):
-        return {
-            "Nombre": data.get("Nombre", ""),
-            "EsEfectivo": data.get("EsEfectivo", False),
-            "SaldoReal": data.get("SaldoReal", 0),
-            "BQ100": data.get("BQ100", 0),
-            "BQ50": data.get("BQ50", 0),
-            "BQ20": data.get("BQ20", 0),
-            "BQ10": data.get("BQ10", 0),
-            "BQ5": data.get("BQ5", 0),
-            "M100c": data.get("M100c", 0),
-            "M50c": data.get("M50c", 0),
-            "M25c": data.get("M25c", 0),
-            "M10c": data.get("M10c", 0),
-            "M5c": data.get("M5c", 0),
-        }
+    def create(self, request, *args, **kwargs):
+        serializer = self.serializer_class(data=request.data)
+        serializer.is_valid(raise_exception=True)
+
+        cuenta = CuentaFunciones.cuenta_crear(
+            usuario=request.user,
+            **serializer.validated_data,
+        ) 
+
+        return Response({'id': cuenta.IdCuenta}, status=status.HTTP_201_CREATED)
     
     def get_update_validated_data(self, data):
         return {

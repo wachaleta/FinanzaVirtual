@@ -3,12 +3,22 @@ import { storeToRefs } from "pinia";
 import { useRoute, useRouter } from 'vue-router'
 import { toast } from 'vue3-toastify'
 import filters from "@/filters";
+import { usePerfilesComposable } from "./usePerfilesComposable";
+import { useCuentasComposable } from "./useCuentasComposable";
 
 export const useTransaccionesComposable = () => {
-
     const route = useRoute()
     const router = useRouter()
+    
+    const {
+        cargarPerfiles,
+    } = usePerfilesComposable()
+
+    const {
+        cargarCuentas,
+    } = useCuentasComposable()
     const store = useTransaccionesStore()
+    
 
     const {
         transaccion,
@@ -17,9 +27,22 @@ export const useTransaccionesComposable = () => {
     } = storeToRefs(store)
 
     //  POST
-    const crearGasto = async () => await store.crearGasto()
-    const crearIngreso = async () => await store.crearIngreso()
-    const crearTransferencia = async () => await store.crearTransferencia()
+    const crearGasto = async () => {
+        await store.crearGasto()
+        cargarPerfiles()
+        cargarCuentas()
+    }
+    const crearIngreso = async () => {
+        await store.crearIngreso()
+        cargarPerfiles()
+        cargarCuentas()
+    }
+
+    const crearTransferencia = async () => {
+        await store.crearTransferencia()
+        cargarPerfiles()
+        cargarCuentas()
+    }
 
     //  PUT
     const editarGasto = async () => {

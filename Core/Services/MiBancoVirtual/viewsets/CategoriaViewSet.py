@@ -2,6 +2,7 @@ from rest_framework import viewsets
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.decorators import action
 from rest_framework.response import Response
+from rest_framework import status
 
 from ....Application.Behaviours import FinanzasModelViewSet
 from ....Application.Exceptions import BadRequestException
@@ -9,6 +10,7 @@ from ..validators import CategoriaCrearValidator, CategoriaEditarValidator
 from ..models import *
 from ..serializers import *
 
+from Core.Services.MiBancoVirtual.Funciones import CategoriaFunciones
 class CategoriaViewSet(FinanzasModelViewSet):
     serializer_class = CategoriaSerializer
     create_validator = CategoriaCrearValidator
@@ -18,10 +20,17 @@ class CategoriaViewSet(FinanzasModelViewSet):
     def get_queryset(self):
         return Categoria.objects.filter(IdUsuario=self.request.user.id, Activo=True)
 
-    def get_create_validated_data(self, data):
-        return {
-            "Nombre": data.get("Nombre", "")
-        }
+    def create(self, request, *args, **kwargs):
+        serializer = self.serializer_class(data=request.data)
+        serializer.is_valid(raise_exception=True)
+
+        categoria = CategoriaFunciones.categoria_crear(
+            usuario=request.user,
+            **serializer.validated_data,
+        )
+
+        return Response({'id': categoria.IdCategoria}, status=status.HTTP_201_CREATED)
+
 
     def get_update_validated_data(self, data):
         return {

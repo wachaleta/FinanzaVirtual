@@ -1,12 +1,15 @@
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.decorators import action
 from rest_framework.response import Response
+from rest_framework import status
 
 from ....Application.Behaviours import FinanzasModelViewSet
 from ....Application.Exceptions import BadRequestException
 from ..validators import PerfilCrearValidator, PerfilEditarValidator
 from ..models import *
 from ..serializers import *
+
+from Core.Services.MiBancoVirtual.Funciones import PerfilFunciones
 
 class PerfilViewSet(FinanzasModelViewSet):
     serializer_class = PerfilSerializer
@@ -29,6 +32,18 @@ class PerfilViewSet(FinanzasModelViewSet):
         perfiles = lista_perfiles.order_by('Nombre')
         
         return perfiles
+    
+    def create(self, request, *args, **kwargs):
+        serializer = self.serializer_class(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        
+        perfil = PerfilFunciones.perfil_crear(
+            usuario=request.user,
+            **serializer.validated_data,
+        )
+
+        return Response({'id': perfil.IdPerfil}, status=status.HTTP_201_CREATED)
+
     
     def get_create_validated_data(self, data):
         return {
