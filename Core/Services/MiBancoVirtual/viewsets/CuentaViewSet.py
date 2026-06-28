@@ -7,14 +7,13 @@ from ....Application.Behaviours import FinanzasModelViewSet
 from ....Application.Exceptions import BadRequestException
 from ..validators import CuentaCrearValidator, CuentaEditarValidator
 from ..models import *
-from ..serializers import *
 
 from Core.Services.MiBancoVirtual.getters import CuentaGetters
 from Core.Services.MiBancoVirtual.Funciones import CuentaFunciones
 from Core.Services.MiBancoVirtual import serializers
 
 class CuentaViewSet(FinanzasModelViewSet):
-    serializer_class = CuentaSerializer
+    serializer_class = serializers.CuentaSerializer
     permission_classes = [IsAuthenticated]
 
     def get_queryset(self):

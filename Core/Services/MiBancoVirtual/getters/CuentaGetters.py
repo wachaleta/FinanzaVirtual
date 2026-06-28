@@ -2,7 +2,7 @@ from decimal import Decimal
 
 from django.contrib.auth.models import User
 from django.db.models.functions import Coalesce
-from django.db.models import Sum
+from django.db.models import Sum, F, Q, OuterRef, Subquery
 from django.db.transaction import atomic
 
 from Core.Services.MiBancoVirtual import models
@@ -23,11 +23,22 @@ def obtener_cuentas_usuario(
 
     cuentas = cuentas.annotate(
         saldo_total=Coalesce(
-                Sum('transaccion_cuenta_beneficiaria__monto'), Decimal(0)
-            )-
-            Coalesce(
-                Sum('transaccion_cuenta_ordenante__monto'), Decimal(0)
-            )
-    ).order_by('nombre')
+            Subquery(
+                models.Transaccion.objects.filter(
+                    cuenta_beneficiaria=OuterRef('pk')
+                ).values('cuenta_beneficiaria').annotate(
+                    total=Sum('monto')
+                ).values('total')
+            ), Decimal(0))
+        -Coalesce(
+            Subquery(
+                models.Transaccion.objects.filter(
+                    cuenta_ordenante=OuterRef('pk')
+                ).values('cuenta_ordenante').annotate(
+                    total=Sum('monto')
+                ).values('total')
+            ), Decimal(0)
+        )
+    )
 
     return cuentas
