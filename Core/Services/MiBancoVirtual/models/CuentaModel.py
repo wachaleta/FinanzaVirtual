@@ -24,26 +24,6 @@ class Cuenta(models.Model):
     m10c = models.IntegerField(default=0)
     m5c = models.IntegerField(default=0)
     activo = models.BooleanField(default=True)
-
-    # @property
-    # def saldo_total(self):
-    #     saldo_ingresos = Transaccion.objects.filter(cuenta_beneficiaria = self.IdCuenta).aggregate(
-    #         saldo=Sum('Monto')
-    #     )['saldo' or 0]
-
-    #     if(saldo_ingresos == None):
-    #         saldo_ingresos = 0
-
-    #     saldo_gastos = Transaccion.objects.filter(cuenta_ordenante = self.IdCuenta).aggregate(
-    #         saldo=Sum('Monto')
-    #     )['saldo' or 0]
-
-    #     if(saldo_gastos == None):
-    #         saldo_gastos = 0
-        
-    #     saldo_total = round(Decimal(saldo_ingresos - saldo_gastos), 2)
-
-    #     return saldo_total
     
     @property
     def saldo_efectivo_calculado(self):

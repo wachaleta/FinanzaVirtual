@@ -1,5 +1,8 @@
 from .CategoriaModel import Categoria
+
 from .CuentaModel import Cuenta
+from .CuentaEfectivoModel import CuentaEfectivo
+
 from .PerfilModel import Perfil
 from .TransaccionModel import Transaccion
 from .TransaccionProgramadaModel import TransaccionProgramada

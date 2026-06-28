@@ -34,7 +34,7 @@ with open(config_path) as f:
 SECRET_KEY = 'django-insecure-1pe&ps*jrv(prj5r1duu3eum$+4&$zabok!zlb%##w@e79kzs*'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.getenv('DEBUG', True)
+DEBUG = settings.get('DEBUG', False)
 
 # DB_NAME = os.getenv('DB_NAME',)
 # DB_USER = os.getenv('DB_USER',)
@@ -81,6 +81,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'Core.Services.MiBancoVirtual',
     'Core.Services.Auth',
+    'Core.Services.catalogos',
     # 'rest_framework.authtoken',
 ]
 
