@@ -2,12 +2,12 @@
     <DynamicSelectComponent
         v-if="cargado"
         v-model="model"
-        name="IdPerfil"
-        valueRef="IdPerfil"
+        name="id"
+        valueRef="id"
         :multiple="multiple"
         :close-on-select="closeOnSelect"
         :items="perfiles"
-        :optionText="(item) => item.Nombre + ': ' + $filters.currencyGTQ(item.Saldo)"
+        :optionText="(item) => item.nombre + ': ' + $filters.currencyGTQ(item.saldo)"
     >
         <slot>
             Perfil
@@ -52,7 +52,9 @@ const refresh = async() =>{
     console.log("props")
     console.log(props.cargarItems)
     if(props.cargarItems){
-        perfilesFiltros.value = {}
+        perfilesFiltros.value = {
+            activo: true,
+        }
         await cargarPerfiles()
     }
 

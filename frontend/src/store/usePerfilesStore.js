@@ -26,7 +26,7 @@ export const usePerfilesStore = defineStore("perfiles", {
         },
 
         async editarPerfil() {
-            await DebitoApi().put(`perfil/${this.perfil.IdPerfil}/`, this.perfil
+            await DebitoApi().put(`perfil/${this.perfil.id}/`, this.perfil
             )
             .then(() => {
                 this.perfil= {}
@@ -37,13 +37,13 @@ export const usePerfilesStore = defineStore("perfiles", {
             })
         },
 
-        async eliminarPerfil(IdPerfil) {
-            if(IdPerfil)
+        async eliminarPerfil(idPerfil) {
+            if(idPerfil)
             {
-                this.perfil.IdPerfil = IdPerfil
+                this.perfil.id = idPerfil
             }
 
-            await DebitoApi().put(`perfil/${this.perfil.IdPerfil}/inactivar/`
+            await DebitoApi().put(`perfil/${this.perfil.id}/inactivar/`
             )
             .then(() => {
                 router.push({name: 'perfil-listado'}).then(() => {
@@ -64,8 +64,8 @@ export const usePerfilesStore = defineStore("perfiles", {
             })
         },
 
-        async cargarPerfilPorId(IdPerfil){
-            await DebitoApi().get(`perfil/${IdPerfil}/`)
+        async cargarPerfilPorId(idPerfil){
+            await DebitoApi().get(`perfil/${idPerfil}/`)
             .then(res => {
                 this.perfil = res.data
             })

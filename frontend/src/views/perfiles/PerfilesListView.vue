@@ -82,20 +82,20 @@
         </div>
 
         <div class="row mt-4">
-            <div class="col-12 col-sm-6 col-md-4" v-for="perfil in perfiles.filter(v => v.SumaDisponible == true || v.Saldo < 0)">
-                <CardComponent @click="router.push({name: 'perfil-editar', params:{idPerfil: perfil.IdPerfil}})"
+            <div class="col-12 col-sm-6 col-md-4" v-for="perfil in perfiles.filter(v => v.suma_disponible == true || v.saldo < 0)">
+                <CardComponent @click="router.push({name: 'perfil-editar', params:{idPerfil: perfil.id}})"
                 class="mb-3"
-                :color="perfil.Saldo >= 0 ? 'success' : 'danger'"
+                :color="perfil.saldo >= 0 ? 'success' : 'danger'"
                 >
                     <template v-slot:header>
-                        {{ perfil.Nombre }}
+                        {{ perfil.nombre }}
                     </template>
                     <template v-slot:body>
                         <div class="">
                             Balance:
                         </div>
                         <div class="mt-2" style="font-size: 1.7rem;">
-                            <strong>{{ $filters.currencyGTQ(perfil.Saldo) }}</strong>
+                            <strong>{{ $filters.currencyGTQ(perfil.saldo) }}</strong>
                         </div>
                     </template>
                 </CardComponent>
@@ -109,20 +109,20 @@
         </div>
 
         <div class="row mt-4">
-            <div class="col-12 col-sm-6 col-md-4" v-for="perfil in perfiles.filter(v => v.SumaDisponible == false && v.Saldo >= 0)">
-                <CardComponent @click="router.push({name: 'perfil-editar', params:{idPerfil: perfil.IdPerfil}})"
+            <div class="col-12 col-sm-6 col-md-4" v-for="perfil in perfiles.filter(v => v.suma_disponible == false && v.saldo >= 0)">
+                <CardComponent @click="router.push({name: 'perfil-editar', params:{idPerfil: perfil.id}})"
                 class="mb-3"
-                :color="perfil.Saldo >= 0 ? 'success' : 'danger'"
+                :color="perfil.saldo >= 0 ? 'success' : 'danger'"
                 >
                     <template v-slot:header>
-                        {{ perfil.Nombre }}
+                        {{ perfil.nombre }}
                     </template>
                     <template v-slot:body>
                         <div class="">
                             Balance:
                         </div>
                         <div class="mt-2" style="font-size: 1.7rem;">
-                            <strong>{{ $filters.currencyGTQ(perfil.Saldo) }}</strong>
+                            <strong>{{ $filters.currencyGTQ(perfil.saldo) }}</strong>
                         </div>
                     </template>
                 </CardComponent>
@@ -153,6 +153,9 @@ const {
 } = usePerfilesComposable()
 
 const refresh = async() => {
+    perfilesFiltros.value = {
+        activo: true
+    }
     cargarPerfiles()
     obtenerSaldoTotalPerfiles()
 }

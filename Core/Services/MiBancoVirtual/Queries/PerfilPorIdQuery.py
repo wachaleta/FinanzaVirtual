@@ -1,4 +1,4 @@
 class PerfilPorIdQuery:
-    def __init__(self, IdPerfil, IdUsuario):
-        self.IdPerfil = IdPerfil
+    def __init__(self, id, IdUsuario):
+        self.id = id
         self.IdUsuario = IdUsuario

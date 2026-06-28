@@ -6,4 +6,4 @@ class PerfilEditarValidator(Validator):
 
     def SetRules(self):
 
-        self.NewField("Nombre").NotEmpty().ValidateDuplicatedDataExceptPk(self.data["IdPerfil"])
+        self.NewField("Nombre").NotEmpty().ValidateDuplicatedDataExceptPk(self.data["id"])

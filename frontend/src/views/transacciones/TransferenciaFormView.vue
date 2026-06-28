@@ -75,6 +75,8 @@ import { useCuentasComposable } from '@/composables/useCuentasComposable';
 const { transaccion } = useTransaccionesComposable()
 
 const {
+    perfilesFiltros,
+
     cargarPerfiles,
 } = usePerfilesComposable()
 
@@ -83,6 +85,9 @@ const {
 } = useCuentasComposable()
 
 const refresh = async () => {
+    perfilesFiltros.value = {
+        activo: true,
+    }
     cargarPerfiles()
     cargarCuentas()
 

@@ -3,6 +3,7 @@ from datetime import date
 
 from django.contrib.auth.models import User
 from django.db import transaction
+from django.utils import timezone
 
 from Core.Application.Exceptions import BadRequestException
 from Core.Services.Auth import models
@@ -33,7 +34,9 @@ def profile_validar_pago(
     if not profile:
         raise BadRequestException("El usuario no cuenta con un registro profile")
 
-    if profile.fecha_limite_permitida < date.today():
+    if profile.fecha_limite_permitida < timezone.localdate():
+        print("date.today()")
+        print(timezone.localdate)
         raise BadRequestException("No puede ejecutar esta acción. Verifique su pago")
 
     return profile

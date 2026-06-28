@@ -10,10 +10,10 @@ from Core.Services.MiBancoVirtual import models
 def transaccion_validar_inactivos(
     transaccion: models.Transaccion = None
 ):
-    if transaccion.IdPerfilOrdenante and transaccion.IdPerfilOrdenante.Activo is False:
+    if transaccion.IdPerfilOrdenante and transaccion.IdPerfilOrdenante.activo is False:
         raise BadRequestException("El perfil ordenante se encuentra inactivo")
 
-    if transaccion.IdPerfilBeneficiario and transaccion.IdPerfilBeneficiario.Activo is False:
+    if transaccion.IdPerfilBeneficiario and transaccion.IdPerfilBeneficiario.activo is False:
         raise BadRequestException("El perfil beneficiario se encuentra inactivo")
 
     if transaccion.IdCuentaOrdenante and transaccion.IdCuentaOrdenante.Activo is False:
@@ -46,6 +46,8 @@ def transaccion_crear(
         IdCuentaBeneficiaria = IdCuentaBeneficiaria,
         IdCategoria = IdCategoria,
     )
+
+    transaccion_validar_inactivos(transaccion=transaccion)
 
     transaccion.full_clean()
     transaccion.save()

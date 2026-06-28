@@ -4,6 +4,7 @@ from .CuentaSerializer import CuentaSerializer
 from .CuentaEditarSerializer import CuentaEditarSerializer
 
 from .PerfilSerializer import PerfilSerializer
+from .PerfilesListSerializer import PerfilesListSerializer
 
 from .TransaccionesRangoFechasSerializer import TransaccionesRangoFechasSerializer
 from .TransaccionSerializer import TransaccionSerializer

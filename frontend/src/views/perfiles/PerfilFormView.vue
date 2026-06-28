@@ -1,10 +1,10 @@
 <template>
     <div class="row">
         <div class="col-12 mb-3">
-            <DynamicInputComponent v-focus v-model="model.Nombre" name="Nombre">Nombre</DynamicInputComponent>
+            <DynamicInputComponent v-focus v-model="model.nombre" name="nombre">Nombre</DynamicInputComponent>
         </div>
         <div class="col-12">
-            <DynamicCheckBoxComponent v-model="model.SumaDisponible" name="sumarTotalEditar">Sumar al disponible</DynamicCheckBoxComponent>
+            <DynamicCheckBoxComponent v-model="model.suma_disponible" name="sumarTotalEditar">Sumar al disponible</DynamicCheckBoxComponent>
         </div>
     </div>
 </template>

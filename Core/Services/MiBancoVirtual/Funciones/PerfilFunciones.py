@@ -28,18 +28,18 @@ def perfil_crear(
 def perfil_editar(
     usuario: User = None,
     perfil: models.Perfil = None,
-    SumaDisponible: bool = True,
-    Nombre: str = None,
-    Activo: bool = True
+    suma_disponible: bool = True,
+    nombre: str = None,
+    activo: bool = True
 ) -> models.Perfil:
     ProfileFunciones.profile_validar_pago(usuario=usuario)
     
     if not perfil:
         raise BadRequestException("No se proporcionó ningún perfil para editar")
 
-    perfil.Nombre = Nombre
-    perfil.SumaDisponible = SumaDisponible
-    perfil.Activo = Activo
+    perfil.nombre = nombre
+    perfil.suma_disponible = suma_disponible
+    perfil.activo = activo
 
     perfil.full_clean()
     perfil.save()

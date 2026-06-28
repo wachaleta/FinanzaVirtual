@@ -196,7 +196,7 @@ CORS_ALLOW_CREDENTIALS = True
 
 LANGUAGE_CODE = 'es-gt'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'America/Guatemala'
 
 USE_I18N = True
 
