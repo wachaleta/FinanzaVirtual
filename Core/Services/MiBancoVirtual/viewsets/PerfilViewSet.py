@@ -29,7 +29,11 @@ class PerfilViewSet(FinanzasModelViewSet):
         return perfiles
     
     def create(self, request, *args, **kwargs):
-        serializer = self.serializer_class(data=request.data)
+        serializer = self.serializer_class(
+            data=request.data,
+            context={'request': request}
+        )
+
         serializer.is_valid(raise_exception=True)
         
         perfil = PerfilFunciones.perfil_crear(
@@ -42,7 +46,12 @@ class PerfilViewSet(FinanzasModelViewSet):
     def update(self, request, *args, **kwargs):
         perfil = self.get_object()
 
-        serializer = self.serializer_class(data=request.data)
+        serializer = self.serializer_class(
+            data=request.data,
+            context={'request': request},
+            instance=perfil,
+        )
+
         serializer.is_valid(raise_exception=True)
         
         perfil = PerfilFunciones.perfil_editar(

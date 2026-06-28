@@ -16,7 +16,7 @@
     <!-- Cards para saldos -->
     <div class="row">
         <div class="col-12 col-sm-6 col-md-4 mt-3">
-            <CardComponent :color="saldosPerfiles.SaldoTotal >= 0 ? 'success' : 'danger'" class="h-100">
+            <CardComponent :color="saldosPerfiles.saldo_total >= 0 ? 'success' : 'danger'" class="h-100">
                 <template v-slot:header>
                     Saldo total
                 </template>
@@ -25,7 +25,7 @@
                         Balance:
                     </div>
                     <div class="mt-2" style="font-size: 1.7rem;">
-                        <strong>{{ $filters.currencyGTQ(saldosPerfiles.SaldoTotal) }}</strong>
+                        <strong>{{ $filters.currencyGTQ(saldosPerfiles.saldo_total) }}</strong>
                     </div>
                 </template>
             </CardComponent>
@@ -70,7 +70,7 @@
                 <ButtonBuscarComponent type="submit"/>
             </div>
             <div class="w-100">
-                <DynamicInputComponent v-model="perfilesFiltros.searchText"/>
+                <DynamicInputComponent v-model="perfilesFiltros.searchText" name="searchText"/>
             </div>
         </div>
     </form>

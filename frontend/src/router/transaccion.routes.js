@@ -87,7 +87,7 @@ export default [
                 ]
             },
             {
-                path: 'transferencia/crear',
+                path: 'crear/transferencia',
                 name: 'transaccion-crear-transferencia',
                 component: TransferenciaCrearView,
                 meta: {

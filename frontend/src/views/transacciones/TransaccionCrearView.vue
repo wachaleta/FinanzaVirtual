@@ -46,9 +46,9 @@ const submitForm = async() => {
 }
 
 const refresh = () => {
-    const fecha = transaccion.value.Fecha
+    const fecha = transaccion.value.fecha
     transaccion.value = {}
-    transaccion.value.Fecha = fecha
+    transaccion.value.fecha = fecha
 }
 
 refresh()

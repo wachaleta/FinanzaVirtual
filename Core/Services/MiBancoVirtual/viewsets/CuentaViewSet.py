@@ -9,6 +9,7 @@ from ..validators import CuentaCrearValidator, CuentaEditarValidator
 from ..models import *
 from ..serializers import *
 
+from Core.Services.MiBancoVirtual.getters import CuentaGetters
 from Core.Services.MiBancoVirtual.Funciones import CuentaFunciones
 from Core.Services.MiBancoVirtual import serializers
 
@@ -18,10 +19,14 @@ class CuentaViewSet(FinanzasModelViewSet):
 
     def get_queryset(self):
 
-        idUsuario = self.request.user.id
+        serializer = serializers.CuentasListRequestSerializer(data=self.request.query_params)
+        serializer.is_valid(raise_exception=True)
 
-        cuentas = Cuenta.objects.filter(IdUsuario=idUsuario, Activo=True).order_by("Nombre")
-
+        cuentas = CuentaGetters.obtener_cuentas_usuario(
+            usuario=self.request.user,
+            **serializer.validated_data
+        )
+        
         return cuentas
     
     def create(self, request, *args, **kwargs):
@@ -37,7 +42,7 @@ class CuentaViewSet(FinanzasModelViewSet):
             **serializer.validated_data,
         ) 
 
-        return Response({'id': cuenta.IdCuenta}, status=status.HTTP_201_CREATED)
+        return Response({'id': cuenta.id}, status=status.HTTP_201_CREATED)
     
     def update(self, request, *args, **kwargs):
         cuenta = self.get_object()
@@ -51,15 +56,15 @@ class CuentaViewSet(FinanzasModelViewSet):
             **serializer.validated_data,
         ) 
 
-        return Response({'id': cuenta.IdCuenta}, status=status.HTTP_200_OK)
+        return Response({'id': cuenta.id}, status=status.HTTP_200_OK)
 
     @action(methods=['put'], detail=True)
     def inactivar(self, request, pk=None):
         cuenta = self.get_object()
 
-        cuenta = CuentaFunciones.cuenta_inactivar(
+        CuentaFunciones.cuenta_inactivar(
             usuario=request.user,
             cuenta=cuenta,
         )
 
-        return Response({'id': cuenta.IdCuenta}, status=status.HTTP_200_OK)
+        return Response({'id': cuenta.id}, status=status.HTTP_200_OK)

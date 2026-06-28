@@ -20,7 +20,7 @@ export const useCategoriasStore = defineStore("categorias", {
         },
 
         async editarCategoria(){
-            await DebitoApi().put(`categoria/${this.categoria.IdCategoria}/`, this.categoria)
+            await DebitoApi().put(`categoria/${this.categoria.id}/`, this.categoria)
                 .then(() => {
                     router.push({name: 'categoria-listado'}).then(() => {
                         toast.success("Categoría Editada Exitosamente!")
@@ -29,7 +29,7 @@ export const useCategoriasStore = defineStore("categorias", {
         },
 
         async eliminarCategoria(){
-            await DebitoApi().put(`categoria/${this.categoria.IdCategoria}/inactivar/`)
+            await DebitoApi().put(`categoria/${this.categoria.id}/inactivar/`)
                 .then(() => {
                     router.push({name: 'categoria-listado'}).then(() => {
                         toast.success(`Categoría ${this.categoria.Nombre} Eliminada Exitosamente!`)
@@ -44,13 +44,13 @@ export const useCategoriasStore = defineStore("categorias", {
             })
         },
 
-        async cargarCategoriaPorId(idCategoria){
+        async cargarCategoriaPorId(id){
 
-            if(idCategoria){
-                this.categoria.IdCategoria = idCategoria
+            if(id){
+                this.categoria.id = id
             }
 
-            await DebitoApi().get(`categoria/${this.categoria.IdCategoria}/`)
+            await DebitoApi().get(`categoria/${this.categoria.id}/`)
             .then(res => {
                 this.categoria = res.data
             })

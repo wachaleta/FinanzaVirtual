@@ -10,41 +10,41 @@ from Core.Services.MiBancoVirtual import models
 def transaccion_validar_inactivos(
     transaccion: models.Transaccion = None
 ):
-    if transaccion.IdPerfilOrdenante and transaccion.IdPerfilOrdenante.activo is False:
+    if transaccion.perfil_ordenante and transaccion.perfil_ordenante.activo is False:
         raise BadRequestException("El perfil ordenante se encuentra inactivo")
 
-    if transaccion.IdPerfilBeneficiario and transaccion.IdPerfilBeneficiario.activo is False:
+    if transaccion.perfil_beneficiario and transaccion.perfil_beneficiario.activo is False:
         raise BadRequestException("El perfil beneficiario se encuentra inactivo")
 
-    if transaccion.IdCuentaOrdenante and transaccion.IdCuentaOrdenante.Activo is False:
+    if transaccion.cuenta_ordenante and transaccion.cuenta_ordenante.activo is False:
         raise BadRequestException("La cuenta ordenante se encuentra inactiva")
 
-    if transaccion.IdCuentaBeneficiaria and transaccion.IdCuentaBeneficiaria.Activo is False:
+    if transaccion.cuenta_beneficiaria and transaccion.cuenta_beneficiaria.activo is False:
         raise BadRequestException("La cuenta beneficiaria se encuentra inactiva")
 
 @transaction.atomic()
 def transaccion_crear(
     usuario: User = None,
-    Monto = 0,
-    Descripcion = None,
-    Fecha: date = None,
-    IdPerfilOrdenante: models.Perfil = None,
-    IdCuentaOrdenante: models.Cuenta = None,
-    IdPerfilBeneficiario: models.Perfil = None,
-    IdCuentaBeneficiaria: models.Cuenta = None,
-    IdCategoria: models.Categoria = None,
+    monto = 0,
+    descripcion = None,
+    fecha: date = None,
+    perfil_ordenante: models.Perfil = None,
+    cuenta_ordenante: models.Cuenta = None,
+    perfil_beneficiario: models.Perfil = None,
+    cuenta_beneficiaria: models.Cuenta = None,
+    categoria: models.Categoria = None,
 ) -> models.Transaccion:
     ProfileFunciones.profile_validar_pago(usuario=usuario)
 
     transaccion = models.Transaccion(
-        Monto = Monto,
-        Descripcion = Descripcion,
-        Fecha = Fecha,
-        IdPerfilOrdenante = IdPerfilOrdenante,
-        IdCuentaOrdenante = IdCuentaOrdenante,
-        IdPerfilBeneficiario = IdPerfilBeneficiario,
-        IdCuentaBeneficiaria = IdCuentaBeneficiaria,
-        IdCategoria = IdCategoria,
+        monto = monto,
+        descripcion = descripcion,
+        fecha = fecha,
+        perfil_ordenante = perfil_ordenante,
+        cuenta_ordenante = cuenta_ordenante,
+        perfil_beneficiario = perfil_beneficiario,
+        cuenta_beneficiaria = cuenta_beneficiaria,
+        categoria = categoria,
     )
 
     transaccion_validar_inactivos(transaccion=transaccion)
@@ -58,14 +58,14 @@ def transaccion_crear(
 def transaccion_editar(
     usuario: User = None,
     transaccion: models.Transaccion = None,
-    Monto = 0,
-    Descripcion = None,
-    Fecha: date = None,
-    IdPerfilOrdenante: models.Perfil = None,
-    IdCuentaOrdenante: models.Cuenta = None,
-    IdPerfilBeneficiario: models.Perfil = None,
-    IdCuentaBeneficiaria: models.Cuenta = None,
-    IdCategoria: models.Categoria = None,
+    monto = 0,
+    descripcion = None,
+    fecha: date = None,
+    perfil_ordenante: models.Perfil = None,
+    cuenta_ordenante: models.Cuenta = None,
+    perfil_beneficiario: models.Perfil = None,
+    cuenta_beneficiaria: models.Cuenta = None,
+    categoria: models.Categoria = None,
 ) -> models.Transaccion:
     ProfileFunciones.profile_validar_pago(usuario=usuario)
 
@@ -74,14 +74,14 @@ def transaccion_editar(
     
     transaccion_validar_inactivos(transaccion=transaccion)
     
-    transaccion.Monto = Monto
-    transaccion.Descripcion = Descripcion
-    transaccion.Fecha = Fecha
-    transaccion.IdPerfilOrdenante = IdPerfilOrdenante
-    transaccion.IdCuentaOrdenante = IdCuentaOrdenante
-    transaccion.IdPerfilBeneficiario = IdPerfilBeneficiario
-    transaccion.IdCuentaBeneficiaria = IdCuentaBeneficiaria
-    transaccion.IdCategoria = IdCategoria
+    transaccion.monto = monto
+    transaccion.descripcion = descripcion
+    transaccion.fecha = fecha
+    transaccion.perfil_ordenante = perfil_ordenante
+    transaccion.cuenta_ordenante = cuenta_ordenante
+    transaccion.perfil_beneficiario = perfil_beneficiario
+    transaccion.cuenta_beneficiaria = cuenta_beneficiaria
+    transaccion.categoria = categoria
 
     transaccion.full_clean()
     transaccion.save()
@@ -100,7 +100,7 @@ def transaccion_eliminar(
 
     transaccion_validar_inactivos(transaccion=transaccion)
     
-    id = transaccion.IdTransaccion
+    id = transaccion.id
     
     transaccion.delete()
 
@@ -109,22 +109,22 @@ def transaccion_eliminar(
 @transaction.atomic()
 def ingreso_crear(
     usuario: User = None,
-    Monto = None,
-    Descripcion = None,
-    Fecha: date = None,
-    IdPerfilOrdenante: models.Perfil = None,
-    IdCuentaOrdenante: models.Cuenta = None,
-    IdCategoria: models.Categoria = None,
+    monto = None,
+    descripcion = None,
+    fecha: date = None,
+    perfil_ordenante: models.Perfil = None,
+    cuenta_ordenante: models.Cuenta = None,
+    categoria: models.Categoria = None,
 ) -> models.Transaccion:
 
     transaccion = transaccion_crear(
         usuario=usuario,
-        Monto=Monto,
-        Descripcion=Descripcion,
-        Fecha=Fecha,
-        IdCuentaBeneficiaria=IdCuentaOrdenante,
-        IdPerfilBeneficiario=IdPerfilOrdenante,
-        IdCategoria=IdCategoria,
+        monto=monto,
+        descripcion=descripcion,
+        fecha=fecha,
+        cuenta_beneficiaria=cuenta_ordenante,
+        perfil_beneficiario=perfil_ordenante,
+        categoria=categoria,
     )
 
     return transaccion
@@ -133,12 +133,12 @@ def ingreso_crear(
 def ingreso_editar(
     usuario: User = None,
     transaccion: models.Transaccion = None,
-    Monto = None,
-    Descripcion = None,
-    Fecha: date = None,
-    IdPerfilOrdenante: models.Perfil = None,
-    IdCuentaOrdenante: models.Cuenta = None,
-    IdCategoria: models.Categoria = None,
+    monto = None,
+    descripcion = None,
+    fecha: date = None,
+    perfil_ordenante: models.Perfil = None,
+    cuenta_ordenante: models.Cuenta = None,
+    categoria: models.Categoria = None,
 ) -> models.Transaccion:
     
     if not transaccion:
@@ -147,12 +147,12 @@ def ingreso_editar(
     transaccion = transaccion_editar(
         usuario=usuario,
         transaccion=transaccion,
-        Monto=Monto,
-        Descripcion=Descripcion,
-        Fecha=Fecha,
-        IdCuentaBeneficiaria=IdCuentaOrdenante,
-        IdPerfilBeneficiario=IdPerfilOrdenante,
-        IdCategoria=IdCategoria,
+        monto=monto,
+        descripcion=descripcion,
+        fecha=fecha,
+        cuenta_beneficiaria=cuenta_ordenante,
+        perfil_beneficiario=perfil_ordenante,
+        categoria=categoria,
     )
 
     return transaccion
@@ -160,22 +160,22 @@ def ingreso_editar(
 @transaction.atomic()
 def gasto_crear(
     usuario: User = None,
-    Monto = None,
-    Descripcion = None,
-    Fecha: date = None,
-    IdPerfilOrdenante: models.Perfil = None,
-    IdCuentaOrdenante: models.Cuenta = None,
-    IdCategoria: models.Categoria = None,
+    monto = None,
+    descripcion = None,
+    fecha: date = None,
+    perfil_ordenante: models.Perfil = None,
+    cuenta_ordenante: models.Cuenta = None,
+    categoria: models.Categoria = None,
 ) -> models.Transaccion:
 
     transaccion = transaccion_crear(
         usuario=usuario,
-        Monto=Monto,
-        Descripcion=Descripcion,
-        Fecha=Fecha,
-        IdCuentaOrdenante=IdCuentaOrdenante,
-        IdPerfilOrdenante=IdPerfilOrdenante,
-        IdCategoria=IdCategoria,
+        monto=monto,
+        descripcion=descripcion,
+        fecha=fecha,
+        cuenta_ordenante=cuenta_ordenante,
+        perfil_ordenante=perfil_ordenante,
+        categoria=categoria,
     )
 
     return transaccion
@@ -184,12 +184,12 @@ def gasto_crear(
 def gasto_editar(
     usuario: User = None,
     transaccion: models.Transaccion = None,
-    Monto = None,
-    Descripcion = None,
-    Fecha: date = None,
-    IdPerfilOrdenante: models.Perfil = None,
-    IdCuentaOrdenante: models.Cuenta = None,
-    IdCategoria: models.Categoria = None,
+    monto = None,
+    descripcion = None,
+    fecha: date = None,
+    perfil_ordenante: models.Perfil = None,
+    cuenta_ordenante: models.Cuenta = None,
+    categoria: models.Categoria = None,
 ) -> models.Transaccion:
     
     if not transaccion:
@@ -198,12 +198,12 @@ def gasto_editar(
     transaccion = transaccion_editar(
         usuario=usuario,
         transaccion=transaccion,
-        Monto=Monto,
-        Descripcion=Descripcion,
-        Fecha=Fecha,
-        IdCuentaOrdenante=IdCuentaOrdenante,
-        IdPerfilOrdenante=IdPerfilOrdenante,
-        IdCategoria=IdCategoria,
+        monto=monto,
+        descripcion=descripcion,
+        fecha=fecha,
+        cuenta_ordenante=cuenta_ordenante,
+        perfil_ordenante=perfil_ordenante,
+        categoria=categoria,
     )
 
     return transaccion
@@ -211,35 +211,35 @@ def gasto_editar(
 @transaction.atomic()
 def transferencia_crear(
     usuario: User = None,
-    Monto = None,
-    Descripcion = None,
-    Fecha: date = None,
-    IdPerfilOrdenante: models.Perfil = None,
-    IdCuentaOrdenante: models.Cuenta = None,
-    IdPerfilBeneficiario: models.Perfil = None,
-    IdCuentaBeneficiaria: models.Cuenta = None,
-    IdCategoria: models.Categoria = None,
-    TransferenciaEntrePerfiles: bool = False,
+    monto = None,
+    descripcion = None,
+    fecha: date = None,
+    perfil_ordenante: models.Perfil = None,
+    cuenta_ordenante: models.Cuenta = None,
+    perfil_beneficiario: models.Perfil = None,
+    cuenta_beneficiaria: models.Cuenta = None,
+    categoria: models.Categoria = None,
+    transferencia_entre_perfiles: bool = False,
 ) -> models.Transaccion:
     
-    if TransferenciaEntrePerfiles is True:
-        IdCuentaBeneficiaria = None
-        IdCuentaOrdenante = None
+    if transferencia_entre_perfiles is True:
+        cuenta_beneficiaria = None
+        cuenta_ordenante = None
 
-    elif TransferenciaEntrePerfiles is False:
-        IdPerfilBeneficiario = None
-        IdPerfilOrdenante = None
+    elif transferencia_entre_perfiles is False:
+        perfil_beneficiario = None
+        perfil_ordenante = None
 
     transaccion = transaccion_crear(
         usuario=usuario,
-        Monto=Monto,
-        Descripcion=Descripcion,
-        Fecha=Fecha,
-        IdCuentaOrdenante=IdCuentaOrdenante,
-        IdCuentaBeneficiaria=IdCuentaBeneficiaria,
-        IdPerfilOrdenante=IdPerfilOrdenante,
-        IdPerfilBeneficiario=IdPerfilBeneficiario,
-        IdCategoria=IdCategoria,
+        monto=monto,
+        descripcion=descripcion,
+        fecha=fecha,
+        cuenta_ordenante=cuenta_ordenante,
+        cuenta_beneficiaria=cuenta_beneficiaria,
+        perfil_ordenante=perfil_ordenante,
+        perfil_beneficiario=perfil_beneficiario,
+        categoria=categoria,
     )
 
     return transaccion
@@ -248,39 +248,39 @@ def transferencia_crear(
 def transferencia_editar(
     usuario: User = None,
     transaccion: models.Transaccion = None,
-    Monto = None,
-    Descripcion = None,
-    Fecha: date = None,
-    IdPerfilOrdenante: models.Perfil = None,
-    IdCuentaOrdenante: models.Cuenta = None,
-    IdPerfilBeneficiario: models.Perfil = None,
-    IdCuentaBeneficiaria: models.Cuenta = None,
-    IdCategoria: models.Categoria = None,
-    TransferenciaEntrePerfiles: bool = False,
+    monto = None,
+    descripcion = None,
+    fecha: date = None,
+    perfil_ordenante: models.Perfil = None,
+    cuenta_ordenante: models.Cuenta = None,
+    perfil_beneficiario: models.Perfil = None,
+    cuenta_beneficiaria: models.Cuenta = None,
+    categoria: models.Categoria = None,
+    transferencia_entre_perfiles: bool = False,
 ) -> models.Transaccion:
     
     if not transaccion:
         raise BadRequestException('No se proporcionó ninguna transferencia para editar')
     
-    if TransferenciaEntrePerfiles is True:
-        IdCuentaBeneficiaria = None
-        IdCuentaOrdenante = None
+    if transferencia_entre_perfiles is True:
+        cuenta_beneficiaria = None
+        cuenta_ordenante = None
 
-    elif TransferenciaEntrePerfiles is False:
-        IdPerfilBeneficiario = None
-        IdPerfilOrdenante = None
+    elif transferencia_entre_perfiles is False:
+        perfil_beneficiario = None
+        perfil_ordenante = None
 
     transaccion = transaccion_editar(
         usuario=usuario,
         transaccion=transaccion,
-        Monto=Monto,
-        Descripcion=Descripcion,
-        Fecha=Fecha,
-        IdCuentaOrdenante=IdCuentaOrdenante,
-        IdCuentaBeneficiaria=IdCuentaBeneficiaria,
-        IdPerfilOrdenante=IdPerfilOrdenante,
-        IdPerfilBeneficiario=IdPerfilBeneficiario,
-        IdCategoria=IdCategoria,
+        monto=monto,
+        descripcion=descripcion,
+        fecha=fecha,
+        cuenta_ordenante=cuenta_ordenante,
+        cuenta_beneficiaria=cuenta_beneficiaria,
+        perfil_ordenante=perfil_ordenante,
+        perfil_beneficiario=perfil_beneficiario,
+        categoria=categoria,
     )
 
     return transaccion

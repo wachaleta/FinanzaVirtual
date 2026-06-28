@@ -8,13 +8,13 @@ from Core.Services.MiBancoVirtual import models
 @transaction.atomic()
 def categoria_crear(
     usuario: User = None,
-    Nombre: str = None,
+    nombre: str = None,
 ) -> models.Categoria:
     ProfileFunciones.profile_validar_pago(usuario=usuario)
 
     categoria = models.Categoria(
-        IdUsuario = usuario,
-        Nombre = Nombre,
+        usuario = usuario,
+        nombre = nombre,
     )
 
     categoria.full_clean()
@@ -26,16 +26,16 @@ def categoria_crear(
 def categoria_editar(
     usuario: User = None,
     categoria: models.Categoria = None,
-    Nombre: str = None,
-    Activo: bool = True,
+    nombre: str = None,
+    activo: bool = True,
 ) -> models.Categoria:
     ProfileFunciones.profile_validar_pago(usuario=usuario)
 
     if not categoria:
         raise BadRequestException("No se proporcionó ninguna categoría para editar")
 
-    categoria.Nombre = Nombre
-    categoria.Activo = Activo
+    categoria.nombre = nombre
+    categoria.activo = activo
 
     categoria.full_clean()
     categoria.save()
@@ -52,7 +52,7 @@ def categoria_inactivar(
     if not categoria:
         raise BadRequestException('No se proporcionó ninguna categoría para inactivar')
 
-    categoria.Activo = False
+    categoria.activo = False
 
     categoria.save()
 

@@ -14,12 +14,12 @@ class TransaccionProgramadaSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
 
-        fecha = validated_data.get("FechaLimite", None)
-        # if(validated_data["FechaLimite"] != None):
+        fecha = validated_data.get("fecha_limite", None)
+        # if(validated_data["fecha_limite"] != None):
 
         nuevo = TransaccionProgramada.objects.create(
             Nombre = validated_data["Nombre"],
-            FechaLimite = fecha,
+            fecha_limite = fecha,
             
             Usuario = self.context["request"].user
         )

@@ -2,10 +2,10 @@
     <DynamicSelectComponent
         v-if="cargado"
         v-model="model"
-        name="IdCategoria"
+        name="id"
         :items="categorias"
-        :optionText="(item) => item.Nombre"
-        valueRef="IdCategoria"
+        :optionText="(item) => item.nombre"
+        valueRef="id"
     >
         <slot>
             Categoría

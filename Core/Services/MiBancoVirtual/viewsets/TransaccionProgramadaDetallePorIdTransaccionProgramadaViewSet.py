@@ -16,7 +16,7 @@ class TransaccionProgramadaDetallePorIdTransaccionProgramadaViewSet(viewsets.Mod
             #     d.Id,
             #     d.Monto,
             #     d.Descripcion,
-            #     d.FechaCreacion,
+            #     d.fecha_creacion,
             #     d.Beneficiario_id,
             #     d.Categoria_id,
             #     d.Ordenante_id,

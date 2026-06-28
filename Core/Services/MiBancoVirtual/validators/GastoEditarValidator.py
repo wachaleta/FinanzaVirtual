@@ -8,5 +8,5 @@ class GastoEditarValidator(Validator):
         self.NewField("Monto").GreaterThan(0)
         self.NewField("Fecha").NotEmpty()
         self.NewField("IdCategoria").NotEmpty()
-        self.NewField("IdCuentaOrdenante").NotEmpty()
-        self.NewField("IdPerfilOrdenante").NotEmpty()
+        self.NewField("cuenta_ordenante").NotEmpty()
+        self.NewField("perfil_ordenante").NotEmpty()

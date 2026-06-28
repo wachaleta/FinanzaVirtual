@@ -7,6 +7,7 @@ export const useCuentasComposable = () => {
     const {
         cuenta,
         cuentas,
+        cuentasFiltros,
     } = storeToRefs(store)
 
     const crearCuenta = async() => {
@@ -30,6 +31,7 @@ export const useCuentasComposable = () => {
     return {
         cuenta,
         cuentas,
+        cuentasFiltros,
         
         crearCuenta,
         editarCuenta,

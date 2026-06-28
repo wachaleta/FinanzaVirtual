@@ -7,17 +7,17 @@ class CuentaCrearValidator(Validator):
     def SetRules(self):
         self.NewField("Nombre").NotEmpty().ValidateDuplicatedData()
 
-        if self.data["EsEfectivo"] == True:
-            self.NewField("BQ100").GreaterOrEqualTo(0)
-            self.NewField("BQ50").GreaterOrEqualTo(0)
-            self.NewField("BQ20").GreaterOrEqualTo(0)
-            self.NewField("BQ10").GreaterOrEqualTo(0)
-            self.NewField("BQ5").GreaterOrEqualTo(0)
-            self.NewField("M100c").GreaterOrEqualTo(0)
-            self.NewField("M50c").GreaterOrEqualTo(0)
-            self.NewField("M25c").GreaterOrEqualTo(0)
-            self.NewField("M10c").GreaterOrEqualTo(0)
-            self.NewField("M5c").GreaterOrEqualTo(0)
+        if self.data["es_efectivo"] == True:
+            self.NewField("bQ100").GreaterOrEqualTo(0)
+            self.NewField("bQ50").GreaterOrEqualTo(0)
+            self.NewField("bQ20").GreaterOrEqualTo(0)
+            self.NewField("bQ10").GreaterOrEqualTo(0)
+            self.NewField("bQ5").GreaterOrEqualTo(0)
+            self.NewField("m100c").GreaterOrEqualTo(0)
+            self.NewField("m50c").GreaterOrEqualTo(0)
+            self.NewField("m25c").GreaterOrEqualTo(0)
+            self.NewField("m10c").GreaterOrEqualTo(0)
+            self.NewField("m5c").GreaterOrEqualTo(0)
         
         else:
-            self.NewField("SaldoReal").GreaterOrEqualTo(0)
+            self.NewField("saldo_real").GreaterOrEqualTo(0)

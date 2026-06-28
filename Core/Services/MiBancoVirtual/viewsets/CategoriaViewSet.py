@@ -18,10 +18,14 @@ class CategoriaViewSet(FinanzasModelViewSet):
     permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
-        return Categoria.objects.filter(IdUsuario=self.request.user.id, Activo=True)
+        return Categoria.objects.filter(usuario=self.request.user.id, activo=True)
 
     def create(self, request, *args, **kwargs):
-        serializer = self.serializer_class(data=request.data)
+        serializer = self.serializer_class(
+            data=request.data,
+            context={'request':request}
+        )
+
         serializer.is_valid(raise_exception=True)
 
         categoria = CategoriaFunciones.categoria_crear(
@@ -29,12 +33,17 @@ class CategoriaViewSet(FinanzasModelViewSet):
             **serializer.validated_data,
         )
 
-        return Response({'id': categoria.IdCategoria}, status=status.HTTP_201_CREATED)
+        return Response({'id': categoria.id}, status=status.HTTP_201_CREATED)
 
     def update(self, request, *args, **kwargs):
         categoria = self.get_object()
 
-        serializer = self.serializer_class(data=request.data)
+        serializer = self.serializer_class(
+            data=request.data,
+            context={'request':request},
+            instance=categoria
+        )
+
         serializer.is_valid(raise_exception=True)
 
         categoria = CategoriaFunciones.categoria_editar(
@@ -43,14 +52,7 @@ class CategoriaViewSet(FinanzasModelViewSet):
             **serializer.validated_data,
         )
 
-        return Response({'id': categoria.IdCategoria}, status=status.HTTP_200_OK)
-    
-    def perform_destroy(self, instance):
-        coincidencia = Transaccion.objects.filter(IdCategoria=instance.IdCategoria).exists()
-
-        if coincidencia : 
-            raise BadRequestException("No se puede eliminar la categoría porque ya existen transacciones que dependen de esta")
-        return super().perform_destroy(instance)
+        return Response({'id': categoria.id}, status=status.HTTP_200_OK)
 
     @action(methods=['put'], detail=True)
     def inactivar(self, request, pk=None):
@@ -61,4 +63,4 @@ class CategoriaViewSet(FinanzasModelViewSet):
             categoria=categoria,
         )
 
-        return Response({'id': categoria.IdCategoria}, status=status.HTTP_200_OK)
+        return Response({'id': categoria.id}, status=status.HTTP_200_OK)

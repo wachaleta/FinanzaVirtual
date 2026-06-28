@@ -7,6 +7,7 @@ export const useCuentasStore = defineStore("cuentas", {
     state:() => {
         return{
             cuentas: [],
+            cuentasFiltros: {},
             cuenta: {},
         }
     },
@@ -20,7 +21,7 @@ export const useCuentasStore = defineStore("cuentas", {
         },
 
         async editarCuenta() {
-            await DebitoApi().put(`cuenta/${this.cuenta.IdCuenta}/`, this.cuenta)
+            await DebitoApi().put(`cuenta/${this.cuenta.id}/`, this.cuenta)
             .then(() => {
                 this.cuenta = {}
 
@@ -32,21 +33,25 @@ export const useCuentasStore = defineStore("cuentas", {
 
         async eliminarCuenta(idCuenta) {
             if(idCuenta){
-                this.cuenta.IdCuenta = idCuenta
+                this.cuenta.id = idCuenta
             }
 
-            await DebitoApi().put(`cuenta/${this.cuenta.IdCuenta}/inactivar/`)
+            await DebitoApi().put(`cuenta/${this.cuenta.id}/inactivar/`)
             .then(() => {
                 
                 router.push({name: 'cuenta-listado'}).then(() => {
-                    toast.success(`Cuenta ${this.cuenta.Nombre} Eliminada Exitosamente!`)
+                    toast.success(`Cuenta ${this.cuenta.nombre} Eliminada Exitosamente!`)
                     this.cuenta = {}
                 })
             })
         },
 
         async cargarCuentas(){
-            await DebitoApi().get("cuenta/")
+            await DebitoApi().get("cuenta/",
+                {
+                    params: this.cuentasFiltros
+                }
+            )
             .then(res => {
                 this.cuentas = res.data
             })
@@ -54,10 +59,10 @@ export const useCuentasStore = defineStore("cuentas", {
 
         async cargarCuentaPorId(idCuenta){
             if(idCuenta){
-                this.cuenta.IdCuenta = idCuenta
+                this.cuenta.id = idCuenta
             }
 
-            await DebitoApi().get(`cuenta/${this.cuenta.IdCuenta}/`)
+            await DebitoApi().get(`cuenta/${this.cuenta.id}/`)
             .then(res => {
                 this.cuenta = res.data
             })

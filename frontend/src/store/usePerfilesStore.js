@@ -10,7 +10,7 @@ export const usePerfilesStore = defineStore("perfiles", {
             perfilesFiltros: {},
             perfil: {},
             saldosPerfiles: {
-                SaldoTotal: 0,
+                saldo_total: 0,
                 SaldoDisponible: 0,
                 SaldoNoDisponible: 0,
             },
@@ -47,7 +47,7 @@ export const usePerfilesStore = defineStore("perfiles", {
             )
             .then(() => {
                 router.push({name: 'perfil-listado'}).then(() => {
-                    toast.success(`Perfil ${this.perfil.Nombre} Eliminado Exitosamente!`)
+                    toast.success(`Perfil ${this.perfil.nombre} Eliminado Exitosamente!`)
                     this.perfil= {}
                 })
             })

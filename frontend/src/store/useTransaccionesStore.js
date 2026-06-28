@@ -2,7 +2,6 @@ import { defineStore } from "pinia";
 import { toast } from 'vue3-toastify'
 import DebitoApi from "@/helpers/DebitoApi";
 import filters from "@/filters";
-import router from "@/router"
 
 export const useTransaccionesStore = defineStore("transacciones", {
     state: () => {
@@ -16,7 +15,7 @@ export const useTransaccionesStore = defineStore("transacciones", {
                 FechaFinalAnual: filters.formatDate(filters.fechaActual(), "YYYY"),
             },
             transaccion: {
-                Fecha: filters.fechaActual()
+                fecha: filters.fechaActual()
             }
         }
     },
@@ -26,9 +25,9 @@ export const useTransaccionesStore = defineStore("transacciones", {
             await DebitoApi().post("gasto/", this.transaccion)
                 .then(() => {
                     toast.success("Gasto Creado Exitosamente!")
-                    const fecha = this.transaccion.Fecha
+                    const fecha = this.transaccion.fecha
                     this.transaccion = {}
-                    this.transaccion.Fecha = fecha
+                    this.transaccion.fecha = fecha
                 })
         },
 
@@ -36,9 +35,9 @@ export const useTransaccionesStore = defineStore("transacciones", {
             await DebitoApi().post("ingreso/", this.transaccion)
                 .then(() => {
                     toast.success("Ingreso Creado Exitosamente!")
-                    const fecha = this.transaccion.Fecha
+                    const fecha = this.transaccion.fecha
                     this.transaccion = {}
-                    this.transaccion.Fecha = fecha
+                    this.transaccion.fecha = fecha
                 })
         },
 
@@ -46,24 +45,24 @@ export const useTransaccionesStore = defineStore("transacciones", {
             await DebitoApi().post("transferencia/", this.transaccion)
                 .then(() => {
                     toast.success("Transferencia Creada Exitosamente!")
-                    const fecha = this.transaccion.Fecha
+                    const fecha = this.transaccion.fecha
                     this.transaccion = {}
-                    this.transaccion.Fecha = fecha
-                    this.transaccion.TransferenciaEntrePerfiles = true
+                    this.transaccion.fecha = fecha
+                    this.transaccion.transferencia_entre_perfiles = true
                 })
         },
 
         //  PUT
         async editarGasto() {
-            await DebitoApi().put(`gasto/${this.transaccion.IdTransaccion}/`, this.transaccion)
+            await DebitoApi().put(`gasto/${this.transaccion.id}/`, this.transaccion)
         },
 
         async editarIngreso() {
-            await DebitoApi().put(`ingreso/${this.transaccion.IdTransaccion}/`, this.transaccion)
+            await DebitoApi().put(`ingreso/${this.transaccion.id}/`, this.transaccion)
         },
 
         async editarTransferencia() {
-            await DebitoApi().put(`transferencia/${this.transaccion.IdTransaccion}/`, this.transaccion)
+            await DebitoApi().put(`transferencia/${this.transaccion.id}/`, this.transaccion)
         },
 
         //  GET
@@ -102,10 +101,10 @@ export const useTransaccionesStore = defineStore("transacciones", {
         async cargarTransaccionPorId(idTransaccion) {
 
             if (idTransaccion) {
-                this.transaccion.IdTransaccion = idTransaccion
+                this.transaccion.id = idTransaccion
             }
 
-            await DebitoApi().get(`transaccion/${this.transaccion.IdTransaccion}/`)
+            await DebitoApi().get(`transaccion/${this.transaccion.id}/`)
                 .then(res => {
                     this.transaccion = res.data
                 })
@@ -113,7 +112,7 @@ export const useTransaccionesStore = defineStore("transacciones", {
 
         //  DELETE
         async eliminarTransaccion() {
-            await DebitoApi().delete(`transaccion/${this.transaccion.IdTransaccion}/`)
+            await DebitoApi().delete(`transaccion/${this.transaccion.id}/`)
         },
     }
 })

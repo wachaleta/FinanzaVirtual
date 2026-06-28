@@ -14,9 +14,9 @@
 
     <div class="row">
         <div v-for="cuenta in cuentas" class="col-12 col-sm-6 col-md-4 mt-3">
-            <CardComponent @click="router.push({name: 'cuenta-editar', params: {idCuenta: cuenta.IdCuenta}})" :color="cuenta.SaldoTotal == cuenta.SaldoCalculado? 'success':'danger'" class="h-100">
+            <CardComponent @click="router.push({name: 'cuenta-editar', params: {idCuenta: cuenta.id}})" :color="cuenta.saldo_total == cuenta.saldo_efectivo_calculado? 'success':'danger'" class="h-100">
                 <template v-slot:header>
-                    {{ cuenta.Nombre }}
+                    {{ cuenta.nombre }}
                 </template>
 
                 <template v-slot:body>
@@ -24,10 +24,10 @@
                         Balance:
                     </div>
                     <div class="mt-2" style="font-size: 1.7rem;">
-                        <strong>{{ $filters.currencyGTQ(cuenta.SaldoTotal) }}</strong>
+                        <strong>{{ $filters.currencyGTQ(cuenta.saldo_total) }}</strong>
                     </div>
-                    <div v-if="cuenta.SaldoTotal != cuenta.SaldoCalculado">
-                        <strong >Diff({{ $filters.currencyGTQ(cuenta.SaldoCalculado - cuenta.SaldoTotal) }})</strong>
+                    <div v-if="cuenta.saldo_total != cuenta.saldo_efectivo_calculado">
+                        <strong >Diff({{ $filters.currencyGTQ(cuenta.saldo_efectivo_calculado - cuenta.saldo_total) }})</strong>
                     </div>
                 </template>
             </CardComponent>
@@ -47,11 +47,15 @@ const router = useRouter()
 
 const {
     cuentas,
+    cuentasFiltros,
 
     cargarCuentas
 } = useCuentasComposable()
 
 const refresh = async() => {
+    cuentasFiltros.value = {
+        activo: true
+    }
     await cargarCuentas()
 }
 

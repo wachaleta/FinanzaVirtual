@@ -35,8 +35,6 @@ def profile_validar_pago(
         raise BadRequestException("El usuario no cuenta con un registro profile")
 
     if profile.fecha_limite_permitida < timezone.localdate():
-        print("date.today()")
-        print(timezone.localdate)
         raise BadRequestException("No puede ejecutar esta acción. Verifique su pago")
 
     return profile

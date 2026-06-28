@@ -60,12 +60,12 @@ const submitForm = async () => {
 const refresh = async () => {
     await cargarTransaccionPorId(route.params.idTransaccion)
 
-    if (transaccion.value.IdPerfilBeneficiario) {
-        transaccion.value.IdPerfilOrdenante = transaccion.value.IdPerfilBeneficiario
-        transaccion.value.IdCuentaOrdenante = transaccion.value.IdCuentaBeneficiaria
+    if (transaccion.value.perfil_beneficiario) {
+        transaccion.value.perfil_ordenante = transaccion.value.perfil_beneficiario
+        transaccion.value.cuenta_ordenante = transaccion.value.cuenta_beneficiaria
 
-        transaccion.value.IdPerfilBeneficiario = null
-        transaccion.value.IdCuentaBeneficiaria = null
+        transaccion.value.perfil_beneficiario = null
+        transaccion.value.cuenta_beneficiaria = null
     }
 }
 

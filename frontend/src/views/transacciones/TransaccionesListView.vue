@@ -75,24 +75,24 @@
         <div v-for="transaccion in transacciones.Items" class="col-12  col-md-6 col-lg-4 mb-3">
             <CardComponent :color="getColorTransaccion(transaccion)" @click="editarTransaccion(transaccion)" class="h-100">
                 <template v-slot:header>
-                    {{ transaccion.Nombre }}
+                    {{ transaccion.nombre }}
                 </template>
                 <template #fecha>
                     <div>
-                        {{ $filters.formatDate(transaccion.Fecha, 'DD-MM-YYYY') }}
+                        {{ $filters.formatDate(transaccion.fecha, 'DD-MM-YYYY') }}
                     </div>
                     <div>
-                        {{ transaccion.CategoriaNombre }}
+                        {{ transaccion.categoria_nombre }}
                     </div>
                 </template>
                 <template v-slot:descripcion>
                     <span>
-                        {{ transaccion.Descripcion }}
+                        {{ transaccion.descripcion }}
                     </span>
                 </template>
                 <template v-slot:body>
                     <div class="mt-2" style="font-size: 1.7rem;">
-                        <strong>{{ $filters.currencyGTQ(transaccion.Monto) }}</strong>
+                        <strong>{{ $filters.currencyGTQ(transaccion.monto) }}</strong>
                     </div>
                 </template>
             </CardComponent>
@@ -105,7 +105,7 @@ import { useRoute, useRouter } from 'vue-router';
 
 import { useTransaccionesComposable } from '@/composables/useTransaccionesComposable';
 
-import { PanelNavComponent, PanelNavItemComponent } from '@/components/panelNav';
+import { PanelNavItemComponent } from '@/components/panelNav';
 
 import CardComponent from '@/components/CardComponent.vue';
 
@@ -117,11 +117,11 @@ const {
 } = useTransaccionesComposable()
 
 const getColorTransaccion = (transaccion) => {
-    if (transaccion.IdPerfilOrdenante == null && transaccion.IdCuentaOrdenante == null) {
+    if (transaccion.perfil_ordenante == null && transaccion.cuenta_ordenante == null) {
         return 'success'
     }
 
-    if (transaccion.IdPerfilBeneficiario == null && transaccion.IdCuentaBeneficiaria == null) {
+    if (transaccion.perfil_beneficiario == null && transaccion.cuenta_beneficiaria == null) {
         return 'danger'
     }
 
@@ -133,7 +133,7 @@ const editarTransaccion = (transaccion) => {
         {
             name: getTransaccionEditarRoute(transaccion),
             params: {
-                idTransaccion: transaccion.IdTransaccion
+                idTransaccion: transaccion.id
             },
             query: {
                 next: route.name
@@ -143,11 +143,11 @@ const editarTransaccion = (transaccion) => {
 }
 
 const getTransaccionEditarRoute = (transaccion) => {
-    if (transaccion.IdPerfilOrdenante == null && transaccion.IdCuentaOrdenante == null) {
+    if (transaccion.perfil_ordenante == null && transaccion.cuenta_ordenante == null) {
         return 'ingreso-editar'
     }
 
-    if (transaccion.IdPerfilBeneficiario == null && transaccion.IdCuentaBeneficiaria == null) {
+    if (transaccion.perfil_beneficiario == null && transaccion.cuenta_beneficiaria == null) {
         return 'gasto-editar'
     }
 

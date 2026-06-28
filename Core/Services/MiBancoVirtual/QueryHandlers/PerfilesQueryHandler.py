@@ -4,7 +4,7 @@ from ..models import Perfil
 
 class PerfilesQueryHandler:
     def handle(self, command):
-        perfiles = Perfil.objects.filter(IdUsuario=command.IdUsuario)
+        perfiles = Perfil.objects.filter(usuario=command.IdUsuario)
 
         return Response(
             {

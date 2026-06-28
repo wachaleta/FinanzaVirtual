@@ -25,39 +25,39 @@ class TransaccionesRangoFechasViewSet(FinanzasModelViewSet):
 
         filtros = Q(
             Q(
-                IdPerfilOrdenante__IdUsuario = idUsuario
+                perfil_ordenante__usuario = idUsuario
             ) | Q(
-                IdPerfilBeneficiario__IdUsuario = idUsuario
+                perfil_beneficiario__usuario = idUsuario
             ) | Q(
-                IdCuentaOrdenante__IdUsuario = idUsuario
+                cuenta_ordenante__usuario = idUsuario
             ) | Q(
-                IdCuentaBeneficiaria__IdUsuario = idUsuario
+                cuenta_beneficiaria__usuario = idUsuario
             ), 
-            Q(Fecha__gte = fechaInicial),
-            Q(Fecha__lte = fechaFinal)
+            Q(fecha__gte = fechaInicial),
+            Q(fecha__lte = fechaFinal)
         )
 
         filtrosExtra = Q()
         filtrosCategorias = Q()
 
         if IdPerfiles != []:
-            filtrosExtra |= Q(IdPerfilOrdenante__IdPerfil__in = IdPerfiles) | Q(IdPerfilBeneficiario__IdPerfil__in = IdPerfiles)
+            filtrosExtra |= Q(perfil_ordenante__id__in = IdPerfiles) | Q(perfil_beneficiario__id__in = IdPerfiles)
             
 
         if IdCuentas != []:
-            filtrosExtra |= Q(IdCuentaOrdenante__IdCuenta__in = IdCuentas) | Q(IdCuentaBeneficiaria__IdCuenta__in = IdCuentas)
+            filtrosExtra |= Q(cuenta_ordenante__id__in = IdCuentas) | Q(cuenta_beneficiaria__id__in = IdCuentas)
         
 
         if IdCategorias != []:
-            filtrosCategorias |= Q(IdCategoria__in = IdCategorias)
+            filtrosCategorias |= Q(categoria__in = IdCategorias)
 
         listaTransacciones = Transaccion.objects.filter(filtros, filtrosExtra, filtrosCategorias)
         
         return listaTransacciones.annotate(
             EsTransferencia = Case(
                 When(
-                    Q(IdPerfilOrdenante__isnull = False, IdPerfilBeneficiario__isnull = False)
-                    | Q(IdCuentaOrdenante__isnull = False, IdCuentaBeneficiaria__isnull = False),
+                    Q(perfil_ordenante__isnull = False, perfil_beneficiario__isnull = False)
+                    | Q(cuenta_ordenante__isnull = False, cuenta_beneficiaria__isnull = False),
                     then=True
                 ),
                 default=Value(False),
@@ -66,7 +66,7 @@ class TransaccionesRangoFechasViewSet(FinanzasModelViewSet):
         ).annotate(
             EsIngreso = Case(
                 When(
-                    Q(IdPerfilBeneficiario__isnull=False, IdCuentaBeneficiaria__isnull=False),
+                    Q(perfil_beneficiario__isnull=False, cuenta_beneficiaria__isnull=False),
                     then=True
                 ),
                 default=Value(False),
@@ -75,48 +75,48 @@ class TransaccionesRangoFechasViewSet(FinanzasModelViewSet):
         ).annotate(
             EsGasto = Case(
                 When(
-                    Q(IdPerfilOrdenante__isnull=False, IdCuentaOrdenante__isnull=False),
+                    Q(perfil_ordenante__isnull=False, cuenta_ordenante__isnull=False),
                     then=True
                 ),
                 default=Value(False),
                 output_field=BooleanField()
             )
         ).annotate(
-            Nombre = Case(
+            nombre = Case(
                 When(
                     Q(EsGasto=True),
                     then=Concat(
-                        F("IdCuentaOrdenante__Nombre"),
+                        F("cuenta_ordenante__nombre"),
                         Value(" - "),
-                        F("IdPerfilOrdenante__Nombre")
+                        F("perfil_ordenante__nombre")
                     )
                 ),
                 When(
                     Q(EsIngreso=True),
                     then=Concat(
-                        F("IdCuentaBeneficiaria__Nombre"),
+                        F("cuenta_beneficiaria__nombre"),
                         Value(" - "),
-                        F("IdPerfilBeneficiario__Nombre")
+                        F("perfil_beneficiario__nombre")
                     )
                 ),
                 When(
-                    Q(EsTransferencia=True, IdPerfilOrdenante__isnull=False),
+                    Q(EsTransferencia=True, perfil_ordenante__isnull=False),
                     then=Concat(
-                        F("IdPerfilOrdenante__Nombre"),
+                        F("perfil_ordenante__nombre"),
                         Value(" -> "),
-                        F("IdPerfilBeneficiario__Nombre")
+                        F("perfil_beneficiario__nombre")
                     )
                 ),
                 default=Concat(
-                        F("IdCuentaOrdenante__Nombre"),
+                        F("cuenta_ordenante__nombre"),
                         Value(" -> "),
-                        F("IdCuentaBeneficiaria__Nombre")
+                        F("cuenta_beneficiaria__nombre")
                     ),
                 output_field=CharField()
             )
         ).annotate(
-            CategoriaNombre = F("IdCategoria__Nombre")
-        ).order_by("-Fecha", "-FechaCreacion")
+            categoria_nombre = F("categoria__nombre")
+        ).order_by("-fecha", "-fecha_creacion")
     
     def list(self, request, *args, **kwargs):
         
@@ -124,9 +124,9 @@ class TransaccionesRangoFechasViewSet(FinanzasModelViewSet):
         IdPerfiles = request.query_params.getlist("IdPerfiles", [])
         IdCuentas = request.query_params.getlist("IdCuentas", [])
 
-        filtrosSalidas = Q(IdPerfilOrdenante__isnull=False) | Q(IdCuentaOrdenante__isnull=False)
-        filtrosEntradas = Q(IdPerfilBeneficiario__isnull=False) | Q(IdCuentaBeneficiaria__isnull=False)
-        filtrosExclude = Q(IdPerfilOrdenante__in=IdPerfiles, IdPerfilBeneficiario__in=IdPerfiles) | Q(IdCuentaOrdenante__in=IdCuentas, IdCuentaBeneficiaria__in=IdCuentas)
+        filtrosSalidas = Q(perfil_ordenante__isnull=False) | Q(cuenta_ordenante__isnull=False)
+        filtrosEntradas = Q(perfil_beneficiario__isnull=False) | Q(cuenta_beneficiaria__isnull=False)
+        filtrosExclude = Q(perfil_ordenante__in=IdPerfiles, perfil_beneficiario__in=IdPerfiles) | Q(cuenta_ordenante__in=IdCuentas, cuenta_beneficiaria__in=IdCuentas)
 
         filtrosExtra = Q()
 
@@ -137,12 +137,12 @@ class TransaccionesRangoFechasViewSet(FinanzasModelViewSet):
         filtrosExtraEntradas = filtrosExtra
         
         if(IdPerfiles != []):
-            filtrosExtraSalidas |= Q(IdPerfilOrdenante__in=IdPerfiles)
-            filtrosExtraEntradas |= Q(IdPerfilBeneficiario__in=IdPerfiles)
+            filtrosExtraSalidas |= Q(perfil_ordenante__in=IdPerfiles)
+            filtrosExtraEntradas |= Q(perfil_beneficiario__in=IdPerfiles)
 
         if(IdCuentas != []):
-            filtrosExtraSalidas |= Q(IdCuentaOrdenante__in=IdCuentas)
-            filtrosExtraEntradas |= Q(IdCuentaBeneficiaria__in=IdCuentas)
+            filtrosExtraSalidas |= Q(cuenta_ordenante__in=IdCuentas)
+            filtrosExtraEntradas |= Q(cuenta_beneficiaria__in=IdCuentas)
 
         listaSalidas = queryset.filter(
                 filtrosSalidas,
@@ -158,8 +158,8 @@ class TransaccionesRangoFechasViewSet(FinanzasModelViewSet):
                 filtrosExclude
             )
 
-        totalSalidas = sum(list(map(lambda x: x.Monto, listaSalidas)))
-        totalEntradas = sum(list(map(lambda x: x.Monto, listaEntradas)))
+        totalSalidas = sum(list(map(lambda x: x.monto, listaSalidas)))
+        totalEntradas = sum(list(map(lambda x: x.monto, listaEntradas)))
 
         serializer = self.get_serializer(queryset, many=True)
 
@@ -175,8 +175,8 @@ class TransaccionesRangoFechasViewSet(FinanzasModelViewSet):
             return {
                 "Monto": data.get("Monto", 0),
                 "Fecha": data.get("Fecha", ""),
-                "IdCuentaOrdenante": data.get("IdCuentaOrdenante", ""),
-                "IdPerfilOrdenante": data.get("IdPerfilOrdenante", ""),
+                "cuenta_ordenante": data.get("cuenta_ordenante", ""),
+                "perfil_ordenante": data.get("perfil_ordenante", ""),
                 "IdCategoria": data.get("IdCategoria", ""),
                 "Descripcion": data.get("Descripcion", ""),
             }
@@ -185,8 +185,8 @@ class TransaccionesRangoFechasViewSet(FinanzasModelViewSet):
             return {
                 "Monto": data.get("Monto", 0),
                 "Fecha": data.get("Fecha", ""),
-                "IdCuentaBeneficiaria": data.get("IdCuentaOrdenante", ""),
-                "IdPerfilBeneficiario": data.get("IdPerfilOrdenante", ""),
+                "cuenta_beneficiaria": data.get("cuenta_ordenante", ""),
+                "perfil_beneficiario": data.get("perfil_ordenante", ""),
                 "IdCategoria": data.get("IdCategoria", ""),
                 "Descripcion": data.get("Descripcion", ""),
             }

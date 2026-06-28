@@ -1,6 +1,7 @@
 from .CategoriaSerializer import CategoriaSerializer
 
 from .CuentaSerializer import CuentaSerializer
+from .CuentasListRequestSerializer import CuentasListRequestSerializer
 from .CuentaEditarSerializer import CuentaEditarSerializer
 
 from .PerfilSerializer import PerfilSerializer

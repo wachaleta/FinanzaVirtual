@@ -9,10 +9,10 @@ class TransferenciaCrearValidator(Validator):
         self.NewField("Fecha").NotEmpty()
         self.NewField("IdCategoria").NotEmpty()
 
-        if self.data.get("TransferenciaEntrePerfiles") == True:
-            self.NewField("IdPerfilOrdenante").NotEmpty()
-            self.NewField("IdPerfilBeneficiario").NotEmpty()
+        if self.data.get("transferencia_entre_perfiles") == True:
+            self.NewField("perfil_ordenante").NotEmpty()
+            self.NewField("perfil_beneficiario").NotEmpty()
 
         else:
-            self.NewField("IdCuentaOrdenante").NotEmpty()
-            self.NewField("IdCuentaBeneficiaria").NotEmpty()
+            self.NewField("cuenta_ordenante").NotEmpty()
+            self.NewField("cuenta_beneficiaria").NotEmpty()

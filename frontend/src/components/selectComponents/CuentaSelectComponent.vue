@@ -2,10 +2,10 @@
     <DynamicSelectComponent
         v-if="cargado"
         v-model="model"
-        name="IdCuenta"
-        valueRef="IdCuenta"
+        name="id"
+        valueRef="id"
         :items="cuentas"
-        :optionText="(item) => item.Nombre + ': ' + $filters.currencyGTQ(item.SaldoTotal)"
+        :optionText="(item) => item.nombre + ': ' + $filters.currencyGTQ(item.saldo_total)"
     >
         <slot>
             Cuenta
@@ -31,12 +31,16 @@ const props = defineProps({
 
 const {
     cuentas,
+    cuentasFiltros,
 
     cargarCuentas
 } = useCuentasComposable()
 
 const refresh = async() =>{
     if(props.cargarItems){
+        cuentasFiltros.value = {
+            activo: true
+        }
         await cargarCuentas()
     }
     

@@ -15,12 +15,12 @@ class ObtenerSaldoTotalPerfilesViewSet(viewsets.ViewSet):
     def list(self, request):
         user = self.request.user
 
-        perfiles = Perfil.objects.filter(usuario=user).annotate(
+        perfiles = Perfil.objects.filter(usuario=user, activo=True).annotate(
             saldo=Coalesce(
-                Sum('transaccion_perfil_beneficiario__Monto'), Decimal(0)
+                Sum('transaccion_perfil_beneficiario__monto'), Decimal(0)
             )-
             Coalesce(
-                Sum('transaccion_perfil_ordenante__Monto'), Decimal(0)
+                Sum('transaccion_perfil_ordenante__monto'), Decimal(0)
             )
         )
 
@@ -31,24 +31,21 @@ class ObtenerSaldoTotalPerfilesViewSet(viewsets.ViewSet):
 
         saldoDisponible = perfilesDisponible.aggregate(
             saldo_disponible = Sum('saldo')
-        )['saldo_disponible'] or 0.0
-
-        # saldoDisponible = sum(list(map(lambda x: x.Saldo, perfilesDisponible)))
-        # saldoDisponible = round(Decimal(saldoDisponible), 2)
+        )['saldo_disponible'] or Decimal(0)
 
         saldo_no_disponible = perfiles.filter(
             suma_disponible=False,
             saldo__gte=0
         ).aggregate(
             saldo_no_disponible=Sum('saldo')
-        )['saldo_no_disponible'] or 0.0
+        )['saldo_no_disponible'] or Decimal(0)
 
 
         saldo_total = saldoDisponible + saldo_no_disponible
 
         return Response(
             {
-                'SaldoTotal': saldo_total,
+                'saldo_total': saldo_total,
                 'SaldoDisponible': saldoDisponible,
                 'SaldoNoDisponible': saldo_no_disponible
             }

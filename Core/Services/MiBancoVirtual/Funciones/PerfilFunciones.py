@@ -8,15 +8,15 @@ from Core.Services.MiBancoVirtual import models
 @transaction.atomic()
 def perfil_crear(
     usuario: User = None,
-    SumaDisponible: bool = True,
-    Nombre: str = None,
+    suma_disponible: bool = True,
+    nombre: str = None,
 ) -> models.Perfil:
     ProfileFunciones.profile_validar_pago(usuario=usuario)
     
     perfil = models.Perfil(
-        IdUsuario = usuario,
-        Nombre = Nombre,
-        SumaDisponible = SumaDisponible,
+        usuario = usuario,
+        nombre = nombre,
+        suma_disponible = suma_disponible,
     )
 
     perfil.full_clean()
@@ -56,10 +56,10 @@ def perfil_inactivar(
     if not perfil: 
         raise BadRequestException('No se proporcionó ningún perfil para inactivar')
 
-    if perfil.Saldo != 0:
+    if perfil.saldo != 0:
         raise BadRequestException("Este perfil aún tiene saldo")
 
-    perfil.Activo = False
+    perfil.activo = False
 
     perfil.save()
 

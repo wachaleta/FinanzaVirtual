@@ -1,5 +1,5 @@
 <template>
-    <DynamicInputComponent v-model="categoria.Nombre" name="Nombre" v-focus>
+    <DynamicInputComponent v-model="categoria.nombre" name="Nombre" v-focus>
         Nombre
     </DynamicInputComponent>
 </template>

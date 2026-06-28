@@ -20,11 +20,11 @@ class TransferenciaViewSet(FinanzasModelViewSet):
         idUsuario = self.request.user.id
 
         lista_transacciones = Transaccion.objects.filter(
-                Q(IdPerfilOrdenante__IdUsuario = idUsuario) | Q(IdPerfilBeneficiario__IdUsuario = idUsuario) |
-                Q(IdCuentaOrdenante__IdUsuario = idUsuario) | Q(IdCuentaBeneficiaria__IdUsuario = idUsuario) 
+                Q(perfil_ordenante__usuario = idUsuario) | Q(perfil_beneficiario__usuario = idUsuario) |
+                Q(cuenta_ordenante__usuario = idUsuario) | Q(cuenta_beneficiaria__usuario = idUsuario) 
             )
         
-        return lista_transacciones.order_by("-Fecha", "-FechaCreacion")
+        return lista_transacciones.order_by("-fecha", "-fecha_creacion")
     
     def create(self, request, *args, **kwargs):
         serializer = self.serializer_class(data=request.data)
@@ -35,7 +35,7 @@ class TransferenciaViewSet(FinanzasModelViewSet):
             **serializer.validated_data,
         )
 
-        return Response({'id': transaccion.IdTransaccion}, status=status.HTTP_201_CREATED)
+        return Response({'id': transaccion.id}, status=status.HTTP_201_CREATED)
 
     def update(self, request, *args, **kwargs):
         transaccion = self.get_object()
@@ -49,4 +49,4 @@ class TransferenciaViewSet(FinanzasModelViewSet):
             **serializer.validated_data,
         )
 
-        return Response({'id': transaccion.IdTransaccion}, status=status.HTTP_201_CREATED)
+        return Response({'id': transaccion.id}, status=status.HTTP_201_CREATED)

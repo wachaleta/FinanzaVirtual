@@ -8,26 +8,26 @@ from django.db.transaction import atomic
 from Core.Services.MiBancoVirtual import models
 
 @atomic()
-def obtener_perfiles_usuario(
+def obtener_cuentas_usuario(
     usuario: User = None,
     searchText: str = None,
     activo: bool = None,
 ):
-    perfiles = models.Perfil.objects.filter(usuario=usuario)
+    cuentas = models.Cuenta.objects.filter(usuario=usuario)
 
     if activo is not None:
-        perfiles = perfiles.filter(activo=activo)
+        cuentas = cuentas.filter(activo=activo)
 
     if searchText:
-        perfiles = perfiles.filter(nombre__icontains=searchText)
+        cuentas = cuentas.filter(nombre__icontains=searchText)
 
-    perfiles = perfiles.annotate(
-        saldo=Coalesce(
-                Sum('transaccion_perfil_beneficiario__monto'), Decimal(0)
+    cuentas = cuentas.annotate(
+        saldo_total=Coalesce(
+                Sum('transaccion_cuenta_beneficiaria__monto'), Decimal(0)
             )-
             Coalesce(
-                Sum('transaccion_perfil_ordenante__monto'), Decimal(0)
+                Sum('transaccion_cuenta_ordenante__monto'), Decimal(0)
             )
     ).order_by('nombre')
 
-    return perfiles
+    return cuentas

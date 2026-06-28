@@ -5,11 +5,11 @@ class IngresoEditarSerializer(serializers.ModelSerializer):
     class Meta: 
         model = Transaccion
         fields = (
-            "Monto",
-            "Descripcion",
-            "Fecha",
-            "IdPerfilOrdenante",
-            "IdCuentaOrdenante",
-            "IdCategoria",
+            "monto",
+            "descripcion",
+            "fecha",
+            "perfil_ordenante",
+            "cuenta_ordenante",
+            "categoria",
         )
         read_only_fields = ("id",)

@@ -24,24 +24,24 @@ class IngresoViewSet(FinanzasModelViewSet):
         # fechaFinal = self.request.query_params.get("fechaFinal")
 
         lista_transacciones = Transaccion.objects.filter(
-                Q(IdPerfilOrdenante__IdUsuario = idUsuario) | Q(IdPerfilBeneficiario__IdUsuario = idUsuario) |
-                Q(IdCuentaOrdenante__IdUsuario = idUsuario) | Q(IdCuentaBeneficiaria__IdUsuario = idUsuario) 
+                Q(perfil_ordenante__usuario = idUsuario) | Q(perfil_beneficiario__usuario = idUsuario) |
+                Q(cuenta_ordenante__usuario = idUsuario) | Q(cuenta_beneficiaria__usuario = idUsuario) 
             )
         # .filter(fecha__gte = fechaInicio).filter(fecha__lte = fechaFinal)
         
         return lista_transacciones.annotate(
             ordenante_nombre = Concat(
-                F("IdCuentaOrdenante__Nombre"), 
+                F("cuenta_ordenante__nombre"), 
                 Value(" - "),
-                F("IdPerfilOrdenante__Nombre")
+                F("perfil_ordenante__nombre")
             )
         ).annotate(
             beneficiario_nombre = Concat(
-                F("IdCuentaBeneficiaria__Nombre"), 
+                F("cuenta_beneficiaria__nombre"), 
                 Value(" - "),
-                F("IdPerfilBeneficiario__Nombre")
+                F("perfil_beneficiario__nombre")
             )
-        ).order_by("-Fecha", "-FechaCreacion")
+        ).order_by("-fecha", "-fecha_creacion")
     
     def create(self, request, *args, **kwargs):
         serializer = self.serializer_class(data=request.data)
@@ -52,7 +52,7 @@ class IngresoViewSet(FinanzasModelViewSet):
             **serializer.validated_data,
         )
 
-        return Response({'id': transaccion.IdTransaccion}, status=status.HTTP_201_CREATED)
+        return Response({'id': transaccion.id}, status=status.HTTP_201_CREATED)
 
     def update(self, request, *args, **kwargs):
         transaccion = self.get_object()
@@ -66,4 +66,4 @@ class IngresoViewSet(FinanzasModelViewSet):
             **serializer.validated_data,
         )
 
-        return Response({'id': transaccion.IdTransaccion}, status=status.HTTP_201_CREATED)
+        return Response({'id': transaccion.id}, status=status.HTTP_201_CREATED)

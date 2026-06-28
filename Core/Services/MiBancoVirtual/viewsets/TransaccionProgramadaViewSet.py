@@ -15,8 +15,8 @@ class TransaccionProgramadaViewSet(viewsets.ModelViewSet):
             SELECT 
                 tp.id,
                 tp.Nombre,
-                tp.FechaCreacion,
-                tp.FechaLimite, 
+                tp.fecha_creacion,
+                tp.fecha_limite, 
                 tp.Usuario_id 
             FROM MiBancoVirtual_transaccionprogramada tp
             WHERE tp.Usuario_id = %s

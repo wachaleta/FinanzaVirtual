@@ -15,8 +15,8 @@
 
     <div class="row mt-3">
         <div v-for="categoria in categorias" class="col-6 col-sm-4 col-md-3 mb-4">
-            <ContainerComponent @click="router.push({name: 'categoria-editar', params:{ idCategoria: categoria.IdCategoria}})">
-                <span> {{ categoria.Nombre }}</span>
+            <ContainerComponent @click="router.push({name: 'categoria-editar', params:{ idCategoria: categoria.id}})">
+                <span> {{ categoria.nombre }}</span>
             </ContainerComponent>
         </div>
     </div>
