@@ -66,7 +66,7 @@
 
     <form @submit.prevent="cargarPerfiles()">
         <div class="d-flex gap-3 px-3 mt-4 align-items-end">
-            <div>
+            <div style="width: 10rem;">
                 <ButtonBuscarComponent type="submit"/>
             </div>
             <div class="w-100">

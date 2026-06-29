@@ -12,6 +12,17 @@
         </div>
     </div>
 
+    <form @submit.prevent="cargarCuentas()">
+        <div class="d-flex gap-3 px-3 mb-4 align-items-end">
+            <div style="width: 10rem;">
+                <ButtonBuscarComponent type="submit"/>
+            </div>
+            <div class="w-100">
+                <DynamicInputComponent v-model="cuentasFiltros.searchText" name="searchText"/>
+            </div>
+        </div>
+    </form>
+
     <div class="row">
         <div v-for="cuenta in cuentas" class="col-12 col-sm-6 col-md-4 mt-3">
             <CardComponent @click="router.push({name: 'cuenta-editar', params: {idCuenta: cuenta.id}})" :color="cuenta.saldo_total == cuenta.saldo_real_calculado? 'success':'danger'" class="h-100">
@@ -43,6 +54,8 @@ import { ButtonCrearComponent } from '@/components/buttonComponents'
 
 import CardComponent from '@/components/CardComponent.vue';
 import { useEfectivoMonedaComposable } from '@/composables/useEfectivoMonedaComposable';
+import ButtonBuscarComponent from '@/components/buttonComponents/ButtonBuscarComponent.vue';
+import DynamicInputComponent from '@/components/inputComponents/DynamicInputComponent.vue';
 
 const router = useRouter()
 

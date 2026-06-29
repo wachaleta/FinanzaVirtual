@@ -1,7 +1,7 @@
 <template>
   <form @submit.prevent="registrarse()">
     <div class="row h-100vh justify-content-center pb-5 align-items-center">
-      <div class="col-6">
+      <div class="col-12 col-lg-6">
         <CardComponent class="pb-4">
           <template #body>
             <div class="row justify-content-center">
@@ -24,13 +24,16 @@
                     Repetir Contraseña
                   </DynamicInputComponent>
                 </div>
+                
+                <div class="text-center help-text">
+                  <p>
+                    Ya tienes una cuenta? <RouterLink :to="{name: 'login'}"> Iniciar Sesión </RouterLink>
+                  </p>
+                </div>
               </div>
               <!-- <button type="submit" class="btn btn-light"><i class="bx bxs-lock-open"></i>Iniciar Sesión</button> -->
               <div class="text-end me-3">
-                <DynamicButtonComponent class="me-3" color="info" @click="router.push({name: 'login'})">
-                  Ya tienes una cuenta? Iniciar Sesión
-                </DynamicButtonComponent>
-                <DynamicButtonComponent type="submit" color="info">
+                <DynamicButtonComponent type="submit" color="secondary">
                   Crear Cuenta
                 </DynamicButtonComponent>
               </div>

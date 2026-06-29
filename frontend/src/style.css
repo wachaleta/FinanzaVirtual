@@ -12,6 +12,11 @@ input.error, select.error{
   border-width: 2px;
 }
 
+.help-text {
+  color: rgb(177, 177, 177);
+  font-size: 0.9rem;
+}
+
 .input-error {
   border-style: solid;
   border-color: rgb(255, 116, 116);

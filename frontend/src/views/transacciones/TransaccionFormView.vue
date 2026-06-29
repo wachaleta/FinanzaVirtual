@@ -1,6 +1,6 @@
 <template>
     <div class="row">
-        <div class="col-6">
+        <div class="col-12 col-sm-6">
             <div class="mb-3">
                 <DynamicInputComponent v-focus type="number" name="monto" min="0" step="0.01" v-model="transaccion.monto" placeholder="Q 0.00">
                     Monto
@@ -20,7 +20,7 @@
             <PerfilSelectComponent v-model="transaccion.perfil_ordenante" name="perfil_ordenante"/>
         </div>
 
-        <div class="col-6">
+        <div class="col-12 col-sm-6">
             <div class="mb-3">
                 <DynamicInputComponent type="date" name="fecha" v-model="transaccion.fecha">Fecha:</DynamicInputComponent>
             </div>

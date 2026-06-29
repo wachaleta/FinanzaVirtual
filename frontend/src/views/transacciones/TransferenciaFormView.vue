@@ -1,6 +1,6 @@
 <template>
     <div class="row">
-        <div class="col-6">
+        <div class="col-12 col-sm-6">
             <div class="mb-3">
                 <DynamicInputComponent v-model="transaccion.monto" v-focus type="number" name="monto" min="0" step="0.01" placeholder="Q 0.00">
                     Monto
@@ -42,7 +42,7 @@
     <!-- Categorias -->
     <div class="row">
         
-        <div class="col-6">
+        <div class="col-12 col-sm-6">
             <div class="mb-3">
                 <DynamicInputComponent type="date" v-model="transaccion.fecha" name="Fecha">Fecha:</DynamicInputComponent>
             </div>
