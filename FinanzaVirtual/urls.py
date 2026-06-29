@@ -47,7 +47,7 @@ urlpatterns = [
     path("api/", include(router.urls),),
     path("api/auth/", include(AuthUrls),),
     path("api/catalogos/", include(CatalogosUrls),),
-    path("debito/api/", include(DebitoUrls),),
+    path("api/debito/", include(DebitoUrls),),
     path('admin/', admin.site.urls),
     # path('', include("Core.Services.MiBancoVirtual.urls")),
     # path('auth', include("Core.Services.MiBancoVirtual.urls")),
