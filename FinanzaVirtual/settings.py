@@ -64,6 +64,7 @@ ALLOWED_HOSTS = [
     'finanzavirtual.onrender.com',
     '142.93.254.184',
     '142.93.254.184:8000',
+    'ctrcash.net'
 ]
 
 
@@ -101,6 +102,7 @@ CORS_ALLOWED_ORIGINS = [
     'http://142.93.254.184',
     'http://142.93.254.184:8000',
     'http://192.168.0.99:5173',
+    'http://ctrlcash.net',
 ]
 
 ROOT_URLCONF = 'FinanzaVirtual.urls'
