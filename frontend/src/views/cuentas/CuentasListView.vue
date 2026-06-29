@@ -14,7 +14,7 @@
 
     <div class="row">
         <div v-for="cuenta in cuentas" class="col-12 col-sm-6 col-md-4 mt-3">
-            <CardComponent @click="router.push({name: 'cuenta-editar', params: {idCuenta: cuenta.id}})" :color="cuenta.saldo_total == cuenta.saldo_efectivo_calculado? 'success':'danger'" class="h-100">
+            <CardComponent @click="router.push({name: 'cuenta-editar', params: {idCuenta: cuenta.id}})" :color="cuenta.saldo_total == cuenta.saldo_real_calculado? 'success':'danger'" class="h-100">
                 <template v-slot:header>
                     {{ cuenta.nombre }}
                 </template>
@@ -26,8 +26,8 @@
                     <div class="mt-2" style="font-size: 1.7rem;">
                         <strong>{{ $filters.currencyGTQ(cuenta.saldo_total) }}</strong>
                     </div>
-                    <div v-if="cuenta.saldo_total != cuenta.saldo_efectivo_calculado">
-                        <strong >Diff({{ $filters.currencyGTQ(cuenta.saldo_efectivo_calculado - cuenta.saldo_total) }})</strong>
+                    <div v-if="cuenta.saldo_total != cuenta.saldo_real_calculado">
+                        <strong >Diff({{ $filters.currencyGTQ(cuenta.saldo_real_calculado - cuenta.saldo_total) }})</strong>
                     </div>
                 </template>
             </CardComponent>
@@ -42,6 +42,7 @@ import { useCuentasComposable } from '@/composables/useCuentasComposable';
 import { ButtonCrearComponent } from '@/components/buttonComponents'
 
 import CardComponent from '@/components/CardComponent.vue';
+import { useEfectivoMonedaComposable } from '@/composables/useEfectivoMonedaComposable';
 
 const router = useRouter()
 
@@ -52,7 +53,13 @@ const {
     cargarCuentas
 } = useCuentasComposable()
 
+const {
+    cargarEfectivoMoneda,
+} = useEfectivoMonedaComposable()
+
 const refresh = async() => {
+    cargarEfectivoMoneda()
+
     cuentasFiltros.value = {
         activo: true
     }

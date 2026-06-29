@@ -6,6 +6,7 @@ export const useCuentasComposable = () => {
 
     const {
         cuenta,
+        cuentaEfectivo,
         cuentas,
         cuentasFiltros,
     } = storeToRefs(store)
@@ -30,6 +31,7 @@ export const useCuentasComposable = () => {
 
     return {
         cuenta,
+        cuentaEfectivo,
         cuentas,
         cuentasFiltros,
         

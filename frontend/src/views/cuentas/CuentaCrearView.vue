@@ -31,11 +31,13 @@ const router = useRouter()
 
 const {
     cuenta,
+    cuentaEfectivo,
     
     crearCuenta,
 } = useCuentasComposable()
 
 const refresh = async() => {
+    cuentaEfectivo.value = {}
     cuenta.value = {}
 }
 

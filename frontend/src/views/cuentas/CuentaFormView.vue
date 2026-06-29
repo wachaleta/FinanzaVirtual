@@ -6,45 +6,11 @@
     </div>
     <DynamicCheckBoxComponent name="es_efectivo" v-model="cuenta.es_efectivo">Es cuenta de efectivo?</DynamicCheckBoxComponent>
     <div v-if="cuenta.es_efectivo == true" class="row mt-3">
-        <InputGroupComponent v-model="cuenta.bQ100" type="number" class="mb-2" name="bQ100">
-            Q100
-        </InputGroupComponent>
-        
-        <InputGroupComponent v-model="cuenta.bQ50" type="number" class="mb-2" name="bQ50">
-            Q50
+
+        <InputGroupComponent v-for="item in listado_efectivo()" v-model="cuentaEfectivo[get_id(item)]" type="number" class="mb-2" name="efectivo">
+            {{ $filters.currencyGTQ(item.valor) }}
         </InputGroupComponent>
 
-        <InputGroupComponent v-model="cuenta.bQ20" type="number" class="mb-2" name="bQ20">
-            Q20
-        </InputGroupComponent>
-
-        <InputGroupComponent v-model="cuenta.bQ10" type="number" class="mb-2" name="bQ10">
-            Q10
-        </InputGroupComponent>
-
-        <InputGroupComponent v-model="cuenta.bQ5" type="number" class="mb-2" name="bQ5">
-            Q5
-        </InputGroupComponent>
-
-        <InputGroupComponent v-model="cuenta.m100c" type="number" class="mb-2" name="m100c">
-            Q1
-        </InputGroupComponent>
-
-        <InputGroupComponent v-model="cuenta.m50c" type="number" class="mb-2" name="m50c">
-            Q0.50
-        </InputGroupComponent>
-
-        <InputGroupComponent v-model="cuenta.m25c" type="number" class="mb-2" name="m25c">
-            Q0.25
-        </InputGroupComponent>
-
-        <InputGroupComponent v-model="cuenta.m10c" type="number" class="mb-2" name="m10c">
-            Q0.10
-        </InputGroupComponent>
-
-        <InputGroupComponent v-model="cuenta.m5c" type="number" class="mb-2" name="m5c">
-            Q0.05
-        </InputGroupComponent>
     </div>
     <div v-else class="mt-3">
         <DynamicInputComponent type="number" min="0" step="0.01" name="saldo_real" v-model="cuenta.saldo_real">Saldo real</DynamicInputComponent>
@@ -63,17 +29,41 @@ import {
 import {
     DynamicCheckBoxComponent,
 } from '@/components/inputComponents';
+import { useEfectivoMonedaComposable } from '@/composables/useEfectivoMonedaComposable';
+import { ref } from 'vue';
+import CuentaConfirmCancelarEditarModalView from './CuentaConfirmCancelarEditarModalView.vue';
 
 const { cleanErrors } = useErrorsComposable()
 
 const {
-    cuenta
+    cuenta,
+    cuentaEfectivo,
 } = useCuentasComposable()
+
+const {
+    efectivoMonedaList
+} = useEfectivoMonedaComposable()
 
 const refresh = () => {
     cleanErrors()
 }
 
 refresh()
+
+const listado_efectivo = () => {
+    if(cuenta.value.cuentaefectivo_set?.length > 0){
+        return cuenta.value.cuentaefectivo_set
+    } else {
+        return efectivoMonedaList.value
+    }
+}
+
+const get_id = (item) => {
+    if(cuenta.value.cuentaefectivo_set?.length > 0){
+        return item.efectivo_moneda
+    } else {
+        return item.id
+    }
+}
 
 </script>

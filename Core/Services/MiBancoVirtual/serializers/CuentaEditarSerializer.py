@@ -3,6 +3,7 @@ from rest_framework import serializers
 from Core.Services.MiBancoVirtual import models
 
 class CuentaEditarSerializer(serializers.ModelSerializer):
+    efectivo = serializers.DictField(write_only=True)
     
     def validate_nombre(self, value):
 

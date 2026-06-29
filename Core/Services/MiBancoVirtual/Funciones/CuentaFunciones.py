@@ -4,7 +4,12 @@ from django.contrib.auth.models import User
 from django.db import transaction  
 
 from Core.Application.Exceptions import BadRequestException
+
 from Core.Services.Auth.Funciones import ProfileFunciones
+
+from Core.Services.catalogos.getters import EfectivoMonedaGetters
+
+from Core.Services.MiBancoVirtual.Funciones import CuentaEfectivoFunciones
 from Core.Services.MiBancoVirtual import models
 
 @transaction.atomic()
@@ -13,16 +18,7 @@ def cuenta_crear(
     nombre: str = None,
     es_efectivo: bool = False,
     saldo_real: int = 0,
-    bQ100: int = 0,
-    bQ50: int = 0,
-    bQ20: int = 0,
-    bQ10: int = 0,
-    bQ5: int = 0,
-    m100c: int = 0,
-    m50c: int = 0,
-    m25c: int = 0,
-    m10c: int = 0,
-    m5c: int = 0,
+    efectivo: dict = {}
 ) -> models.Cuenta:
     ProfileFunciones.profile_validar_pago(usuario=usuario)
 
@@ -31,20 +27,24 @@ def cuenta_crear(
         nombre = nombre,
         es_efectivo = es_efectivo,
         saldo_real = saldo_real,
-        bQ100 = bQ100,
-        bQ50 = bQ50,
-        bQ20 = bQ20,
-        bQ10 = bQ10,
-        bQ5 = bQ5,
-        m100c = m100c,
-        m50c = m50c,
-        m25c = m25c,
-        m10c = m10c,
-        m5c = m5c,
     )
 
     cuenta.full_clean()
     cuenta.save()
+
+    if cuenta.es_efectivo:
+        efectivo_list = EfectivoMonedaGetters.obtener_efectivo_moneda_por_usuario(usuario=usuario)
+
+        for efectivo_moneda in efectivo_list:
+
+            cantidad = efectivo.get(str(efectivo_moneda.id), Decimal(0))
+
+            CuentaEfectivoFunciones.cuenta_efectivo_crear(
+                usuario=usuario,
+                cuenta=cuenta,
+                efectivo_moneda=efectivo_moneda,
+                cantidad_efectivo=cantidad
+            )
 
     return cuenta
 
@@ -56,16 +56,7 @@ def cuenta_editar(
     es_efectivo: bool = False,
     activo: bool = False,
     saldo_real: Decimal = 0,
-    bQ100: int = 0,
-    bQ50: int = 0,
-    bQ20: int = 0,
-    bQ10: int = 0,
-    bQ5: int = 0,
-    m100c: int = 0,
-    m50c: int = 0,
-    m25c: int = 0,
-    m10c: int = 0,
-    m5c: int = 0,
+    efectivo: dict = {}
 ) -> models.Cuenta:
     ProfileFunciones.profile_validar_pago(usuario=usuario)
 
@@ -76,19 +67,30 @@ def cuenta_editar(
     cuenta.es_efectivo = es_efectivo
     cuenta.saldo_real = saldo_real
     cuenta.activo = activo
-    cuenta.bQ100 = bQ100
-    cuenta.bQ50 = bQ50
-    cuenta.bQ20 = bQ20
-    cuenta.bQ10 = bQ10
-    cuenta.bQ5 = bQ5
-    cuenta.m100c = m100c
-    cuenta.m50c = m50c
-    cuenta.m25c = m25c
-    cuenta.m10c = m10c
-    cuenta.m5c = m5c
 
-    # cuenta.full_clean()
     cuenta.save()
+
+    if cuenta.es_efectivo:
+        efectivo_list = EfectivoMonedaGetters.obtener_efectivo_moneda_por_usuario(usuario=usuario)
+
+        for efectivo_moneda in efectivo_list:
+
+            cantidad = efectivo.get(str(efectivo_moneda.id), Decimal(0))
+            item = cuenta.cuentaefectivo_set.filter(efectivo_moneda = efectivo_moneda).first()
+
+            if not item:
+                CuentaEfectivoFunciones.cuenta_efectivo_crear(
+                    usuario=usuario,
+                    cuenta=cuenta,
+                    efectivo_moneda=efectivo_moneda,
+                    cantidad_efectivo=cantidad
+                )
+            else:
+                CuentaEfectivoFunciones.cuenta_efectivo_editar(
+                    usuario=usuario,
+                    cuenta_efectivo=item,
+                    cantidad_efectivo=cantidad
+                )
 
     return cuenta
 

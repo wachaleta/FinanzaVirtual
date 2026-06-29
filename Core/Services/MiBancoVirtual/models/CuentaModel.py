@@ -24,33 +24,6 @@ class Cuenta(models.Model):
     m10c = models.IntegerField(default=0)
     m5c = models.IntegerField(default=0)
     activo = models.BooleanField(default=True)
-    
-    @property
-    def saldo_efectivo_calculado(self):
-        if self.es_efectivo:
-            saldo =(
-                self.bQ100 * 100 +
-                self.bQ50 * 50 +
-                self.bQ20 * 20 +
-                self.bQ10 * 10 +
-                self.bQ5 * 5 +
-                self.m100c +
-                self.m50c * 50 / 100 +
-                self.m25c * 25 / 100 +
-                self.m10c * 10 / 100 +
-                self.m5c * 5 / 100
-            )
 
-        else:
-            saldo = self.saldo_real
-
-        return saldo
-
-    def __str__(self):
-        return self.Nombre
-
-    def __int__(self):
-        return self.IdCuenta
-    
     class Meta:
         db_table="cuenta"

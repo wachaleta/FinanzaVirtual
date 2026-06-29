@@ -20,6 +20,7 @@ from rest_framework import routers
 from Core.Services.MiBancoVirtual.viewsets import *
 
 from Core.Services.Auth import urls as AuthUrls
+from Core.Services.catalogos import urls as CatalogosUrls
 from Core.Services.MiBancoVirtual import urls as DebitoUrls
 
 router = routers.DefaultRouter()
@@ -45,6 +46,7 @@ router.register(r"transferencia", TransferenciaViewSet, basename="transferencia"
 urlpatterns = [
     path("api/", include(router.urls),),
     path("api/auth/", include(AuthUrls),),
+    path("api/catalogos/", include(CatalogosUrls),),
     path("debito/api/", include(DebitoUrls),),
     path('admin/', admin.site.urls),
     # path('', include("Core.Services.MiBancoVirtual.urls")),

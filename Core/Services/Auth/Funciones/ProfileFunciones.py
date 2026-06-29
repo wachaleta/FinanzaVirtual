@@ -7,6 +7,8 @@ from django.utils import timezone
 
 from Core.Application.Exceptions import BadRequestException
 from Core.Services.Auth import models
+from Core.Services.Auth.getters import ProfileGetters
+from Core.Services.catalogos.getters import UnidadMonetariaGetters
 
 @transaction.atomic()
 def profile_crear(
@@ -14,10 +16,13 @@ def profile_crear(
 ):
     fecha_limite_permitida = date.today() + relativedelta(months=1)
     
+    unidad_monetaria = UnidadMonetariaGetters.obtener_unidad_monetaria_por_simbolo(simbolo="Q")
+    
     profile = models.Profile(
         usuario = usuario,
         nombre = usuario.username,
         fecha_limite_permitida = fecha_limite_permitida,
+        unidad_monetaria=unidad_monetaria,
     )
 
     profile.full_clean()
@@ -29,10 +34,7 @@ def profile_crear(
 def profile_validar_pago(
     usuario: User = None,
 ):
-    profile = models.Profile.objects.filter(usuario=usuario).first()
-
-    if not profile:
-        raise BadRequestException("El usuario no cuenta con un registro profile")
+    profile = ProfileGetters.obtener_profile_por_usuario(usuario=usuario)
 
     if profile.fecha_limite_permitida < timezone.localdate():
         raise BadRequestException("No puede ejecutar esta acción. Verifique su pago")

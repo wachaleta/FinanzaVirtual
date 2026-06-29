@@ -8,11 +8,14 @@ export const useCuentasStore = defineStore("cuentas", {
         return{
             cuentas: [],
             cuentasFiltros: {},
+            cuentaEfectivo: {},
             cuenta: {},
         }
     },
     actions: {
         async crearCuenta() {
+            this.cuenta.efectivo = {...this.cuentaEfectivo}
+
             await DebitoApi().post("cuenta/", this.cuenta)
             .then(() => {
                 this.cuenta = {}
@@ -21,6 +24,7 @@ export const useCuentasStore = defineStore("cuentas", {
         },
 
         async editarCuenta() {
+            this.cuenta.efectivo = {...this.cuentaEfectivo}
             await DebitoApi().put(`cuenta/${this.cuenta.id}/`, this.cuenta)
             .then(() => {
                 this.cuenta = {}
@@ -65,6 +69,11 @@ export const useCuentasStore = defineStore("cuentas", {
             await DebitoApi().get(`cuenta/${this.cuenta.id}/`)
             .then(res => {
                 this.cuenta = res.data
+
+                for(const clave in this.cuenta.cuentaefectivo_set){
+                    const item = this.cuenta.cuentaefectivo_set[clave]
+                    this.cuentaEfectivo[item.efectivo_moneda] = item.cantidad_efectivo
+                }
             })
         },
     }
