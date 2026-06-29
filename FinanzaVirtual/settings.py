@@ -63,8 +63,8 @@ ALLOWED_HOSTS = [
     'restaurantelaantigua.pythonanywhere.com',
     'finanzavirtual.onrender.com',
     '142.93.254.184',
-    '142.93.254.184:8000',
-    'ctrcash.net'
+    'ctrlcash.net',
+    'www.ctrlcash.net',
 ]
 
 
@@ -100,9 +100,9 @@ MIDDLEWARE = [
 CORS_ALLOWED_ORIGINS = [
     'http://localhost:5173',
     'http://142.93.254.184',
-    'http://142.93.254.184:8000',
     'http://192.168.0.99:5173',
     'http://ctrlcash.net',
+    'http://www.ctrlcash.net',
 ]
 
 ROOT_URLCONF = 'FinanzaVirtual.urls'
