@@ -46,9 +46,11 @@ export const useTransaccionesStore = defineStore("transacciones", {
                 .then(() => {
                     toast.success("Transferencia Creada Exitosamente!")
                     const fecha = this.transaccion.fecha
+                    const transferencia_entre_perfiles = this.transaccion.transferencia_entre_perfiles
+                    
                     this.transaccion = {}
                     this.transaccion.fecha = fecha
-                    this.transaccion.transferencia_entre_perfiles = true
+                    this.transaccion.transferencia_entre_perfiles = transferencia_entre_perfiles
                 })
         },
 
