@@ -48,8 +48,13 @@ export default (baseURL = "") => {
                 router.push({name: "login"})
             }
 
-            if(error.response.data.detail) {
-                toast.error(error.response.data.detail)
+            const data = error.response.data
+
+            console.log("data")
+            console.log(error.response)
+
+            if(data != null && Object.values(data)[0]) {
+                toast.error(Object.values(data)[0])
             } else {
                 toast.error("Ha ocurrido un error inesperado")
             }

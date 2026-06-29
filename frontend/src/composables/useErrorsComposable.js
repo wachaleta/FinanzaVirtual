@@ -10,10 +10,11 @@ export const useErrorsComposable = (name='') => {
     } = storeToRefs(errorsStore)
 
     const getErrors = computed(() => {
-        if(errors.value && errors.value.errores)
+
+        if(errors.value)
         {
-            const key = Object.keys(errors.value.errores).find(v => v.toLowerCase() == name.toLowerCase())
-            return errors.value.errores[key]
+            const key = Object.keys(errors.value).find(v => v.toLowerCase() == name.toLowerCase())
+            return errors.value[key]
         }
     })
 

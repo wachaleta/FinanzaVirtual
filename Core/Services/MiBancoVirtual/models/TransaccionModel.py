@@ -16,13 +16,23 @@ class Transaccion(models.Model):
     fecha = models.DateField(auto_now_add=False)
     fecha_creacion = models.DateTimeField(auto_now_add=True)
     
-    perfil_ordenante = models.ForeignKey("MiBancoVirtual.Perfil", related_name="transaccion_perfil_ordenante", on_delete=models.SET_NULL, null=True, blank=True)
-    cuenta_ordenante = models.ForeignKey("MiBancoVirtual.Cuenta", related_name="transaccion_cuenta_ordenante", on_delete=models.SET_NULL, null=True, blank=True)
+    perfil_ordenante = models.ForeignKey("MiBancoVirtual.Perfil", related_name="transaccion_perfil_ordenante",
+        on_delete=models.SET_NULL, null=True, blank=True)
 
-    perfil_beneficiario = models.ForeignKey("MiBancoVirtual.Perfil", related_name="transaccion_perfil_beneficiario", on_delete=models.SET_NULL, null=True, blank=True)
-    cuenta_beneficiaria = models.ForeignKey("MiBancoVirtual.Cuenta", related_name="transaccion_cuenta_beneficiaria", on_delete=models.SET_NULL, null=True, blank=True)
+    cuenta_ordenante = models.ForeignKey("MiBancoVirtual.Cuenta", related_name="transaccion_cuenta_ordenante",
+        on_delete=models.SET_NULL, null=True, blank=True)
+
+
+    perfil_beneficiario = models.ForeignKey("MiBancoVirtual.Perfil", related_name="transaccion_perfil_beneficiario",
+        on_delete=models.SET_NULL, null=True, blank=True)
+
+    cuenta_beneficiaria = models.ForeignKey("MiBancoVirtual.Cuenta", related_name="transaccion_cuenta_beneficiaria",
+        on_delete=models.SET_NULL, null=True, blank=True)
+
     
-    categoria = models.ForeignKey("MiBancoVirtual.Categoria", on_delete=models.PROTECT)
+    categoria = models.ForeignKey("MiBancoVirtual.Categoria",
+        on_delete=models.PROTECT)
+
 
     @property
     def transferencia_entre_perfiles(self):
