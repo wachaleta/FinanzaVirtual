@@ -5,8 +5,14 @@ from Core.Services.MiBancoVirtual.serializers.PerfilSerializer import PerfilSeri
 from Core.Services.MiBancoVirtual.serializers.CuentaSerializer import CuentaSerializer
 
 class IngresoSerializer(serializers.ModelSerializer):
-    perfil_ordenante = PerfilSerializer(required=True)
-    cuenta_ordenante = CuentaSerializer(required=True)
+    perfil_ordenante = serializers.PrimaryKeyRelatedField(
+        queryset=Perfil.objects.all(),
+        required=True
+    )
+    cuenta_ordenante = serializers.PrimaryKeyRelatedField(
+        queryset=Cuenta.objects.all(),
+        required=True
+    )
 
     class Meta: 
         model = Transaccion
