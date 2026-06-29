@@ -1,11 +1,9 @@
-FinanzaVirtual/__pycache__/
-MiBancoVirtual/__pycache__/
-MiBancoVirtual/models/__pycache__/
-MiBancoVirtual/serializers/__pycache__/
-MiBancoVirtual/viewsets/__pycache__/
 db.sqlite3
 .vscode
 .DS_Store
 *.appsettings.json
 .env*
+.venv
+
+__pycache__/
 *.pyc
