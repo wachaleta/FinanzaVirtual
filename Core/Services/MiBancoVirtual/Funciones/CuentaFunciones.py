@@ -78,6 +78,11 @@ def cuenta_editar(
             cantidad = efectivo.get(str(efectivo_moneda.id), Decimal(0))
             item = cuenta.cuentaefectivo_set.filter(efectivo_moneda = efectivo_moneda).first()
 
+            print("CANTIDAD 1")
+            print(cantidad)
+            print(type(cantidad))
+
+
             if not item:
                 CuentaEfectivoFunciones.cuenta_efectivo_crear(
                     usuario=usuario,

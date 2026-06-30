@@ -84,8 +84,6 @@ export default {
     },
 
     primerDiaAnio(fecha){
-        console.log(fecha)
-        console.log(dayjs(fecha))
         const newDate = dayjs(fecha.toString()).startOf('year')
 
         return this.formatDate(newDate)

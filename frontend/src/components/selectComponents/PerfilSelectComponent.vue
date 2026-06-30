@@ -49,8 +49,6 @@ const {
 } = usePerfilesComposable()
 
 const refresh = async() =>{
-    console.log("props")
-    console.log(props.cargarItems)
     if(props.cargarItems){
         perfilesFiltros.value = {
             activo: true,

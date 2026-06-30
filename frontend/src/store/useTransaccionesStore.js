@@ -25,9 +25,12 @@ export const useTransaccionesStore = defineStore("transacciones", {
             await DebitoApi().post("gasto/", this.transaccion)
                 .then(() => {
                     toast.success("Gasto Creado Exitosamente!")
-                    const fecha = this.transaccion.fecha
-                    this.transaccion = {}
-                    this.transaccion.fecha = fecha
+                    
+                    const guardar = {
+                        fecha: this.transaccion.fecha,
+                        categoria: this.transaccion.categoria,
+                    }
+                    this.transaccion = {...guardar}
                 })
         },
 
@@ -35,9 +38,12 @@ export const useTransaccionesStore = defineStore("transacciones", {
             await DebitoApi().post("ingreso/", this.transaccion)
                 .then(() => {
                     toast.success("Ingreso Creado Exitosamente!")
-                    const fecha = this.transaccion.fecha
-                    this.transaccion = {}
-                    this.transaccion.fecha = fecha
+                    
+                    const guardar = {
+                        fecha: this.transaccion.fecha,
+                        categoria: this.transaccion.categoria,
+                    }
+                    this.transaccion = {...guardar}
                 })
         },
 
@@ -45,12 +51,13 @@ export const useTransaccionesStore = defineStore("transacciones", {
             await DebitoApi().post("transferencia/", this.transaccion)
                 .then(() => {
                     toast.success("Transferencia Creada Exitosamente!")
-                    const fecha = this.transaccion.fecha
-                    const transferencia_entre_perfiles = this.transaccion.transferencia_entre_perfiles
-                    
-                    this.transaccion = {}
-                    this.transaccion.fecha = fecha
-                    this.transaccion.transferencia_entre_perfiles = transferencia_entre_perfiles
+
+                    const guardar = {
+                        fecha: this.transaccion.fecha,
+                        categoria: this.transaccion.categoria,
+                        transferencia_entre_perfiles: this.transaccion.transferencia_entre_perfiles,
+                    }
+                    this.transaccion = {...guardar}
                 })
         },
 

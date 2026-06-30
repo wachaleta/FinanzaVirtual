@@ -52,8 +52,9 @@ export default (baseURL = "") => {
 
             console.log("data")
             console.log(error.response)
+            console.log(typeof(data))
 
-            if(data != null && Object.values(data)[0]) {
+            if(typeof(data) == 'object' && data != null && Object.values(data)[0]) {
                 toast.error(Object.values(data)[0])
             } else {
                 toast.error("Ha ocurrido un error inesperado")

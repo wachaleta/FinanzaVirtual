@@ -39,7 +39,6 @@ const {
 } = useCategoriasComposable()
 
 const keyupHandler = (e) => {
-    console.log(e.key)
     if(e.key == "Escape" && route.name == "categoria-editar")
     {
         router.push({name: 'categoria-editar-cancelar'})
