@@ -15,8 +15,8 @@ def obtener_perfiles_usuario(
 ):
     perfiles = models.Perfil.objects.filter(usuario=usuario)
 
-    # if activo is not None:
-        # perfiles = perfiles.filter(activo=activo)
+    if activo is not None:
+        perfiles = perfiles.filter(activo=activo)
 
     if searchText:
         perfiles = perfiles.filter(nombre__icontains=searchText)
